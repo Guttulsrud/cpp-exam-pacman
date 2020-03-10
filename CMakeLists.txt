@@ -12,6 +12,6 @@ find_package(SDL2_image REQUIRED)
 include_directories(${SDL2_INCLUDE_DIR}
         ${SDL2_IMAGE_INCLUDE_DIR})
 
-add_executable(Exam main.cpp src/InputManager.cpp include/InputManager.h include/Drawable2D.h include/Updatable.h)
+add_executable(Exam main.cpp src/InputManager.cpp include/InputManager.h include/Drawable2D.h include/Updatable.h src/Character.cpp include/Character.h include/Component.h)
 
 target_link_libraries(Exam ${SDL2_LIBRARY} ${SDL2_IMAGE_LIBRARIES} -lmingw32 -lSDL2main -lSDL2 -mwindows)

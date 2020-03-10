@@ -10,9 +10,9 @@ public:
 
     virtual void getPosition() = 0;
 
-    virtual void getHeight() = 0;
+    virtual int getHeight() = 0;
 
-    virtual void getWidth() = 0;
+    virtual int getWidth() = 0;
 
 
 };
