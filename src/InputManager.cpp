@@ -1,20 +1,23 @@
 #include <cstring>
+#include <iostream>
 #include "../include/InputManager.h"
 
 bool InputManager::KeyDown(int iKeyIndex) {
-    return false;
+    return !oldKeys[iKeyIndex] && keys[iKeyIndex];
+
 }
 
 bool InputManager::KeyStillDown(int iKeyIndex) {
-    return false;
+    return oldKeys[iKeyIndex] && keys[iKeyIndex];
 }
 
 bool InputManager::KeyUp(int iKeyIndex) {
-    return false;
+    return oldKeys[iKeyIndex] && !keys[iKeyIndex];
 }
 
 bool InputManager::KeyStillUp(int iKeyIndex) {
-    return false;
+    return !(oldKeys[iKeyIndex] && keys[iKeyIndex]);
+
 }
 
 bool InputManager::MouseDown(int iButton) {
@@ -40,9 +43,8 @@ InputManager &InputManager::getInstance() {
 
 void InputManager::update() {
     m_oldMouseButtons = m_mouseButtons;
-    memcpy(oldKeys.get(), keys, keyCount * sizeof(Uint8));
+    memcpy(oldKeys, keys, keyCount * sizeof(Uint8));
     SDL_PumpEvents();
-
     m_mouseButtons = SDL_GetRelativeMouseState(&mouseX, &mouseY);
 
 }

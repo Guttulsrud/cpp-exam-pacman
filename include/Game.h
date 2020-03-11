@@ -19,7 +19,7 @@ public:
 
     void init(const char *title, int xpos, int ypos, int width, int height, bool fullscreen);
 
-    void handleEvents();
+    static SDL_Texture *loadTexture(const char *fileName, SDL_Renderer *renderer);
 
     void update();
 

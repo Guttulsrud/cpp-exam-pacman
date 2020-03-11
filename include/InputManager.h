@@ -3,13 +3,16 @@
 
 
 #ifdef WIN32
+
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+
 #else
 #include <SDL.h>
 #include <SDL_image.h>
 
 #endif
+
 #include <SDL_quit.h>
 #include <memory>
 
@@ -17,9 +20,8 @@ class InputManager {
 public:
 
     InputManager() {
-        //keys = SDL_GetKeyboardState(keyCount);
-
-        oldKeys = std::unique_ptr<Uint8>(new Uint8[keyCount]);
+        keys = SDL_GetKeyboardState(&keyCount);
+        oldKeys = new Uint8[keyCount];
     }
 
     void update();
@@ -45,14 +47,22 @@ public:
 
     bool MouseStillUp(int iButton);
 
+    SDL_Event pollEvent() {
+        SDL_Event event;
+
+        if (SDL_PollEvent(&event)) {
+            return event;
+        }
+    }
+
 protected:
 
     // A pointer to SDL's internal key state array.
     // (Memory handled by SDL.)
-    Uint8 *keys;
+    const Uint8 *keys;
     // Our own copy of last update's array.
     // NB! Memory handled dynamically by us!
-    std::unique_ptr<Uint8> oldKeys; // Number of keys in the arrays above, for this
+    Uint8 *oldKeys; // Number of keys in the arrays above, for this
     // app. (Can vary depending on setup/hardware.)
     int keyCount;
 

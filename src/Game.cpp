@@ -1,11 +1,14 @@
-#pragma clang diagnostic push
-#pragma ide diagnostic ignored "hicpp-signed-bitwise"
+
 #include "../include/Game.h"
+#include "../include/InputManager.h"
 #include <iostream>
+
+SDL_Texture *playerTexture;
+SDL_Rect srcR, destR;
 
 void Game::init(const char *title, int xPos, int yPos, int width, int height, bool fullscreen) {
 
-    Uint32 flags = 0;
+    Uint32 flags = SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL;
     if (fullscreen) {
         flags = SDL_WINDOW_FULLSCREEN | SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL;
     }
@@ -26,22 +29,29 @@ void Game::init(const char *title, int xPos, int yPos, int width, int height, bo
             std::cout << "Renderer created!" << std::endl;
         }
         isRunning = true;
-    } else {
-        isRunning = false;
     }
+
+    playerTexture = loadTexture("../Resources/img/player.png", renderer);
 }
 
-Game::Game() {
-    SDL_Event event;
-    SDL_PollEvent(&event);
-    switch (event.type) {
-        case SDL_QUIT:
-            isRunning = false;
-            break;
+void Game::render() {
+    SDL_RenderClear(renderer);
+    SDL_RenderCopy(renderer, playerTexture, NULL, &destR);
+    SDL_RenderPresent(renderer);
+}
 
-        default:
-            break;
-    }
+
+Game::Game() {
+//    SDL_Event event;
+//    SDL_PollEvent(&event);
+//    switch (event.type) {
+//        case SDL_QUIT:
+//            isRunning = false;
+//            break;
+//
+//        default:
+//            break;
+//    }
 
 }
 
@@ -49,23 +59,27 @@ Game::~Game() {
 
 }
 
-void Game::handleEvents() {
-
-}
-
-void Game::render() {
-    SDL_RenderClear(renderer);
-
-    // Add render stuff here
-
-
-    SDL_RenderPresent(renderer);
-
-}
 
 void Game::update() {
-    cnt++;
-    std::cout << cnt << std::endl;
+
+    if (InputManager::getInstance().KeyStillDown(SDL_SCANCODE_W)) {
+        destR.y -= 3;
+    }
+    if (InputManager::getInstance().KeyStillDown(SDL_SCANCODE_A)) {
+        destR.x -= 3;
+    }
+    if (InputManager::getInstance().KeyStillDown(SDL_SCANCODE_S)) {
+        destR.y += 3;
+    }
+    if (InputManager::getInstance().KeyStillDown(SDL_SCANCODE_D)) {
+        destR.x += 3;
+    }
+
+
+    destR.h = 64;
+    destR.w = 64;
+
+
 }
 
 void Game::clean() {
@@ -76,4 +90,13 @@ void Game::clean() {
     std::cout << "Cleaned.." << std::endl;
 }
 
-#pragma clang diagnostic pop
+SDL_Texture *Game::loadTexture(const char *fileName, SDL_Renderer *renderer) {
+
+    SDL_Surface *surface = IMG_Load(fileName);
+    SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
+    SDL_FreeSurface(surface);
+
+    return texture;
+}
+
+
