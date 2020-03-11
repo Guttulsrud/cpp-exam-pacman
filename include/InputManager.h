@@ -1,7 +1,15 @@
 #ifndef INPUTMANAGER_H
 #define INPUTMANAGER_H
 
+
+#ifdef WIN32
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+#else
+#include <SDL.h>
+#include <SDL_image.h>
+
+#endif
 #include <SDL_quit.h>
 #include <memory>
 

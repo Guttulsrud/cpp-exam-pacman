@@ -1,12 +1,13 @@
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "hicpp-signed-bitwise"
 #include "../include/Game.h"
-#include <SDL2/SDL.h>
 #include <iostream>
 
 void Game::init(const char *title, int xPos, int yPos, int width, int height, bool fullscreen) {
 
-    int flags = 0;
+    Uint32 flags = 0;
     if (fullscreen) {
-        flags = SDL_WINDOW_FULLSCREEN;
+        flags = SDL_WINDOW_FULLSCREEN | SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL;
     }
     if (SDL_Init(SDL_INIT_EVERYTHING) == 0) {
 
@@ -17,10 +18,11 @@ void Game::init(const char *title, int xPos, int yPos, int width, int height, bo
             std::cout << "Window created!" << std::endl;
         }
 
+
         renderer = SDL_CreateRenderer(window, -1, flags);
 
         if (renderer) {
-            SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+            SDL_SetRenderDrawColor(renderer, 200, 50, 255, 255);
             std::cout << "Renderer created!" << std::endl;
         }
         isRunning = true;
@@ -73,3 +75,5 @@ void Game::clean() {
     SDL_Quit();
     std::cout << "Cleaned.." << std::endl;
 }
+
+#pragma clang diagnostic pop
