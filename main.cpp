@@ -1,7 +1,5 @@
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
 #include <iostream>
-
+#include "include/Game.h"
 
 
 // -------- Input management: ---------- //
@@ -19,44 +17,33 @@
 // Main menu tasks,
 // Item clicks, …
 
-
 // -------- STATE SNAPSHOT ---------- //
 // Bruker state sjekking på resten (movement, actions). (State snapshot)
 
 
 
 
-
-
-
-
-
+Game *game = nullptr;
 
 int main(int argc, char *argv[]) {
-    SDL_Init(SDL_INIT_VIDEO); // Init. SDL2
-    SDL_Window *window = nullptr; // Pointer to Window
-
-    window = SDL_CreateWindow(
-            "Testing",          //    window title
-            SDL_WINDOWPOS_UNDEFINED,           //    initial x position
-            SDL_WINDOWPOS_UNDEFINED,           //    initial y position
-            550,                               //    width, in pixels
-            400,                               //    height, in pixels
-            SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL //    flags
-    );
 
 
-    if (window == nullptr) {
-        std::cerr << "Failed to create window: "
-                  << SDL_GetError() << std::endl;
-        SDL_Quit(); // Rydd opp!
-        return EXIT_FAILURE;
+    game = new Game();
+    game->init("Halla", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, false);
+
+    while (game->running()) {
+        game->handleEvents();
+        game->update();
+        game->render();
     }
 
-    SDL_Delay(5000);
-    SDL_DestroyWindow(window);
-    SDL_Quit();
-    return EXIT_SUCCESS;
+    game->clean();
+
+    //TODO: Make wrapper class "fascade" for SDL2?
+    // Har egne metoder som forenkler kall til de wrappede undermetodene (gjerne flere om gangen).
+    // Hvis undermetodene tilhører klasser, blir disse klassene private medlemsvariabler i Facade klassen.
+
 
 
 }
+
