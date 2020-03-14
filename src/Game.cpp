@@ -1,10 +1,13 @@
 
 #include "../include/Game.h"
 #include "../include/InputManager.h"
+#include "../include/GameObject.h"
 #include <iostream>
 
-SDL_Texture *playerTexture;
-SDL_Rect srcR, destR;
+GameObject *player;
+GameObject *enemy;
+GameObject *enemy2;
+SDL_Renderer* Game::renderer = nullptr;
 
 void Game::init(const char *title, int xPos, int yPos, int width, int height, bool fullscreen) {
 
@@ -25,33 +28,33 @@ void Game::init(const char *title, int xPos, int yPos, int width, int height, bo
         renderer = SDL_CreateRenderer(window, -1, flags);
 
         if (renderer) {
-            SDL_SetRenderDrawColor(renderer, 200, 50, 255, 255);
+            SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
             std::cout << "Renderer created!" << std::endl;
         }
         isRunning = true;
     }
 
-    playerTexture = loadTexture("../Resources/img/player.png", renderer);
+    player = new GameObject("../Resources/img/player.png", 0, 0, 1, false);
+    enemy = new GameObject("../Resources/img/player.png", 600, 600, 2, true);
+    enemy2 = new GameObject("../Resources/img/player.png", 600, 600, 3, true);
+
+    enemy2->moveSpeed = 2;
+    enemy->moveSpeed = 3;
+    Game::gameObjects.emplace_back(*player);
+    Game::gameObjects.emplace_back(*enemy);
+    Game::gameObjects.emplace_back(*enemy2);
 }
 
 void Game::render() {
     SDL_RenderClear(renderer);
-    SDL_RenderCopy(renderer, playerTexture, NULL, &destR);
+    player->render();
+    enemy->render();
+    enemy2->render();
     SDL_RenderPresent(renderer);
 }
 
 
 Game::Game() {
-//    SDL_Event event;
-//    SDL_PollEvent(&event);
-//    switch (event.type) {
-//        case SDL_QUIT:
-//            isRunning = false;
-//            break;
-//
-//        default:
-//            break;
-//    }
 
 }
 
@@ -61,24 +64,11 @@ Game::~Game() {
 
 
 void Game::update() {
-
-    if (InputManager::getInstance().KeyStillDown(SDL_SCANCODE_W)) {
-        destR.y -= 3;
-    }
-    if (InputManager::getInstance().KeyStillDown(SDL_SCANCODE_A)) {
-        destR.x -= 3;
-    }
-    if (InputManager::getInstance().KeyStillDown(SDL_SCANCODE_S)) {
-        destR.y += 3;
-    }
-    if (InputManager::getInstance().KeyStillDown(SDL_SCANCODE_D)) {
-        destR.x += 3;
-    }
-
-
-    destR.h = 64;
-    destR.w = 64;
-
+    player->update(gameObjects);
+    enemy->setDestination(player->m_position.x, player->m_position.y);
+    enemy2->setDestination(enemy->m_position.x, enemy->m_position.y);
+    enemy->update(gameObjects);
+    enemy2->update(gameObjects);
 
 }
 
@@ -90,13 +80,14 @@ void Game::clean() {
     std::cout << "Cleaned.." << std::endl;
 }
 
-SDL_Texture *Game::loadTexture(const char *fileName, SDL_Renderer *renderer) {
+SDL_Texture *Game::loadTexture(const char *texture) {
 
-    SDL_Surface *surface = IMG_Load(fileName);
-    SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
+    SDL_Surface *surface = IMG_Load(texture);
+    SDL_Texture *tex = SDL_CreateTextureFromSurface(Game::renderer, surface);
     SDL_FreeSurface(surface);
 
-    return texture;
+    return tex;
 }
+
 
 

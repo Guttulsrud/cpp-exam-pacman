@@ -4,7 +4,6 @@
 
 bool InputManager::KeyDown(int iKeyIndex) {
     return !oldKeys[iKeyIndex] && keys[iKeyIndex];
-
 }
 
 bool InputManager::KeyStillDown(int iKeyIndex) {
@@ -17,7 +16,6 @@ bool InputManager::KeyUp(int iKeyIndex) {
 
 bool InputManager::KeyStillUp(int iKeyIndex) {
     return !(oldKeys[iKeyIndex] && keys[iKeyIndex]);
-
 }
 
 bool InputManager::MouseDown(int iButton) {
