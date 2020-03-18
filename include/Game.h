@@ -8,6 +8,7 @@
 
 #include <SDL.h>
 #include <SDL_image.h>
+#include <memory>
 
 
 
@@ -21,7 +22,7 @@ public:
 
     static SDL_Texture *loadTexture(const char *fileName);
 
-    std::vector<GameObject> gameObjects;
+    std::vector<std::shared_ptr<GameObject>> gameObjects;
 
     void update();
 

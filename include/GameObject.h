@@ -17,7 +17,7 @@ public:
 
     ~GameObject();
 
-    void update(std::vector<GameObject> &gameObjects);
+    void update();
 
     void render();
 

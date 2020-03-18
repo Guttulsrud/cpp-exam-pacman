@@ -33,7 +33,7 @@ void GameObject::aiFollow() {
     }
 }
 
-void GameObject::update(std::vector<GameObject> &gameObjects) {
+void GameObject::update() {
 
     if (m_ai) {
        aiFollow();
@@ -59,16 +59,14 @@ void GameObject::update(std::vector<GameObject> &gameObjects) {
     srcRect.x = m_position.x;
     srcRect.y = m_position.y;
 
-    std::cout << srcRect.x << std::endl;
-
     // check collide here
-    for(auto &o : gameObjects) {
-        std::cout << o.m_id << std::endl;
-
-        if(SDL_HasIntersection(&srcRect, &o.srcRect)){
-            std::cout << o.m_id << " collided with " << m_id << std::endl;
-        }
-    }
+//    for(auto &o : gameObjects) {
+//        std::cout << o.m_id << std::endl;
+//
+//        if(SDL_HasIntersection(&srcRect, &o.srcRect)){
+//            std::cout << o.m_id << " collided with " << m_id << std::endl;
+//        }
+//    }
 
     destRect.x = m_position.x;
     destRect.y = m_position.y;

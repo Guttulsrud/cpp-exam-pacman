@@ -4,10 +4,7 @@
 #include "../include/GameObject.h"
 #include <iostream>
 
-GameObject *player;
-GameObject *enemy;
-GameObject *enemy2;
-SDL_Renderer* Game::renderer = nullptr;
+SDL_Renderer *Game::renderer = nullptr;
 
 void Game::init(const char *title, int xPos, int yPos, int width, int height, bool fullscreen) {
 
@@ -34,22 +31,17 @@ void Game::init(const char *title, int xPos, int yPos, int width, int height, bo
         isRunning = true;
     }
 
-    player = new GameObject("../resources/img/player.png", 0, 0, 1, false);
-    enemy = new GameObject("../resources/img/player.png", 600, 600, 2, true);
-    enemy2 = new GameObject("../resources/img/player.png", 600, 600, 3, true);
 
-    enemy2->moveSpeed = 2;
-    enemy->moveSpeed = 3;
-    Game::gameObjects.emplace_back(*player);
-    Game::gameObjects.emplace_back(*enemy);
-    Game::gameObjects.emplace_back(*enemy2);
+    std::shared_ptr<GameObject> player = std::make_shared<GameObject>("../resources/img/player.png", 0, 0, 1, false);
+    gameObjects.emplace_back(player);
 }
 
 void Game::render() {
     SDL_RenderClear(renderer);
-    player->render();
-    enemy->render();
-    enemy2->render();
+    std::for_each(std::begin(gameObjects), std::end(gameObjects),
+                  [](std::shared_ptr<GameObject> &object) {
+                      object->render();
+                  });
     SDL_RenderPresent(renderer);
 }
 
@@ -64,12 +56,10 @@ Game::~Game() {
 
 
 void Game::update() {
-    player->update(gameObjects);
-    enemy->setDestination(player->m_position.x, player->m_position.y);
-    enemy2->setDestination(enemy->m_position.x, enemy->m_position.y);
-    enemy->update(gameObjects);
-    enemy2->update(gameObjects);
-
+    std::for_each(std::begin(gameObjects), std::end(gameObjects),
+                  [](std::shared_ptr<GameObject> &object) {
+                      object->update();
+                  });
 }
 
 void Game::clean() {
