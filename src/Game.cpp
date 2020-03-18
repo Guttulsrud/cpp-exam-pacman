@@ -34,9 +34,9 @@ void Game::init(const char *title, int xPos, int yPos, int width, int height, bo
         isRunning = true;
     }
 
-    player = new GameObject("../Resources/img/player.png", 0, 0, 1, false);
-    enemy = new GameObject("../Resources/img/player.png", 600, 600, 2, true);
-    enemy2 = new GameObject("../Resources/img/player.png", 600, 600, 3, true);
+    player = new GameObject("../resources/img/player.png", 0, 0, 1, false);
+    enemy = new GameObject("../resources/img/player.png", 600, 600, 2, true);
+    enemy2 = new GameObject("../resources/img/player.png", 600, 600, 3, true);
 
     enemy2->moveSpeed = 2;
     enemy->moveSpeed = 3;

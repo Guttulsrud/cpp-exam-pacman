@@ -2,18 +2,14 @@
 #define GAME_H
 
 
-#ifdef WIN32
 
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
 #include <vector>
 #include "GameObject.h"
 
-#else
 #include <SDL.h>
 #include <SDL_image.h>
 
-#endif
+
 
 class Game {
 public:
