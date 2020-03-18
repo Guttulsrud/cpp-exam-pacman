@@ -5,13 +5,12 @@
 #include "../include/InputManager.h"
 
 
-GameObject::GameObject(const char *textureSheet, int x, int y, int id, bool ai) {
+GameObject::GameObject(const char *textureSheet, int x, int y, int id) {
 
     objTexture = Game::loadTexture(textureSheet);
     m_position.x = x;
     m_position.y = y;
     m_destination = m_position;
-    m_ai = ai;
     m_id = id;
 }
 
@@ -35,31 +34,43 @@ void GameObject::aiFollow() {
 
 void GameObject::update() {
 
-    if (m_ai) {
-       aiFollow();
-    } else {
-        moveSpeed = 7;
-        if (InputManager::getInstance().KeyStillDown(SDL_SCANCODE_W)) {
-            m_position.y -= moveSpeed;
-        }
-        if (InputManager::getInstance().KeyStillDown(SDL_SCANCODE_A)) {
-            m_position.x -= moveSpeed;
-        }
-        if (InputManager::getInstance().KeyStillDown(SDL_SCANCODE_S)) {
-            m_position.y += moveSpeed;
-        }
-        if (InputManager::getInstance().KeyStillDown(SDL_SCANCODE_D)) {
-            m_position.x += moveSpeed;
-        }
+//    if (m_ai) {
+//       aiFollow();
+//    } else {
+    moveSpeed = 7;
+    if (InputManager::getInstance().KeyStillDown(SDL_SCANCODE_W)) {
+        m_position.y -= moveSpeed;
+    }
+    if (InputManager::getInstance().KeyStillDown(SDL_SCANCODE_A)) {
+        m_position.x -= moveSpeed;
+    }
+    if (InputManager::getInstance().KeyStillDown(SDL_SCANCODE_S)) {
+        m_position.y += moveSpeed;
+    }
+    if (InputManager::getInstance().KeyStillDown(SDL_SCANCODE_D)) {
+        m_position.x += moveSpeed;
+//        }
 
 
     }
+
     srcRect.h = 32;
     srcRect.w = 32;
     srcRect.x = m_position.x;
     srcRect.y = m_position.y;
 
     // check collide here
+
+    std::cout << "før KEK" << std::endl;
+    std::cout << Game::getGameObjects().size() << "nå KEK" << std::endl;
+    std::cout << "etter KEK" << std::endl;
+
+    std::for_each(std::begin(Game::getGameObjects()), std::end(Game::getGameObjects()),
+                  [](std::shared_ptr<GameObject> &object) {
+                      std::cout << object->m_id << "KEKEsKE" << std::endl;
+                  });
+
+
 //    for(auto &o : gameObjects) {
 //        std::cout << o.m_id << std::endl;
 //
@@ -73,8 +84,6 @@ void GameObject::update() {
     destRect.w = srcRect.w;
     destRect.h = srcRect.h;
 }
-
-
 
 
 void GameObject::setDestination(int x, int y) {

@@ -13,7 +13,7 @@ class GameObject {
 public:
 
 
-    GameObject(const char *textureSheet, int x, int y, int id, bool ai);
+    GameObject(const char *textureSheet, int x, int y, int id);
 
     ~GameObject();
 

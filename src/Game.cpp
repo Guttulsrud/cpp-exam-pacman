@@ -21,7 +21,6 @@ void Game::init(const char *title, int xPos, int yPos, int width, int height, bo
             std::cout << "Window created!" << std::endl;
         }
 
-
         renderer = SDL_CreateRenderer(window, -1, flags);
 
         if (renderer) {
@@ -32,22 +31,19 @@ void Game::init(const char *title, int xPos, int yPos, int width, int height, bo
     }
 
 
-    std::shared_ptr<GameObject> player = std::make_shared<GameObject>("../resources/img/player.png", 0, 0, 1, false);
-    gameObjects.emplace_back(player);
+    std::shared_ptr<GameObject> player = std::make_shared<GameObject>("../resources/img/player.png", 0, 0, 1);
+    getGameObjects().emplace_back(player);
 }
 
 void Game::render() {
     SDL_RenderClear(renderer);
+
     std::for_each(std::begin(gameObjects), std::end(gameObjects),
                   [](std::shared_ptr<GameObject> &object) {
                       object->render();
                   });
+
     SDL_RenderPresent(renderer);
-}
-
-
-Game::Game() {
-
 }
 
 Game::~Game() {
@@ -79,5 +75,8 @@ SDL_Texture *Game::loadTexture(const char *texture) {
     return tex;
 }
 
+std::vector<std::shared_ptr<GameObject>> &Game::getGameObjects() {
+    return Game::getInstance().gameObjects;
+}
 
 
