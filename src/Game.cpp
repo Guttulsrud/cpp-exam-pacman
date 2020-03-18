@@ -29,11 +29,13 @@ void Game::init(const char *title, int xPos, int yPos, int width, int height, bo
         }
         isRunning = true;
     }
-
-
-    addGameObject(std::make_shared<GameObject>("../resources/img/player.png", 0, 0, 1));
-    addGameObject(std::make_shared<GameObject>("../resources/img/player.png", 50, 50, 2));
-    addGameObject(std::make_shared<GameObject>("../resources/img/player.png", 300, 300, 3));
+    addGameObject(std::make_shared<GameObject>("../resources/img/player.png", 30, 30, 250, 250, 0));
+    addGameObject(std::make_shared<GameObject>("../resources/img/player.png", 30, 30, 50, 50, 1, true));
+    addGameObject(std::make_shared<GameObject>("../resources/img/player.png", 600, 10, 0, 0, 2, true));
+    addGameObject(std::make_shared<GameObject>("../resources/img/player.png", 600, 10, 0, 500, 2, true));
+    addGameObject(std::make_shared<GameObject>("../resources/img/player.png", 10, 500, 0, 0, 2, true));
+    addGameObject(std::make_shared<GameObject>("../resources/img/player.png", 10, 500, 600, 0, 2, true));
+    addGameObject(std::make_shared<GameObject>("../resources/img/player.png", 10, 250, 300, 0, 2, true));
 
 }
 
@@ -62,6 +64,12 @@ void Game::update() {
     std::for_each(std::begin(Game::getGameObjects()), std::end(Game::getGameObjects()),
                   [](std::shared_ptr<GameObject> &object) {
                       object->update();
+                      if(object->m_id == 1){
+                          object->moveSpeed = 1;
+                          object->setDestination(Game::getGameObjects()[0]->m_position.x,Game::getGameObjects()[0]->m_position.y);
+                      }
+                      if(object->m_id == 0)
+                          object->moveSpeed = 7;
                   });
 }
 

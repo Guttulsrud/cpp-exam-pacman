@@ -13,7 +13,7 @@ class GameObject {
 public:
 
 
-    GameObject(const char *textureSheet, int x, int y, int id);
+    GameObject(const char *textureSheet, int w, int h, int x, int y, int id, bool isAi=false);
 
     ~GameObject();
 
@@ -26,9 +26,9 @@ public:
     int moveSpeed = 4;
 
     void setDestination(int x, int y);
-    SDL_Point m_position;
-    SDL_Point m_destination;
+    SDL_Point m_position, m_destination;
     SDL_Rect srcRect, destRect;
+    int m_width, m_height;
 
 
     int m_id;
