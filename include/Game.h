@@ -25,7 +25,12 @@ public:
 
     std::vector<std::shared_ptr<GameObject>> gameObjects;
 
-    static std::vector<std::shared_ptr<GameObject>>& getGameObjects();
+    static std::vector<std::shared_ptr<GameObject>>& getGameObjects() {
+        return getInstance().gameObjects;
+    }
+
+
+
 
     void update();
 
@@ -46,6 +51,7 @@ private:
     SDL_Window *window;
 
 
+    static void addGameObject(const std::shared_ptr<GameObject> &o);
 };
 
 

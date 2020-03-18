@@ -1,4 +1,4 @@
-#include <cmath>
+
 #include <iostream>
 #include "../include/GameObject.h"
 #include "../include/Game.h"
@@ -56,18 +56,16 @@ void GameObject::update() {
 
     srcRect.h = 32;
     srcRect.w = 32;
+
     srcRect.x = m_position.x;
     srcRect.y = m_position.y;
 
     // check collide here
 
-    std::cout << "før KEK" << std::endl;
-    std::cout << Game::getGameObjects().size() << "nå KEK" << std::endl;
-    std::cout << "etter KEK" << std::endl;
 
     std::for_each(std::begin(Game::getGameObjects()), std::end(Game::getGameObjects()),
                   [](std::shared_ptr<GameObject> &object) {
-                      std::cout << object->m_id << "KEKEsKE" << std::endl;
+                      std::cout << object->m_id << std::endl;
                   });
 
 

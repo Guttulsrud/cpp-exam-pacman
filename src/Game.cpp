@@ -31,14 +31,16 @@ void Game::init(const char *title, int xPos, int yPos, int width, int height, bo
     }
 
 
-    std::shared_ptr<GameObject> player = std::make_shared<GameObject>("../resources/img/player.png", 0, 0, 1);
-    getGameObjects().emplace_back(player);
+    addGameObject(std::make_shared<GameObject>("../resources/img/player.png", 0, 0, 1));
+    addGameObject(std::make_shared<GameObject>("../resources/img/player.png", 50, 50, 2));
+    addGameObject(std::make_shared<GameObject>("../resources/img/player.png", 300, 300, 3));
+
 }
 
 void Game::render() {
     SDL_RenderClear(renderer);
 
-    std::for_each(std::begin(gameObjects), std::end(gameObjects),
+    std::for_each(std::begin(Game::getGameObjects()), std::end(Game::getGameObjects()),
                   [](std::shared_ptr<GameObject> &object) {
                       object->render();
                   });
@@ -50,9 +52,14 @@ Game::~Game() {
 
 }
 
+void Game::addGameObject(std::shared_ptr<GameObject> const &o) {
+    getGameObjects().emplace_back(o);
+}
 
 void Game::update() {
-    std::for_each(std::begin(gameObjects), std::end(gameObjects),
+
+
+    std::for_each(std::begin(Game::getGameObjects()), std::end(Game::getGameObjects()),
                   [](std::shared_ptr<GameObject> &object) {
                       object->update();
                   });
@@ -73,10 +80,6 @@ SDL_Texture *Game::loadTexture(const char *texture) {
     SDL_FreeSurface(surface);
 
     return tex;
-}
-
-std::vector<std::shared_ptr<GameObject>> &Game::getGameObjects() {
-    return Game::getInstance().gameObjects;
 }
 
 
