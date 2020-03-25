@@ -5,6 +5,8 @@
 #include "../include/Player.h"
 #include "../include/InputManager.h"
 #include "../include/Game.h"
+#include <typeinfo>
+#include <iostream>
 
 void Player::update() {
 
@@ -47,27 +49,29 @@ void Player::update() {
     }
 
     /// Collision
-    bool collided = false;
+    bool collidedWithWall = false;
     std::for_each(
             std::begin(Game::getGameObjects()), std::end(Game::getGameObjects()),
-            [this, &collided, newPosition](std::shared_ptr<GameObject> &object) {
+            [this, &collidedWithWall, newPosition](std::shared_ptr<GameObject> &object) {
                 if (m_id != object->m_id) {
-
-                    if (SDL_HasIntersection(&newPosition, &object->m_positionRectangle)) {
-                        collided = true;
+                    if (SDL_HasIntersection(&newPosition, &object->m_positionRectangle) && object->getType() == "Wall") {
+                        collidedWithWall = true;
                     }
-
                 }
             }
     );
 
 
-    if (!collided) {
+    if (!collidedWithWall) {
         m_positionRectangle = newPosition;
     } else if(changedDirection){
         direction = oldDirection;
     }
     //////
 
+}
+
+std::string Player::getType() {
+    return "Player";
 }
 

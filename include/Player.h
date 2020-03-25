@@ -22,6 +22,7 @@ public:
     }
 
     void update() override;
+    std::string getType() override;
 
 private:
     DIRECTION direction;

@@ -33,12 +33,11 @@ void Game::init(const char *title, int xPos, int yPos, int width, int height, bo
     }
 
     addGameObject(std::make_shared<Player>("../resources/img/pacman-open.png", 50, 50, 500, 500, 0, 3));
-    addGameObject(std::make_shared<WallEntity>("../resources/img/wall.png", 800, 50, 0, 0, 1));
-    addGameObject(std::make_shared<WallEntity>("../resources/img/wall.png", 800, 50, 800, 0, 1));
-    addGameObject(std::make_shared<WallEntity>("../resources/img/wall.png", 50, 800, 0, 0, 1));
-    addGameObject(std::make_shared<WallEntity>("../resources/img/wall.png", 50, 800, 0, 800, 1));
 
-
+    addGameObject(std::make_shared<WallEntity>("../resources/img/wall.png", 800, 50, 0, -50, 1));
+    addGameObject(std::make_shared<WallEntity>("../resources/img/wall.png", 800, 50, 0, 800, 2));
+    addGameObject(std::make_shared<WallEntity>("../resources/img/wall.png", 50, 800, -50, 0, 2));
+    addGameObject(std::make_shared<WallEntity>("../resources/img/wall.png", 50, 800, 800, 0, 2));
 
 }
 

@@ -12,10 +12,9 @@
 class WallEntity : public GameObject {
 
 public:
-    WallEntity(const char *textureSheet, int w, int h, int x, int y, int id) : GameObject(textureSheet, w, h, x, y, id){
-        std::cout << "I AM CREATE" << std::endl;
-    }
+    WallEntity(const char *textureSheet, int w, int h, int x, int y, int id) : GameObject(textureSheet, w, h, x, y, id){}
     void update() override;
+    std::string getType() override ;
 
 };
 
