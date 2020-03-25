@@ -8,6 +8,7 @@
 
 #include <SDL_rect.h>
 #include <SDL_render.h>
+#include <string>
 
 class GameObject {
 public:
@@ -17,6 +18,7 @@ public:
     void render();
     SDL_Rect m_sourceRectangle, m_positionRectangle;
     int m_id;
+    virtual std::string getType() = 0;
 private:
     SDL_Texture * texture;
     SDL_Renderer * renderer;
