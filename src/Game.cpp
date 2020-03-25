@@ -1,6 +1,8 @@
 
 #include "../include/Game.h"
 #include "../include/InputManager.h"
+#include "../include/GameObject.h"
+#include "../include/Player.h"
 #include <iostream>
 
 SDL_Renderer *Game::renderer = nullptr;
@@ -23,13 +25,14 @@ void Game::init(const char *title, int xPos, int yPos, int width, int height, bo
         renderer = SDL_CreateRenderer(window, -1, flags);
 
         if (renderer) {
-            SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
             std::cout << "Renderer created!" << std::endl;
         }
         isRunning = true;
     }
 
-//    addGameObject(std::make_shared<GameObject>("../resources/img/player.png", 30, 30, 250, 250, 0));
+    addGameObject(std::make_shared<Player>("../resources/img/pacman.png", 500, 500, 0, 0, 0, 5));
+
 
 
 }
@@ -37,8 +40,11 @@ void Game::init(const char *title, int xPos, int yPos, int width, int height, bo
 void Game::render() {
     SDL_RenderClear(renderer);
 
-
-//             object->render();
+//    std::for_each(std::begin(Game::getGameObjects()), std::end(Game::getGameObjects()),
+//                  [](std::shared_ptr<GameObject> &object) {
+//                      object->render();
+//                  });
+    getGameObjects()[0]->render();
 
 
     SDL_RenderPresent(renderer);
@@ -48,9 +54,16 @@ Game::~Game() {
 
 }
 
+void Game::addGameObject(std::shared_ptr<GameObject> const &o) {
+    getGameObjects().emplace_back(o);
+}
 
 void Game::update() {
-
+//    std::for_each(std::begin(Game::getGameObjects()), std::end(Game::getGameObjects()),
+//                  [](std::shared_ptr<GameObject> &object) {
+//                      object->update();
+//                  });
+    getGameObjects()[0]->update();
 }
 
 void Game::clean() {
