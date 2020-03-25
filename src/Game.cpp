@@ -1,7 +1,6 @@
 
 #include "../include/Game.h"
 #include "../include/InputManager.h"
-#include "../include/GameObject.h"
 #include <iostream>
 
 SDL_Renderer *Game::renderer = nullptr;
@@ -29,25 +28,18 @@ void Game::init(const char *title, int xPos, int yPos, int width, int height, bo
         }
         isRunning = true;
     }
-    addGameObject(std::make_shared<GameObject>("../resources/img/player.png", 30, 30, 250, 250, 0));
-    addGameObject(std::make_shared<GameObject>("../resources/img/player.png", 30, 30, 50, 50, 1, true));
-    addGameObject(std::make_shared<GameObject>("../resources/img/player.png", 30, 30, 500, 50, 2, true));
-    addGameObject(std::make_shared<GameObject>("../resources/img/player.png", 30, 30, 50, 500, 3, true));
-//    addGameObject(std::make_shared<GameObject>("../resources/img/player.png", 600, 10, 0, 0, 2, true));
-//    addGameObject(std::make_shared<GameObject>("../resources/img/player.png", 600, 10, 0, 500, 2, true));
-//    addGameObject(std::make_shared<GameObject>("../resources/img/player.png", 10, 500, 0, 0, 2, true));
-//    addGameObject(std::make_shared<GameObject>("../resources/img/player.png", 10, 500, 600, 0, 2, true));
-//    addGameObject(std::make_shared<GameObject>("../resources/img/player.png", 10, 250, 300, 0, 2, true));
+
+//    addGameObject(std::make_shared<GameObject>("../resources/img/player.png", 30, 30, 250, 250, 0));
+
 
 }
 
 void Game::render() {
     SDL_RenderClear(renderer);
 
-    std::for_each(std::begin(Game::getGameObjects()), std::end(Game::getGameObjects()),
-                  [](std::shared_ptr<GameObject> &object) {
-                      object->render();
-                  });
+
+//             object->render();
+
 
     SDL_RenderPresent(renderer);
 }
@@ -56,31 +48,9 @@ Game::~Game() {
 
 }
 
-void Game::addGameObject(std::shared_ptr<GameObject> const &o) {
-    getGameObjects().emplace_back(o);
-}
 
 void Game::update() {
 
-
-    std::for_each(std::begin(Game::getGameObjects()), std::end(Game::getGameObjects()),
-                  [](std::shared_ptr<GameObject> &object) {
-                      object->update();
-                      if(object->m_id == 1){
-                          object->moveSpeed = 1;
-                          object->setDestination(Game::getGameObjects()[0]->m_position.x,Game::getGameObjects()[0]->m_position.y);
-                      }
-                      if(object->m_id == 2){
-                          object->moveSpeed = 3;
-                          object->setDestination(Game::getGameObjects()[1]->m_position.x,Game::getGameObjects()[1]->m_position.y);
-                      }
-                      if(object->m_id == 3){
-                          object->moveSpeed = 5;
-                          object->setDestination(Game::getGameObjects()[2]->m_position.x,Game::getGameObjects()[2]->m_position.y);
-                      }
-                      if(object->m_id == 0)
-                          object->moveSpeed = 7;
-                  });
 }
 
 void Game::clean() {
