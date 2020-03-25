@@ -3,6 +3,7 @@
 #include "../include/InputManager.h"
 #include "../include/GameObject.h"
 #include "../include/Player.h"
+#include "../include/WallEntity.h"
 #include <iostream>
 
 SDL_Renderer *Game::renderer = nullptr;
@@ -31,7 +32,11 @@ void Game::init(const char *title, int xPos, int yPos, int width, int height, bo
         isRunning = true;
     }
 
-    addGameObject(std::make_shared<Player>("../resources/img/pacman.png", 500, 500, 0, 0, 0, 5));
+    addGameObject(std::make_shared<Player>("../resources/img/pacman-open.png", 50, 50, 500, 500, 0, 3));
+    addGameObject(std::make_shared<WallEntity>("../resources/img/wall.png", 800, 50, 0, 0, 1));
+    addGameObject(std::make_shared<WallEntity>("../resources/img/wall.png", 800, 50, 800, 0, 1));
+    addGameObject(std::make_shared<WallEntity>("../resources/img/wall.png", 50, 800, 0, 0, 1));
+    addGameObject(std::make_shared<WallEntity>("../resources/img/wall.png", 50, 800, 0, 800, 1));
 
 
 
@@ -45,6 +50,7 @@ void Game::render() {
 //                      object->render();
 //                  });
     getGameObjects()[0]->render();
+    getGameObjects()[1]->render();
 
 
     SDL_RenderPresent(renderer);
@@ -64,6 +70,7 @@ void Game::update() {
 //                      object->update();
 //                  });
     getGameObjects()[0]->update();
+//    getGameObjects()[1]->update();
 }
 
 void Game::clean() {

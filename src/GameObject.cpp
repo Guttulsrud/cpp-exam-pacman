@@ -15,8 +15,8 @@ GameObject::GameObject(const char *textureSheet, int w, int h, int x, int y, int
     m_positionRectangle.h = h;
     m_sourceRectangle.x = 0;
     m_sourceRectangle.y = 0;
-    m_sourceRectangle.h = 1080;
-    m_sourceRectangle.w = 1920;
+    m_sourceRectangle.h = 800;
+    m_sourceRectangle.w = 800;
     m_id = id;
 
 }
