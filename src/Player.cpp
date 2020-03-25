@@ -5,6 +5,7 @@
 #include "../include/Player.h"
 #include "../include/InputManager.h"
 #include "../include/Game.h"
+#include "../include/Map.h"
 #include <typeinfo>
 #include <iostream>
 
@@ -55,7 +56,8 @@ void Player::update() {
             std::begin(Game::getGameObjects()), std::end(Game::getGameObjects()),
             [this, &collidedWithWall, newPosition](std::shared_ptr<GameObject> &object) {
                 if (m_id != object->m_id) {
-                    if (SDL_HasIntersection(&newPosition, &object->m_positionRectangle) && object->getType() == "Wall") {
+                    if (SDL_HasIntersection(&newPosition, &object->m_positionRectangle) &&
+                        object->getType() == "Wall") {
                         collidedWithWall = true;
                     }
                 }
@@ -63,9 +65,20 @@ void Player::update() {
     );
 
 
+
+
+    for(auto &wall : Map::walls) {
+
+        if (SDL_HasIntersection(&newPosition, &wall)) {
+            collidedWithWall = true;
+        }
+
+    }
+
+
     if (!collidedWithWall) {
         m_positionRectangle = newPosition;
-    } else if(changedDirection){
+    } else if (changedDirection) {
         direction = oldDirection;
     }
     //////
