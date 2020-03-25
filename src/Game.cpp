@@ -3,9 +3,11 @@
 #include "../include/InputManager.h"
 #include "../include/GameObject.h"
 #include "../include/Player.h"
+#include "../include/Map.h"
 #include <iostream>
 
 SDL_Renderer *Game::renderer = nullptr;
+Map *map;
 
 void Game::init(const char *title, int xPos, int yPos, int width, int height, bool fullscreen) {
 
@@ -31,8 +33,9 @@ void Game::init(const char *title, int xPos, int yPos, int width, int height, bo
         isRunning = true;
     }
 
-    addGameObject(std::make_shared<Player>("../resources/img/pacman.png", 500, 500, 0, 0, 0, 5));
+    addGameObject(std::make_shared<Player>("../resources/img/pacman.png", 50, 50, 0, 0, 0, 5));
 
+    map = new Map();
 
 
 }
@@ -44,6 +47,8 @@ void Game::render() {
 //                  [](std::shared_ptr<GameObject> &object) {
 //                      object->render();
 //                  });
+
+    map->drawMap();
     getGameObjects()[0]->render();
 
 

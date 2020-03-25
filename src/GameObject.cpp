@@ -4,11 +4,12 @@
 
 #include "../include/GameObject.h"
 #include "../include/Game.h"
+#include "../include/TextureManager.h"
 
 
 GameObject::GameObject(const char *textureSheet, int w, int h, int x, int y, int id) {
 
-    texture = Game::loadTexture(textureSheet);
+    texture = TextureManager::loadTexture(textureSheet);
     m_positionRectangle.x = x;
     m_positionRectangle.y = y;
     m_positionRectangle.w = w;

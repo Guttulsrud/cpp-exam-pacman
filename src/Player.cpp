@@ -2,8 +2,8 @@
 // Created by mathi on 3/25/2020.
 //
 
-#include "Player.h"
-#include "InputManager.h"
+#include "../include/Player.h"
+#include "../include/InputManager.h"
 
 void Player::update() {
 
