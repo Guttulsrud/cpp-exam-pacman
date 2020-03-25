@@ -8,6 +8,13 @@
 
 #include "GameObject.h"
 
+enum DIRECTION{
+    UP,
+    RIGHT,
+    DOWN,
+    LEFT
+};
+
 class Player : public GameObject {
 public:
     Player(const char *textureSheet, int w, int h, int x, int y, int id, int movementSpeed) : GameObject(textureSheet, w, h, x, y, id){
@@ -17,6 +24,7 @@ public:
     void update() override;
 
 private:
+    DIRECTION direction;
     int m_movementSpeed;
 };
 
