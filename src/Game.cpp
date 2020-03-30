@@ -35,14 +35,13 @@ void Game::init(const char *title, int xPos, int yPos, int width, int height, bo
         isRunning = true;
     }
 
-    addGameObject(std::make_shared<Player>("../resources/img/pacman-open.png", 36, 36, 90, 40, 0, 3));
+    addGameObject(std::make_shared<Player>("../resources/img/pacman-open.png", 28, 28, 90, 30, 0, 3));
     map = new Map();
 
 
     for (int i = 40; i < 500; i++) {
         if (i % 40 == 0) {
             addGameObject(std::make_shared<Pellet>("../resources/img/pellet.png", 7, 7, 57, i, 1));
-
         }
 
 

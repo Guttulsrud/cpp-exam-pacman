@@ -14,11 +14,11 @@ public:
     Map();
     ~Map();
 
-    void loadMap(int array[34][34]);
+    void loadMap(int array[32][30]);
 
     void drawMap();
 
-    int map2D[34][34];
+    int map2D[32][30];
 
     static std::vector<SDL_Rect> walls;
 
