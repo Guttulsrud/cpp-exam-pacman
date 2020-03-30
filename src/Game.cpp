@@ -35,7 +35,7 @@ void Game::init(const char *title, int xPos, int yPos, int width, int height, bo
         isRunning = true;
     }
 
-    addGameObject(std::make_shared<Player>("../resources/img/pacman-open.png", 28, 28, 90, 30, 0, 3));
+    addGameObject(std::make_shared<Player>("../resources/img/pacman-open.png", 38, 38, 20, 17, 0, 3));
     map = new Map();
 
 
@@ -43,10 +43,7 @@ void Game::init(const char *title, int xPos, int yPos, int width, int height, bo
         if (i % 40 == 0) {
             addGameObject(std::make_shared<Pellet>("../resources/img/pellet.png", 7, 7, 57, i, 1));
         }
-
-
     }
-
 
 }
 
@@ -71,12 +68,21 @@ void Game::addGameObject(std::shared_ptr<GameObject> const &o) {
     getGameObjects().emplace_back(o);
 }
 
+int test = true;
+
 void Game::update() {
     std::for_each(std::begin(Game::getGameObjects()), std::end(Game::getGameObjects()),
                   [](std::shared_ptr<GameObject> &object) {
                       object->update();
                   });
 
+    if(test) {
+        Game::getGameObjects()[0].get()->texture = Game::loadTexture("../resources/img/pacman-closed.png");
+        test = false;
+    } else {
+        Game::getGameObjects()[0].get()->texture = Game::loadTexture("../resources/img/pacman-open.png");
+        test = true;
+    }
 }
 
 void Game::clean() {

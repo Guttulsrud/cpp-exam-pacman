@@ -19,10 +19,11 @@ public:
     SDL_Rect m_sourceRectangle, m_positionRectangle;
     int m_id;
     virtual std::string getType() = 0;
+    SDL_Texture * texture;
+
 private:
     SDL_Renderer * renderer;
 protected:
-    SDL_Texture * texture;
 };
 
 

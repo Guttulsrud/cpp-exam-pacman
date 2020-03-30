@@ -6,83 +6,75 @@
 #include "../include/InputManager.h"
 #include "../include/Game.h"
 #include "../include/Map.h"
-#include <typeinfo>
+#include "../include/TextureManager.h"
 #include <iostream>
 
 void Player::update() {
 
-    SDL_Rect newPosition = m_positionRectangle;
-    bool changedDirection = false;
-    DIRECTION oldDirection = direction;
+    //TODO: possible to clip through walls by holding 90 degree of movement button
 
-    if (InputManager::getInstance().KeyDown(SDL_SCANCODE_W)) {
-        direction = UP;
-        changedDirection = true;
+    SDL_Rect desiredPosition = m_positionRectangle;
+    DIRECTION desiredDirection = movementDirection;
 
-    } else if (InputManager::getInstance().KeyDown(SDL_SCANCODE_A)) {
-        direction = LEFT;
-        changedDirection = true;
-
-    } else if (InputManager::getInstance().KeyDown(SDL_SCANCODE_S)) {
-        direction = DOWN;
-        changedDirection = true;
-
-    } else if (InputManager::getInstance().KeyDown(SDL_SCANCODE_D)) {
-        direction = RIGHT;
-        changedDirection = true;
+    if (InputManager::getInstance().KeyDown(SDL_SCANCODE_W) ||
+        InputManager::getInstance().KeyStillDown(SDL_SCANCODE_W)) {
+        desiredDirection = UP;
+    } else if (InputManager::getInstance().KeyDown(SDL_SCANCODE_A) ||
+               InputManager::getInstance().KeyStillDown(SDL_SCANCODE_A)) {
+        desiredDirection = LEFT;
+    } else if (InputManager::getInstance().KeyDown(SDL_SCANCODE_S) ||
+               InputManager::getInstance().KeyStillDown(SDL_SCANCODE_S)) {
+        desiredDirection = DOWN;
+    } else if (InputManager::getInstance().KeyDown(SDL_SCANCODE_D) ||
+               InputManager::getInstance().KeyStillDown(SDL_SCANCODE_D)) {
+        desiredDirection = RIGHT;
     }
-
-
-    switch (direction) {
+    switch (desiredDirection) {
         case UP:
-            newPosition.y -= m_movementSpeed;
+            desiredPosition.y -= m_movementSpeed;
             break;
         case DOWN:
-            newPosition.y += m_movementSpeed;
+            desiredPosition.y += m_movementSpeed;
             break;
         case RIGHT:
-            newPosition.x += m_movementSpeed;
+            desiredPosition.x += m_movementSpeed;
             break;
         case LEFT:
-            newPosition.x -= m_movementSpeed;
+            desiredPosition.x -= m_movementSpeed;
             break;
         default:
             break;
     }
 
-    /// Collision
     bool collidedWithWall = false;
-    std::for_each(
-            std::begin(Game::getGameObjects()), std::end(Game::getGameObjects()),
-            [this, &collidedWithWall, newPosition](std::shared_ptr<GameObject> &object) {
-                if (m_id != object->m_id) {
-                    if (SDL_HasIntersection(&newPosition, &object->m_positionRectangle) &&
-                        object->getType() == "Wall") {
-                        collidedWithWall = true;
-                    }
-                }
-            }
-    );
-
-
-
-
-    for(auto &wall : Map::walls) {
-
-        if (SDL_HasIntersection(&newPosition, &wall)) {
+    for (auto &wall : Map::walls) {
+        if (SDL_HasIntersection(&desiredPosition, &wall)) {
             collidedWithWall = true;
         }
-
     }
-
 
     if (!collidedWithWall) {
-        m_positionRectangle = newPosition;
-    } else if (changedDirection) {
-        direction = oldDirection;
+        movementDirection = desiredDirection;
+    } else if (movementDirection == desiredDirection) {
+        movementDirection = NONE;
     }
-    //////
 
+    switch (movementDirection) {
+        case UP:
+            m_positionRectangle.y -= m_movementSpeed;
+            break;
+        case DOWN:
+            m_positionRectangle.y += m_movementSpeed;
+            break;
+        case RIGHT:
+            m_positionRectangle.x += m_movementSpeed;
+            break;
+        case LEFT:
+            m_positionRectangle.x -= m_movementSpeed;
+            break;
+        default:
+            break;
+    }
 }
 
 std::string Player::getType() {
