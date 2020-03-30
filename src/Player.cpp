@@ -4,14 +4,10 @@
 
 #include "../include/Player.h"
 #include "../include/InputManager.h"
-#include "../include/Game.h"
 #include "../include/Map.h"
 #include <iostream>
 
 void Player::update() {
-
-    //TODO: possible to clip through walls by holding 90 degree of movement button
-
     SDL_Rect desiredPosition = m_positionRectangle;
     DIRECTION desiredDirection = movementDirection;
 
@@ -58,21 +54,31 @@ void Player::update() {
         movementDirection = NONE;
     }
 
+    desiredPosition = m_positionRectangle;
     switch (movementDirection) {
         case UP:
-            m_positionRectangle.y -= m_movementSpeed;
+            desiredPosition.y -= m_movementSpeed;
             break;
         case DOWN:
-            m_positionRectangle.y += m_movementSpeed;
+            desiredPosition.y += m_movementSpeed;
             break;
         case RIGHT:
-            m_positionRectangle.x += m_movementSpeed;
+            desiredPosition.x += m_movementSpeed;
             break;
         case LEFT:
-            m_positionRectangle.x -= m_movementSpeed;
+            desiredPosition.x -= m_movementSpeed;
             break;
         default:
             break;
+    }
+    collidedWithWall = false;
+    for (auto &wall : Map::walls) {
+        if (SDL_HasIntersection(&desiredPosition, &wall)) {
+            collidedWithWall = true;
+        }
+    }
+    if(!collidedWithWall){
+        m_positionRectangle = desiredPosition;
     }
 }
 
