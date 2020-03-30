@@ -10,7 +10,10 @@ void VoidWarp::update() {
 
     //Player collides with VoidWarp
     if(SDL_HasIntersection(&Game::getGameObjects()[0].get()->m_positionRectangle, &m_positionRectangle)) {
-        //if(Game::getGameObjects()[0].get()->m_side == 0)
+
+        if(m_side == 0) {
+
+        }
         Game::getGameObjects()[0].get()->m_positionRectangle.x = 50;
     }
 

@@ -15,6 +15,7 @@ public:
     VoidWarp(const char *textureSheet, int w, int h, int x, int y, int id, int side) : GameObject(textureSheet, w, h, x, y, id){
         m_side = side;
     }
+
     void update();
     std::string getType() override;
 };
