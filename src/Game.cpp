@@ -49,7 +49,8 @@ void Game::init(const char *title, int xPos, int yPos, int width, int height, bo
 
     }
 
-    addGameObject(std::make_shared<VoidWarp>("../resources/img/red.jpg", 28, 28, 200, 180, 2));
+    addGameObject(std::make_shared<VoidWarp>("../resources/img/red.jpg", 1, 1, 1, 300, 2, 0));
+    addGameObject(std::make_shared<VoidWarp>("../resources/img/red.jpg", 1, 1, 600, 300, 2, 1));
 
 
 }

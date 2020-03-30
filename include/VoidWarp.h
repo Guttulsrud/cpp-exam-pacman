@@ -11,7 +11,10 @@
 class VoidWarp : public GameObject{
 public:
 
-    VoidWarp(const char *textureSheet, int w, int h, int x, int y, int id) : GameObject(textureSheet, w, h, x, y, id){}
+    int m_side = 0;
+    VoidWarp(const char *textureSheet, int w, int h, int x, int y, int id, int side) : GameObject(textureSheet, w, h, x, y, id){
+        m_side = side;
+    }
     void update();
     std::string getType() override;
 };
