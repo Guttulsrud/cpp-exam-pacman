@@ -12,7 +12,8 @@ enum DIRECTION{
     UP,
     RIGHT,
     DOWN,
-    LEFT
+    LEFT,
+    NONE
 };
 
 class Player : public GameObject {
@@ -25,7 +26,7 @@ public:
     std::string getType() override;
 
 private:
-    DIRECTION direction;
+    DIRECTION movementDirection = NONE;
     int m_movementSpeed;
 };
 
