@@ -7,6 +7,7 @@
 #include "../include/WallEntity.h"
 #include "../include/Pellet.h"
 #include <iostream>
+#include <algorithm>
 
 SDL_Renderer *Game::renderer = nullptr;
 Map *map = nullptr;

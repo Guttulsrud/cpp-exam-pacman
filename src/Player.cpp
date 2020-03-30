@@ -8,6 +8,7 @@
 #include "../include/Map.h"
 #include <typeinfo>
 #include <iostream>
+#include <algorithm>
 
 void Player::update() {
 
