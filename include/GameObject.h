@@ -20,8 +20,9 @@ public:
     int m_id;
     virtual std::string getType() = 0;
 private:
-    SDL_Texture * texture;
     SDL_Renderer * renderer;
+protected:
+    SDL_Texture * texture;
 };
 
 
