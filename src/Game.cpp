@@ -6,6 +6,7 @@
 #include "../include/Map.h"
 #include "../include/WallEntity.h"
 #include "../include/Pellet.h"
+#include "../include/TextureManager.h"
 #include <iostream>
 
 SDL_Renderer *Game::renderer = nullptr;
@@ -68,21 +69,17 @@ void Game::addGameObject(std::shared_ptr<GameObject> const &o) {
     getGameObjects().emplace_back(o);
 }
 
-int test = true;
+
+
 
 void Game::update() {
+
+
+
     std::for_each(std::begin(Game::getGameObjects()), std::end(Game::getGameObjects()),
                   [](std::shared_ptr<GameObject> &object) {
                       object->update();
                   });
-
-    if(test) {
-        Game::getGameObjects()[0].get()->texture = Game::loadTexture("../resources/img/pacman-closed.png");
-        test = false;
-    } else {
-        Game::getGameObjects()[0].get()->texture = Game::loadTexture("../resources/img/pacman-open.png");
-        test = true;
-    }
 }
 
 void Game::clean() {
