@@ -10,11 +10,11 @@ public:
         static GameManager instance;
         return instance;
     }
-
+/*
     void pointScore(int oldPoints, int pelletPoint){
         if()
     }
-
+*/
     //TODO: Adde ting fra Game og over hit, Pacman, andre renders, etc.
 
 

@@ -6,6 +6,7 @@
 #include "../include/Map.h"
 #include "../include/WallEntity.h"
 #include "../include/Pellet.h"
+#include "../include/VoidWarp.h"
 #include <iostream>
 #include <algorithm>
 
@@ -47,6 +48,8 @@ void Game::init(const char *title, int xPos, int yPos, int width, int height, bo
 
 
     }
+
+    addGameObject(std::make_shared<VoidWarp>("../resources/img/red.jpg", 28, 28, 200, 180, 2));
 
 
 }
