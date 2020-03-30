@@ -2,7 +2,6 @@
 #define GAME_H
 
 
-
 #include <vector>
 #include "GameObject.h"
 
@@ -11,18 +10,27 @@
 #include <memory>
 
 
-
 class Game {
 public:
-    Game();
-
     ~Game();
 
     void init(const char *title, int xpos, int ypos, int width, int height, bool fullscreen);
 
+    static Game &getInstance(){
+        static Game instance;
+        return instance;
+    }
+
     static SDL_Texture *loadTexture(const char *fileName);
 
     std::vector<std::shared_ptr<GameObject>> gameObjects;
+
+    static std::vector<std::shared_ptr<GameObject>>& getGameObjects() {
+        return getInstance().gameObjects;
+    }
+
+
+
 
     void update();
 
@@ -37,11 +45,12 @@ public:
     static SDL_Renderer *renderer;
 
 private:
-    int cnt = 0;
+    Game() = default;
     bool isRunning;
     SDL_Window *window;
 
 
+    static void addGameObject(const std::shared_ptr<GameObject> &o);
 };
 
 

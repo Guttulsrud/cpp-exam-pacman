@@ -1,90 +1,33 @@
-#include <cmath>
-#include <iostream>
+//
+// Created by mathi on 3/25/2020.
+//
+
 #include "../include/GameObject.h"
 #include "../include/Game.h"
-#include "../include/InputManager.h"
+#include "../include/TextureManager.h"
 
 
-GameObject::GameObject(const char *textureSheet, int x, int y, int id, bool ai) {
+GameObject::GameObject(const char *textureSheet, int w, int h, int x, int y, int id) {
 
-    objTexture = Game::loadTexture(textureSheet);
-    m_position.x = x;
-    m_position.y = y;
-    m_destination = m_position;
-    m_ai = ai;
+    texture = TextureManager::loadTexture(textureSheet);
+    m_positionRectangle.x = x;
+    m_positionRectangle.y = y;
+    m_positionRectangle.w = w;
+    m_positionRectangle.h = h;
+    m_sourceRectangle.x = 0;
+    m_sourceRectangle.y = 0;
+    m_sourceRectangle.h = 1600;
+    m_sourceRectangle.w = 800;
     m_id = id;
-}
 
-void GameObject::aiFollow() {
-    if (abs(m_destination.x - m_position.x) < moveSpeed) {
-        m_position.x = m_destination.x;
-    } else if (m_destination.x > m_position.x) {
-        m_position.x += moveSpeed;
-    } else if (m_destination.x < m_position.x) {
-        m_position.x -= moveSpeed;
-    }
-
-    if (abs(m_destination.y - m_position.y) < moveSpeed) {
-        m_position.y = m_destination.y;
-    } else if (m_destination.y > m_position.y) {
-        m_position.y += moveSpeed;
-    } else if (m_destination.y < m_position.y) {
-        m_position.y -= moveSpeed;
-    }
 }
 
 void GameObject::update() {
 
-    if (m_ai) {
-       aiFollow();
-    } else {
-        moveSpeed = 7;
-        if (InputManager::getInstance().KeyStillDown(SDL_SCANCODE_W)) {
-            m_position.y -= moveSpeed;
-        }
-        if (InputManager::getInstance().KeyStillDown(SDL_SCANCODE_A)) {
-            m_position.x -= moveSpeed;
-        }
-        if (InputManager::getInstance().KeyStillDown(SDL_SCANCODE_S)) {
-            m_position.y += moveSpeed;
-        }
-        if (InputManager::getInstance().KeyStillDown(SDL_SCANCODE_D)) {
-            m_position.x += moveSpeed;
-        }
-
-
-    }
-    srcRect.h = 32;
-    srcRect.w = 32;
-    srcRect.x = m_position.x;
-    srcRect.y = m_position.y;
-
-    // check collide here
-//    for(auto &o : gameObjects) {
-//        std::cout << o.m_id << std::endl;
-//
-//        if(SDL_HasIntersection(&srcRect, &o.srcRect)){
-//            std::cout << o.m_id << " collided with " << m_id << std::endl;
-//        }
-//    }
-
-    destRect.x = m_position.x;
-    destRect.y = m_position.y;
-    destRect.w = srcRect.w;
-    destRect.h = srcRect.h;
 }
-
-
-
-
-void GameObject::setDestination(int x, int y) {
-    m_destination.x = x;
-    m_destination.y = y;
-}
-
 
 void GameObject::render() {
-    SDL_RenderCopy(Game::renderer, objTexture, &srcRect, &destRect);
+    SDL_RenderCopy(Game::renderer, texture, &m_sourceRectangle, &m_positionRectangle);
 }
 
 

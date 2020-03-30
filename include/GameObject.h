@@ -1,44 +1,28 @@
-#ifndef CHARACTER_H
-#define CHARACTER_H
+//
+// Created by mathi on 3/25/2020.
+//
+
+#ifndef EXAM_GAMEOBJECT_H
+#define EXAM_GAMEOBJECT_H
 
 
-#include <string>
-#include <vector>
+#include <SDL_rect.h>
 #include <SDL_render.h>
-#include "Updatable.h"
-#include "Component.h"
+#include <string>
 
 class GameObject {
-
 public:
-
-
-    GameObject(const char *textureSheet, int x, int y, int id, bool ai);
-
+    GameObject(const char *textureSheet, int w, int h, int x, int y, int id);
     ~GameObject();
-
-    void update();
-
+    virtual void update() = 0;
     void render();
-
-
-
-    int moveSpeed = 4;
-
-    void setDestination(int x, int y);
-    SDL_Point m_position;
-    SDL_Point m_destination;
-    SDL_Rect srcRect, destRect;
-
-
+    SDL_Rect m_sourceRectangle, m_positionRectangle;
     int m_id;
+    virtual std::string getType() = 0;
 private:
-    SDL_Texture *objTexture;
-    SDL_Renderer *renderer;
-    bool m_ai;
-
-    void aiFollow();
+    SDL_Texture * texture;
+    SDL_Renderer * renderer;
 };
 
 
-#endif // CHARACTER_H
+#endif //EXAM_GAMEOBJECT_H
