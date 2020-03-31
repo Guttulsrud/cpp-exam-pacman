@@ -9,7 +9,6 @@
 #include <SDL_image.h>
 #include <memory>
 
-
 class Game {
 public:
     ~Game();
@@ -28,9 +27,6 @@ public:
     static std::vector<std::shared_ptr<GameObject>>& getGameObjects() {
         return getInstance().gameObjects;
     }
-
-
-
 
     void update();
 
