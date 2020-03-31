@@ -56,8 +56,8 @@ Map::Map() {
     loadMap(levelOne);
 
     m_sourceRectangle.x = m_sourceRectangle.y = 0;
-    m_sourceRectangle.w = m_destinationRectangle.w = 20;
-    m_sourceRectangle.h = m_destinationRectangle.h = 20;
+    m_sourceRectangle.w = m_destinationRectangle.w = 25;
+    m_sourceRectangle.h = m_destinationRectangle.h = 25;
 
     m_destinationRectangle.x = m_destinationRectangle.y = 0;
 
@@ -83,8 +83,8 @@ void Map::drawMap() {
         for (int column = 0; column < 30; column++) {
             type = map2D[row][column];
 
-            m_destinationRectangle.x = column * 20;
-            m_destinationRectangle.y = row * 20;
+            m_destinationRectangle.x = column * 25;
+            m_destinationRectangle.y = row * 25;
 
 
             if (type == 1) {

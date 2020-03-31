@@ -36,7 +36,7 @@ void Game::init(const char *title, int xPos, int yPos, int width, int height, bo
         isRunning = true;
     }
 
-    addGameObject(std::make_shared<Player>("../resources/img/pacman-open.png", 38, 38, 20, 17, 0, 3));
+    addGameObject(std::make_shared<Player>("../resources/img/pacman-open.png", 48, 48, 25, 25, 0, 3));
     map = new Map();
 
 
