@@ -5,7 +5,10 @@
 #include "../include/Player.h"
 #include "../include/InputManager.h"
 #include "../include/Map.h"
+#include "../include/Game.h"
+#include "../include/TextureManager.h"
 #include <iostream>
+SDL_Texture *kek = Game::loadTexture("../resources/img/blue.png");
 
 void Player::update() {
     SDL_Rect desiredPosition = m_positionRectangle;
@@ -47,6 +50,17 @@ void Player::update() {
             collidedWithWall = true;
         }
     }
+
+//    for (auto &pellet : Map::pelletObjects) {
+//
+//        if (SDL_HasIntersection(&m_positionRectangle, &pellet.rectangle)) {
+//            pellet.collided = true;
+//
+//        }
+//    }
+
+
+
 
     if (!collidedWithWall) {
         movementDirection = desiredDirection;

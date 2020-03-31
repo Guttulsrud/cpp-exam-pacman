@@ -7,6 +7,7 @@
 
 #include <SDL.h>
 #include <vector>
+#include "Pellet.h"
 
 class Map {
 
@@ -21,6 +22,9 @@ public:
     int map2D[32][30];
 
     static std::vector<SDL_Rect> walls;
+    static std::vector<SDL_Rect> pellets;
+    static std::vector<SDL_Texture*> pelletsTex;
+    static std::vector<Pellet> pelletObjects;
 
 private:
     SDL_Rect m_sourceRectangle, m_destinationRectangle;

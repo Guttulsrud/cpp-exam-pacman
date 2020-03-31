@@ -4,11 +4,17 @@
 
 #include "GameObject.h"
 
-class Pellet : public GameObject{
+class Pellet {
 public:
-    Pellet(const char *textureSheet, int w, int h, int x, int y, int id) : GameObject(textureSheet, w, h, x, y, id){}
-    void update() override;
-    std::string getType() override;
+    Pellet(SDL_Texture * tex, SDL_Rect rect, bool collided){
+        rectangle = rect;
+        texture = tex;
+        collided = false;
+    }
+
+    SDL_Rect rectangle;
+    SDL_Texture * texture;
+    bool collided;
 };
 
 
