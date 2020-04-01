@@ -7,9 +7,9 @@
 #include "../include/TextureManager.h"
 
 
-GameObject::GameObject(const char *textureSheet, int w, int h, int x, int y, int id) {
+GameObject::GameObject(SDL_Texture * texturePtr, int w, int h, int x, int y, int id) {
 
-    texture = TextureManager::loadTexture(textureSheet);
+    texture = texturePtr;
     m_positionRectangle.x = x;
     m_positionRectangle.y = y;
     m_positionRectangle.w = w;
