@@ -42,7 +42,7 @@ void Game::init(const char *title, int xPos, int yPos, int width, int height, bo
 
     for (int i = 40; i < 500; i++) {
         if (i % 40 == 0) {
-            addGameObject(std::make_shared<Pellet>("../resources/img/pellet.png", 7, 7, 57, i, 1));
+            Game::addGameObject(std::make_shared<Pellet>("../resources/img/pellet.png", 7, 7, 57, i, 1));
         }
     }
 
@@ -52,11 +52,9 @@ void Game::render() {
     SDL_RenderClear(renderer);
     map->drawMap();
 
-    std::for_each(std::begin(Game::getGameObjects()), std::end(Game::getGameObjects()),
-                  [](std::shared_ptr<GameObject> &object) {
-                      object->render();
-                  });
-
+    for (auto &object : Game::getGameObjects()) {
+        object->render();
+    }
 
     SDL_RenderPresent(renderer);
 }
@@ -74,12 +72,11 @@ void Game::addGameObject(std::shared_ptr<GameObject> const &o) {
 
 void Game::update() {
 
+    for (auto &object : Game::getGameObjects()) {
+        object->update();
+    }
 
 
-    std::for_each(std::begin(Game::getGameObjects()), std::end(Game::getGameObjects()),
-                  [](std::shared_ptr<GameObject> &object) {
-                      object->update();
-                  });
 }
 
 void Game::clean() {

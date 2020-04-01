@@ -6,6 +6,7 @@
 #include "../include/Map.h"
 #include "../include/Game.h"
 #include "../include/TextureManager.h"
+#include "../include/Pellet.h"
 
 
 int levelOne[32][30] = {
@@ -41,7 +42,6 @@ int levelOne[32][30] = {
         {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
         {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
-
 
 
 };
@@ -94,7 +94,6 @@ void Map::drawMap() {
 
             } else if (type == 2) {
                 TextureManager::draw(m_pellet, m_sourceRectangle, m_destinationRectangle);
-
             } else {
                 TextureManager::draw(m_nonWall, m_sourceRectangle, m_destinationRectangle);
             }

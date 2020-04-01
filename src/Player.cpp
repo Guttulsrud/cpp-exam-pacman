@@ -41,6 +41,7 @@ void Player::update() {
             break;
     }
 
+
     bool collidedWithWall = false;
     for (auto &wall : Map::walls) {
         if (SDL_HasIntersection(&desiredPosition, &wall)) {
