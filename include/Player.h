@@ -18,7 +18,7 @@ enum DIRECTION{
 
 class Player : public GameObject {
 public:
-    Player(const char *textureSheet, int w, int h, int x, int y, int id, int movementSpeed) : GameObject(textureSheet, w, h, x, y, id){
+    Player(SDL_Texture * texturePtr, int w, int h, int x, int y, int id, int movementSpeed) : GameObject(texturePtr, w, h, x, y, id){
         m_movementSpeed = movementSpeed;
     }
 

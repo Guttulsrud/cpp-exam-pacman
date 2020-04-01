@@ -36,15 +36,16 @@ void Game::init(const char *title, int xPos, int yPos, int width, int height, bo
         isRunning = true;
     }
 
-    addGameObject(std::make_shared<Player>("../resources/img/pacman-open.png", 48, 48, 25, 25, 0, 3));
+    SDL_Texture *playerTex = TextureManager::loadTexture("../resources/img/pacman-open.png");
+    addGameObject(std::make_shared<Player>(playerTex, 48, 48, 60, 25, 0, 3));
     map = new Map();
 
 
-    for (int i = 40; i < 500; i++) {
-        if (i % 40 == 0) {
-            Game::addGameObject(std::make_shared<Pellet>("../resources/img/pellet.png", 7, 7, 57, i, 1));
-        }
-    }
+//    for (int i = 40; i < 270; i++) {
+//        if (i % 40 == 0) {
+//            addGameObject(std::make_shared<Pellet>("../resources/img/pellet.png", 7, 7, 48, i, 1));
+//        }
+//    }
 
 }
 
@@ -52,9 +53,11 @@ void Game::render() {
     SDL_RenderClear(renderer);
     map->drawMap();
 
-    for (auto &object : Game::getGameObjects()) {
-        object->render();
-    }
+    std::for_each(std::begin(Game::getGameObjects()), std::end(Game::getGameObjects()),
+                  [](std::shared_ptr<GameObject> &object) {
+                      object->render();
+                  });
+
 
     SDL_RenderPresent(renderer);
 }
@@ -68,15 +71,15 @@ void Game::addGameObject(std::shared_ptr<GameObject> const &o) {
 }
 
 
-
-
 void Game::update() {
 
-    for (auto &object : Game::getGameObjects()) {
-        object->update();
-    }
+    Game::getGameObjects()[0]->update();
 
 
+    std::for_each(std::begin(Game::getGameObjects()), std::end(Game::getGameObjects()),
+                  [](std::shared_ptr<GameObject> &object) {
+                      object->update();
+                  });
 }
 
 void Game::clean() {
