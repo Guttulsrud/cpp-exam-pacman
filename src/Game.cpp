@@ -4,13 +4,10 @@
 #include "../include/GameObject.h"
 #include "../include/Player.h"
 #include "../include/Map.h"
-#include "../include/WallEntity.h"
-#include "../include/Pellet.h"
 #include "../include/TextureManager.h"
 #include <iostream>
 
 SDL_Renderer *Game::renderer = nullptr;
-Map *map = nullptr;
 
 void Game::init(const char *title, int xPos, int yPos, int width, int height, bool fullscreen) {
 
@@ -36,46 +33,25 @@ void Game::init(const char *title, int xPos, int yPos, int width, int height, bo
         isRunning = true;
     }
 
-    SDL_Texture *playerTex = TextureManager::loadTexture("../resources/img/pacman-closed.png");
-    addGameObject(std::make_shared<Player>(playerTex, 50, 50, 338, 425 , 0, 1));
-    map = new Map();
+    SDL_Texture *playerTex = TextureManager::loadTexture("../resources/img/pacman-open.png");
 
-
-//    for (int i = 40; i < 270; i++) {
-//        if (i % 40 == 0) {
-//            addGameObject(std::make_shared<Pellet>("../resources/img/pellet.png", 7, 7, 48, i, 1));
-//        }
-//    }
-
+    addGameObject(std::make_shared<Player>(playerTex, 48, 48, 60, 25, 0, 3));
+    addMap(std::make_shared<Map>());
 }
 
 void Game::render() {
     SDL_RenderClear(renderer);
-    map->drawMap();
 
-    for (auto &object : Game::getGameObjects()) {
-        object->render();
+    for (auto &gameObject : Game::getGameObjects()) {
+        gameObject->render();
     }
-
 
     SDL_RenderPresent(renderer);
 }
 
-Game::~Game() {
-
-}
-
-void Game::addGameObject(std::shared_ptr<GameObject> const &o) {
-    getGameObjects().emplace_back(o);
-}
-
-
 void Game::update() {
-
-    Game::getGameObjects()[0]->update();
-
-    for (auto &object : Game::getGameObjects()) {
-        object->update();
+    for (auto &gameObject : Game::getGameObjects()) {
+        gameObject->update();
     }
 }
 
@@ -87,13 +63,22 @@ void Game::clean() {
     std::cout << "Cleaned.." << std::endl;
 }
 
-SDL_Texture *Game::loadTexture(const char *texture) {
-
-    SDL_Surface *surface = IMG_Load(texture);
-    SDL_Texture *tex = SDL_CreateTextureFromSurface(Game::renderer, surface);
-    SDL_FreeSurface(surface);
-
-    return tex;
+void Game::addMap(const std::shared_ptr<Map> &m) {
+    getMaps().emplace_back(m);
 }
 
+void Game::addGameObject(std::shared_ptr<GameObject> const &object) {
+    getGameObjects().emplace_back(object);
+}
 
+std::vector<std::shared_ptr<Map>> &Game::getMaps() {
+    return getInstance().maps;
+}
+
+std::vector<std::shared_ptr<GameObject>> &Game::getGameObjects() {
+    return getInstance().gameObjects;
+}
+
+Game::~Game() {
+
+}
