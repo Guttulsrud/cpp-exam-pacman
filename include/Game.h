@@ -4,6 +4,7 @@
 
 #include <vector>
 #include "GameObject.h"
+#include "Map.h"
 
 #include <SDL.h>
 #include <SDL_image.h>
@@ -16,20 +17,10 @@ public:
 
     void init(const char *title, int xpos, int ypos, int width, int height, bool fullscreen);
 
-    static Game &getInstance(){
+    static Game &getInstance() {
         static Game instance;
         return instance;
     }
-
-    static SDL_Texture *loadTexture(const char *fileName);
-
-    std::vector<std::shared_ptr<GameObject>> gameObjects;
-
-    static std::vector<std::shared_ptr<GameObject>>& getGameObjects() {
-        return getInstance().gameObjects;
-    }
-
-
 
 
     void update();
@@ -44,10 +35,22 @@ public:
 
     static SDL_Renderer *renderer;
 
-    static void addGameObject(const std::shared_ptr<GameObject> &o);
+
+    std::vector<std::shared_ptr<GameObject>> gameObjects;
+    std::vector<std::shared_ptr<Map>> maps;
+
+    static std::vector<std::shared_ptr<GameObject>> &getGameObjects();
+
+    static std::vector<std::shared_ptr<Map>> &getMaps();
+
+    static void addGameObject(const std::shared_ptr<GameObject> &object);
+
+    static void addMap(const std::shared_ptr<Map> &map);
+
 
 private:
     Game() = default;
+
     bool isRunning;
     SDL_Window *window;
 
