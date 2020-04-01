@@ -34,9 +34,7 @@ void Player::update() {
 
     if (positionIsValid(possiblePosition)) {
         m_positionRectangle = possiblePosition;
-    }
-
-    else {
+    } else {
         possiblePosition = m_positionRectangle;
         possibleMovementChange = movementChange;
 
@@ -50,23 +48,28 @@ void Player::update() {
 
 }
 
-bool Player::positionIsValid(SDL_Rect &possiblePosition) const {
+bool Player::positionIsValid(SDL_Rect &possiblePosition) {
     bool didNotCollideWithWall = true;
+
+
     for (auto &object : Game::getGameObjects()) {
-        if (object->getType() == "Wall") {
-            if (SDL_HasIntersection(&possiblePosition, &object->m_positionRectangle)) {
+
+        if (SDL_HasIntersection(&possiblePosition, &object->m_positionRectangle)) {
+            if (object->getType() == "Wall") {
                 didNotCollideWithWall = false;
+            } else if (object->getType() == "Pellet") {
+                dynamic_cast<Pellet *>(object.get())->eaten = true;
+
+
+                points++;
             }
-        } else if (object->getType() == "Pellet") {
-            continue;
-            ///Kan fjerne de fra listen, eller gi de en verdi som heter "collected"
-            ///Points++
-        } else if (object->getType() == "Player") {
-            continue;
         }
     }
+
+
     return didNotCollideWithWall;
 }
+
 
 std::string Player::getType() {
     return "Player";

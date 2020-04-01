@@ -8,7 +8,7 @@
 
 
 std::string Pellet::getType() {
-    return std::string();
+    return "Pellet";
 }
 
 void Pellet::update() {

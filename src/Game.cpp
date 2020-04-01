@@ -1,4 +1,3 @@
-
 #include "../include/Game.h"
 #include "../include/InputManager.h"
 #include "../include/GameObject.h"
@@ -6,8 +5,6 @@
 #include "../include/Map.h"
 #include "../include/TextureManager.h"
 #include <iostream>
-
-#include <map>
 
 
 SDL_Renderer *Game::renderer = nullptr;
@@ -44,40 +41,49 @@ void Game::init(const char *title, int xPos, int yPos, int width, int height, bo
 }
 
 
-int test = 0;
+void removeGameObjects(std::vector<std::shared_ptr<GameObject>> &objects) {
 
+    objects.erase(
+            std::remove_if(objects.begin(), objects.end(),
+                           [](const std::shared_ptr<GameObject> &pellet) {
+                               return pellet->getType() == "Pellet" && dynamic_cast<Pellet *>(pellet.get())->eaten;
+                           }),
+            objects.end());
+}
+
+
+void Game::update() {
+    std::vector<std::shared_ptr<GameObject>> &objects = Game::getGameObjects();
+
+    for (auto &gameObject : objects) {
+        gameObject->update();
+    }
+
+    removeGameObjects(objects);
+
+
+}
+
+int test = 0;
 
 void Game::render() {
     SDL_RenderClear(renderer);
-
     for (auto &gameObject : Game::getGameObjects()) {
         gameObject->render();
     }
 
+    //todo: Player animation below. Needs to be a function
     test++;
-
     auto *player = dynamic_cast<Player *>(Game::getGameObjects()[0].get());
-
-
     SDL_Texture *altTex = player->playerClosed;
-
-
     if (test > 19) {
         player->render(altTex);
     }
-
     if (test > 40) {
         test = 0;
     }
 
-
     SDL_RenderPresent(renderer);
-}
-
-void Game::update() {
-    for (auto &gameObject : Game::getGameObjects()) {
-        gameObject->update();
-    }
 }
 
 void Game::clean() {
@@ -96,6 +102,7 @@ void Game::addGameObject(std::shared_ptr<GameObject> const &object) {
     getGameObjects().emplace_back(object);
 }
 
+
 std::vector<std::shared_ptr<Map>> &Game::getMaps() {
     return getInstance().maps;
 }
@@ -105,5 +112,20 @@ std::vector<std::shared_ptr<GameObject>> &Game::getGameObjects() {
 }
 
 Game::~Game() {
+
+}
+
+void Game::removePellet(const std::shared_ptr<GameObject> &object) {
+    std::vector<std::shared_ptr<GameObject>> &objects = Game::getGameObjects();
+
+
+    objects.erase(
+            std::remove_if(
+                    objects.begin(),
+                    objects.end(),
+                    [object](const std::shared_ptr<GameObject> &p) { return p->m_id == object->m_id; }
+            ),
+            objects.end()
+    );
 
 }

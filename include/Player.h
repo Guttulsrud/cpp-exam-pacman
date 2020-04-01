@@ -19,12 +19,13 @@ public:
     void update() override;
     std::string getType() override;
     SDL_Texture * playerClosed;
+    int points;
 
 private:
     int m_movementSpeed;
     SDL_Point movementChange;
 
-    bool positionIsValid(SDL_Rect &possiblePosition) const;
+    bool positionIsValid(SDL_Rect &possiblePosition);
 };
 
 

@@ -9,6 +9,9 @@ public:
     Pellet(SDL_Texture *texturePtr, int w, int h, int x, int y, int id) : GameObject(texturePtr, w, h, x, y, id){}
     void update() override;
     std::string getType() override;
+
+    bool eaten = false;
+
 };
 
 
