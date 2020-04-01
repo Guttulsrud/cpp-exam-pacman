@@ -13,6 +13,6 @@ include_directories(${SDL2_INCLUDE_DIR}
         ${SDL2_IMAGE_INCLUDE_DIR})
 
 
-add_executable(Exam main.cpp src/InputManager.cpp src/TextureManager.cpp include/TextureManager.h include/InputManager.h src/Game.cpp include/Game.h src/GameObject.cpp include/GameObject.h src/Player.cpp include/Player.h src/WallEntity.cpp include/Map.h src/Map.cpp include/WallEntity.h src/Pellet.cpp include/Pellet.h)
+add_executable(Exam main.cpp src/InputManager.cpp src/TextureManager.cpp include/TextureManager.h include/InputManager.h src/Game.cpp include/Game.h src/GameObject.cpp include/GameObject.h src/Player.cpp include/Player.h src/WallEntity.cpp include/Map.h src/Map.cpp include/WallEntity.h src/Pellet.cpp include/Pellet.h src/Ghost.cpp include/Ghost.h)
 target_link_libraries(Exam ${SDL2_LIBRARY} ${SDL2_IMAGE_LIBRARIES})
 # -lmingw32 -lSDL2main -lSDL2 #[[-mwindows]]
