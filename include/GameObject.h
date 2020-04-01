@@ -12,7 +12,7 @@
 
 class GameObject {
 public:
-    GameObject(const char *textureSheet, int w, int h, int x, int y, int id);
+    GameObject(SDL_Texture * texturePtr, int w, int h, int x, int y, int id);
     ~GameObject();
     virtual void update() = 0;
     void render();

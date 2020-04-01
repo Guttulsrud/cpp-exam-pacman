@@ -44,28 +44,28 @@ void Player::update() {
             break;
     }
 
-    bool collidedWithWall = false;
-    for (auto &wall : Map::walls) {
-        if (SDL_HasIntersection(&desiredPosition, &wall)) {
-            collidedWithWall = true;
-        }
-    }
-
-    for (auto &pellet : Map::pellets) {
-
-        if (SDL_HasIntersection(&m_positionRectangle, &pellet)) {
-
-        }
-    }
-
-
+//    bool collidedWithWall = false;
+//    for (auto &wall : Map::walls) {
+//        if (SDL_HasIntersection(&desiredPosition, &wall)) {
+//            collidedWithWall = true;
+//        }
+//    }
+//
+//    for (auto &pellet : Map::pellets) {
+//
+//        if (SDL_HasIntersection(&m_positionRectangle, &pellet)) {
+//
+//        }
+//    }
 
 
-    if (!collidedWithWall) {
-        movementDirection = desiredDirection;
-    } else if (movementDirection == desiredDirection) {
-        movementDirection = NONE;
-    }
+
+
+//    if (!collidedWithWall) {
+//        movementDirection = desiredDirection;
+//    } else if (movementDirection == desiredDirection) {
+//        movementDirection = NONE;
+//    }
 
     desiredPosition = m_positionRectangle;
     switch (movementDirection) {
@@ -84,15 +84,15 @@ void Player::update() {
         default:
             break;
     }
-    collidedWithWall = false;
-    for (auto &wall : Map::walls) {
-        if (SDL_HasIntersection(&desiredPosition, &wall)) {
-            collidedWithWall = true;
-        }
-    }
-    if(!collidedWithWall){
-        m_positionRectangle = desiredPosition;
-    }
+//    collidedWithWall = false;
+//    for (auto &wall : Map::walls) {
+//        if (SDL_HasIntersection(&desiredPosition, &wall)) {
+//            collidedWithWall = true;
+//        }
+//    }
+//    if(!collidedWithWall){
+//        m_positionRectangle = desiredPosition;
+//    }
 }
 
 std::string Player::getType() {

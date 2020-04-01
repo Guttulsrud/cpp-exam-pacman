@@ -36,7 +36,8 @@ void Game::init(const char *title, int xPos, int yPos, int width, int height, bo
         isRunning = true;
     }
 
-    addGameObject(std::make_shared<Player>("../resources/img/pacman-open.png", 48, 48, 60, 25, 0, 3));
+    SDL_Texture *playerTex = TextureManager::loadTexture("../resources/img/pacman-open.png");
+    addGameObject(std::make_shared<Player>(playerTex, 48, 48, 60, 25, 0, 3));
     map = new Map();
 
 
@@ -71,6 +72,8 @@ void Game::addGameObject(std::shared_ptr<GameObject> const &o) {
 
 
 void Game::update() {
+
+    Game::getGameObjects()[0]->update();
 
 
     std::for_each(std::begin(Game::getGameObjects()), std::end(Game::getGameObjects()),
