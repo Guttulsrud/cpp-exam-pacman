@@ -7,3 +7,10 @@
 #include "../include/Player.h"
 
 
+std::string Pellet::getType() {
+    return std::string();
+}
+
+void Pellet::update() {
+
+}

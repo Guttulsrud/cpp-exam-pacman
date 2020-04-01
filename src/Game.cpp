@@ -70,10 +70,7 @@ void Game::addGameObject(std::shared_ptr<GameObject> const &o) {
 }
 
 
-
-
 void Game::update() {
-
 
 
     std::for_each(std::begin(Game::getGameObjects()), std::end(Game::getGameObjects()),

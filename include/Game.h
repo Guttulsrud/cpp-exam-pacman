@@ -44,13 +44,14 @@ public:
 
     static SDL_Renderer *renderer;
 
+    static void addGameObject(const std::shared_ptr<GameObject> &o);
+
 private:
     Game() = default;
     bool isRunning;
     SDL_Window *window;
 
 
-    static void addGameObject(const std::shared_ptr<GameObject> &o);
 };
 
 

@@ -51,13 +51,12 @@ void Player::update() {
         }
     }
 
-//    for (auto &pellet : Map::pelletObjects) {
-//
-//        if (SDL_HasIntersection(&m_positionRectangle, &pellet.rectangle)) {
-//            pellet.collided = true;
-//
-//        }
-//    }
+    for (auto &pellet : Map::pellets) {
+
+        if (SDL_HasIntersection(&m_positionRectangle, &pellet)) {
+
+        }
+    }
 
 
 
