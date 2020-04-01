@@ -26,8 +26,9 @@ public:
     std::string getType() override;
 
 private:
-    DIRECTION movementDirection = NONE;
     int m_movementSpeed;
+    int movementChangeX;
+    int movementChangeY;
 };
 
 
