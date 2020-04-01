@@ -8,14 +8,6 @@
 
 #include "GameObject.h"
 
-enum DIRECTION{
-    UP,
-    RIGHT,
-    DOWN,
-    LEFT,
-    NONE
-};
-
 class Player : public GameObject {
 public:
     Player(SDL_Texture * texturePtr, int w, int h, int x, int y, int id, int movementSpeed) : GameObject(texturePtr, w, h, x, y, id){
@@ -27,8 +19,9 @@ public:
 
 private:
     int m_movementSpeed;
-    int movementChangeX;
-    int movementChangeY;
+    SDL_Point movementChange;
+
+    bool positionIsValid(SDL_Rect &possiblePosition) const;
 };
 
 

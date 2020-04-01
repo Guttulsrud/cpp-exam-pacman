@@ -10,7 +10,7 @@
 
 class Ghost : public GameObject {
 public:
-    Ghost(const char *textureSheet, int w, int h, int x, int y, int id, int movementSpeed) : GameObject(textureSheet, w, h, x, y, id){
+    Ghost(SDL_Texture * texturePtr, int w, int h, int x, int y, int id, int movementSpeed) : GameObject(texturePtr, w, h, x, y, id){
         m_movementSpeed = movementSpeed;
     }
     int m_movementSpeed;
