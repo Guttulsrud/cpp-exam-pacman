@@ -38,14 +38,13 @@ void Game::init(const char *title, int xPos, int yPos, int width, int height, bo
     }
 
     addGameObject(std::make_shared<Player>(
-            TextureManager::loadTexture("../resources/img/pacman-open-left.png"),
-            48, 48, 60, 25, 0, 3));
+            TextureManager::loadTexture("../resources/img/pacman-closed.png"),
+            49, 49, 60, 25, 0, 3));
     addMap(std::make_shared<Map>());
 }
 
 
 int test = 0;
-
 
 
 void Game::render() {
@@ -60,7 +59,7 @@ void Game::render() {
     auto *player = dynamic_cast<Player *>(Game::getGameObjects()[0].get());
 
 
-    SDL_Texture * altTex = player->playerClosed;
+    SDL_Texture *altTex = player->playerClosed;
 
 
     if (test > 19) {

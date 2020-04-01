@@ -9,19 +9,11 @@
 #include "GameObject.h"
 #include "TextureManager.h"
 
-enum DIRECTION{
-    UP,
-    RIGHT,
-    DOWN,
-    LEFT,
-    NONE
-};
-
 class Player : public GameObject {
 public:
     Player(SDL_Texture * texturePtr, int w, int h, int x, int y, int id, int movementSpeed) : GameObject(texturePtr, w, h, x, y, id){
         m_movementSpeed = movementSpeed;
-        playerClosed = TextureManager::loadTexture("../resources/img/pacman-closed.png");
+        playerClosed = TextureManager::loadTexture("../resources/img/pacman-open-left.png");
     }
 
     void update() override;
@@ -29,8 +21,10 @@ public:
     SDL_Texture * playerClosed;
 
 private:
-    DIRECTION movementDirection = NONE;
     int m_movementSpeed;
+    SDL_Point movementChange;
+
+    bool positionIsValid(SDL_Rect &possiblePosition) const;
 };
 
 
