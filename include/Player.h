@@ -7,6 +7,7 @@
 
 
 #include "GameObject.h"
+#include "TextureManager.h"
 
 enum DIRECTION{
     UP,
@@ -20,10 +21,12 @@ class Player : public GameObject {
 public:
     Player(SDL_Texture * texturePtr, int w, int h, int x, int y, int id, int movementSpeed) : GameObject(texturePtr, w, h, x, y, id){
         m_movementSpeed = movementSpeed;
+        playerClosed = TextureManager::loadTexture("../resources/img/pacman-closed.png");
     }
 
     void update() override;
     std::string getType() override;
+    SDL_Texture * playerClosed;
 
 private:
     DIRECTION movementDirection = NONE;

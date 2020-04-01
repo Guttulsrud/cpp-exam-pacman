@@ -12,19 +12,25 @@
 
 class GameObject {
 public:
-    GameObject(SDL_Texture * texturePtr, int w, int h, int x, int y, int id);
+    GameObject(SDL_Texture *texturePtr, int w, int h, int x, int y, int id);
+
     ~GameObject();
+
     virtual void update() = 0;
-    void render();
+
+    void render(SDL_Texture *alternativeTexture = nullptr);
+
     SDL_Rect m_sourceRectangle, m_positionRectangle;
     int m_id;
+
     virtual std::string getType() = 0;
-    SDL_Texture * texture;
+
+    SDL_Texture *texture;
 
 private:
-    SDL_Renderer * renderer;
+    SDL_Renderer *renderer;
 protected:
 };
 
 
-#endif //EXAM_GAMEOBJECT_H
+#endif

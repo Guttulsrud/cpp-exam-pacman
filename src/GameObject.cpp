@@ -7,7 +7,7 @@
 #include "../include/TextureManager.h"
 
 
-GameObject::GameObject(SDL_Texture * texturePtr, int w, int h, int x, int y, int id) {
+GameObject::GameObject(SDL_Texture *texturePtr, int w, int h, int x, int y, int id) {
 
     texture = texturePtr;
     m_positionRectangle.x = x;
@@ -26,8 +26,12 @@ void GameObject::update() {
 
 }
 
-void GameObject::render() {
-    SDL_RenderCopy(Game::renderer, texture, &m_sourceRectangle, &m_positionRectangle);
+void GameObject::render(SDL_Texture *alternativeTexture) {
+    if (alternativeTexture) {
+        SDL_RenderCopy(Game::renderer, alternativeTexture, &m_sourceRectangle, &m_positionRectangle);
+    } else {
+        SDL_RenderCopy(Game::renderer, texture, &m_sourceRectangle, &m_positionRectangle);
+    }
 }
 
 

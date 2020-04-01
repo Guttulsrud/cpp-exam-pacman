@@ -7,7 +7,11 @@
 #include "../include/TextureManager.h"
 #include <iostream>
 
+#include <map>
+
+
 SDL_Renderer *Game::renderer = nullptr;
+
 
 void Game::init(const char *title, int xPos, int yPos, int width, int height, bool fullscreen) {
 
@@ -33,11 +37,16 @@ void Game::init(const char *title, int xPos, int yPos, int width, int height, bo
         isRunning = true;
     }
 
-    SDL_Texture *playerTex = TextureManager::loadTexture("../resources/img/pacman-open.png");
-
-    addGameObject(std::make_shared<Player>(playerTex, 48, 48, 60, 25, 0, 3));
+    addGameObject(std::make_shared<Player>(
+            TextureManager::loadTexture("../resources/img/pacman-open-left.png"),
+            48, 48, 60, 25, 0, 3));
     addMap(std::make_shared<Map>());
 }
+
+
+int test = 0;
+
+
 
 void Game::render() {
     SDL_RenderClear(renderer);
@@ -45,6 +54,23 @@ void Game::render() {
     for (auto &gameObject : Game::getGameObjects()) {
         gameObject->render();
     }
+
+    test++;
+
+    auto *player = dynamic_cast<Player *>(Game::getGameObjects()[0].get());
+
+
+    SDL_Texture * altTex = player->playerClosed;
+
+
+    if (test > 19) {
+        player->render(altTex);
+    }
+
+    if (test > 40) {
+        test = 0;
+    }
+
 
     SDL_RenderPresent(renderer);
 }
