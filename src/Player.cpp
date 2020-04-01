@@ -8,7 +8,7 @@
 #include "../include/Game.h"
 #include "../include/TextureManager.h"
 #include <iostream>
-SDL_Texture *kek = Game::loadTexture("../resources/img/blue.png");
+SDL_Texture *kek = TextureManager::loadTexture("../resources/img/blue.png");
 
 void Player::update() {
     SDL_Rect desiredPosition = m_positionRectangle;

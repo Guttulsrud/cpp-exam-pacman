@@ -16,13 +16,10 @@ public:
     ~Map();
 
     void loadLevelMap(int array[32][30]);
-    void drawMap();
 
 private:
-    SDL_Rect m_sourceRectangle, m_destinationRectangle;
-//    SDL_Texture * m_wall;
-//    SDL_Texture * m_nonWall;
-//    SDL_Texture * m_pellet;
+    SDL_Texture* wall;
+    SDL_Texture* pellet;
 };
 
 
