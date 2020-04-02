@@ -19,6 +19,10 @@ public:
 
 private:
     SDL_Texture* wall;
+    SDL_Texture* roundedWallUp;
+    SDL_Texture* roundedWallDown;
+    SDL_Texture* roundedWallLeft;
+    SDL_Texture* roundedWallRight;
     SDL_Texture* pellet;
     SDL_Texture* pelletLarge;
 };
