@@ -7,6 +7,7 @@
 #include "../include/Game.h"
 #include "../include/Pellet.h"
 #include <iostream>
+#include <algorithm>
 
 //enum GameObjectType{WALL, PELLET};
 
