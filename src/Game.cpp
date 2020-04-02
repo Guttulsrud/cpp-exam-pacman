@@ -3,9 +3,10 @@
 #include "../include/GameObject.h"
 #include "../include/Player.h"
 #include "../include/Map.h"
-#include "../include/TextureManager.h"
+#include "../include/Pellet.h"
+#include "../include/VoidWarp.h"
 #include <iostream>
-
+#include <algorithm>
 
 SDL_Renderer *Game::renderer = nullptr;
 
@@ -37,7 +38,13 @@ void Game::init(const char *title, int xPos, int yPos, int width, int height, bo
     addGameObject(std::make_shared<Player>(
             TextureManager::loadTexture("../resources/img/pacman-closed.png"),
             49, 49, 60, 25, 0, 3));
+
+    ///TODO: Draw with map class
+    addGameObject(std::make_shared<VoidWarp>(TextureManager::loadTexture("../resources/img/red.jpg"), 50, 50, -100, 350, 2, 0));
+    addGameObject(std::make_shared<VoidWarp>(TextureManager::loadTexture("../resources/img/red.jpg"), 50, 50, 775, 350, 2, 1));
+
     addMap(std::make_shared<Map>());
+
 }
 
 

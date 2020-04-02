@@ -12,11 +12,11 @@ class VoidWarp : public GameObject{
 public:
 
     int m_side = 0;
-    VoidWarp(const char *textureSheet, int w, int h, int x, int y, int id, int side) : GameObject(textureSheet, w, h, x, y, id){
+    VoidWarp(SDL_Texture * texturePtr, int w, int h, int x, int y, int id, int side) : GameObject(texturePtr, w, h, x, y, id){
         m_side = side;
     }
 
-    void update();
+    void update() override ;
     std::string getType() override;
 };
 
