@@ -21,7 +21,7 @@ public:
     }
 
     int m_movementSpeed;
-
+    int difficulty = 4;
     Direction direction = RIGHT;
     std::vector<Direction> prevDirections;
     bool wasAtIntersection = false;
@@ -29,6 +29,8 @@ public:
     void update() override;
 
     std::string getType() override;
+
+    Direction getDirectionToPlayer(const std::map<Direction, SDL_Rect> &possibleDirections) const;
 };
 
 
