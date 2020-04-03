@@ -28,7 +28,7 @@ public:
 
     Direction direction = RIGHT;
     std::vector<Direction> prevDirections;
-
+    bool wasAtIntersection = false;
 
     void update() override;
 

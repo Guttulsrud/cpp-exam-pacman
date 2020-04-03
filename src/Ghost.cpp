@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <map>
+#include <random>
 #include "../include/Ghost.h"
 #include "../include/Game.h"
 
@@ -11,8 +12,26 @@ std::string Ghost::getType() {
     return "Ghost";
 }
 
-void Ghost::update() {
+Direction getOppositeDirection(Direction direction){
+    Direction returnDir;
+    switch (direction) {
+        case UP:
+            returnDir = DOWN;
+            break;
+        case DOWN:
+            returnDir = UP;
+            break;
+        case LEFT:
+            returnDir = RIGHT;
+            break;
+        case RIGHT:
+            returnDir = LEFT;
+            break;
+    }
+    return returnDir;
+}
 
+void Ghost::update() {
 
     std::map<Direction, SDL_Rect> positions;
 
@@ -32,7 +51,6 @@ void Ghost::update() {
     std::map<Direction, SDL_Rect> possibleDirections;
     std::vector<Direction> possibleDirectionsVector;
 
-    int totalPossibleDirections = 0;
     for (auto &directionPosition : positions) {
         bool didNotCollideWithWall = true;
         for (auto &object : Game::getGameObjects()) {
@@ -42,8 +60,7 @@ void Ghost::update() {
                 }
             }
         }
-        if (didNotCollideWithWall) {
-            totalPossibleDirections++;
+        if (didNotCollideWithWall && directionPosition.first != getOppositeDirection(direction)) {
             possibleDirections.insert(directionPosition);
             possibleDirectionsVector.push_back(directionPosition.first);
         }
@@ -67,17 +84,22 @@ void Ghost::update() {
         }
     }
 
+    std::cout << " | " << possibleDirections.size() << std::endl;
 
-    std::cout << " | " << totalPossibleDirections << std::endl;
 
-    if (prevDirections == possibleDirectionsVector) {
-        m_positionRectangle = positions[direction];
-    } else {
+    //En intersection er en sving og et kryss
+    if ((prevDirections != possibleDirectionsVector || possibleDirections.size() > 2) && !wasAtIntersection){
         auto item = possibleDirections.begin();
-        srand(48);
-        std::advance(item, rand() % totalPossibleDirections);
+        std::random_device rd;
+        std::mt19937 mt(rd());
+        std::uniform_int_distribution<int> dist(0, possibleDirections.size()-1);
+        std::advance(item, dist(mt));
         direction = item->first;
         m_positionRectangle = item->second;
+        wasAtIntersection = true;
+    } else {
+        m_positionRectangle = positions[direction];
+        wasAtIntersection = false;
     }
 
     prevDirections = possibleDirectionsVector;
