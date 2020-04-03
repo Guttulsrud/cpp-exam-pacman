@@ -13,7 +13,7 @@ void VoidWarp::update() {
         if (object->getType() == "Player" || object->getType() == "Ghost") {
             if (SDL_HasIntersection(&object->m_positionRectangle, &m_positionRectangle)) {
                 if (m_side == 1) {
-                    object->m_positionRectangle.x = -50;
+                    object->m_positionRectangle.x = -20;
                 } else if (m_side == 0) {
                     object->m_positionRectangle.x = 860;
                 }
