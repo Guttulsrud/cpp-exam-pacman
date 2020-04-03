@@ -1,10 +1,5 @@
-//
-// Created by mathi on 3/25/2020.
-//
-
 #ifndef EXAM_WALLENTITY_H
 #define EXAM_WALLENTITY_H
-
 
 #include <iostream>
 #include "GameObject.h"
@@ -19,4 +14,4 @@ public:
 };
 
 
-#endif //EXAM_WALLENTITY_H
+#endif

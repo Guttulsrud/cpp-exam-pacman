@@ -1,10 +1,5 @@
-//
-// Created by marti on 30/03/2020.
-//
-
 #ifndef EXAM_VOIDWARP_H
 #define EXAM_VOIDWARP_H
-
 
 #include "GameObject.h"
 
@@ -21,4 +16,4 @@ public:
 };
 
 
-#endif //EXAM_VOIDWARP_H
+#endif

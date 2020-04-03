@@ -1,13 +1,6 @@
-//
-// Created by Håkon on 25.03.2020.
-//
-
-
-#include <iostream>
 #include "../include/Map.h"
 #include "../include/Game.h"
 #include "../include/TextureManager.h"
-#include "../include/Pellet.h"
 #include "../include/WallEntity.h"
 
 

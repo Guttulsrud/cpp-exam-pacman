@@ -1,7 +1,3 @@
-//
-// Created by mathi on 3/31/2020.
-//
-
 #ifndef EXAM_GHOST_H
 #define EXAM_GHOST_H
 
@@ -36,4 +32,4 @@ public:
 };
 
 
-#endif //EXAM_GHOST_H
+#endif

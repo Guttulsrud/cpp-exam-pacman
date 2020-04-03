@@ -1,7 +1,6 @@
 #ifndef EXAM_PELLET_H
 #define EXAM_PELLET_H
 
-
 #include "GameObject.h"
 
 class Pellet : public GameObject{

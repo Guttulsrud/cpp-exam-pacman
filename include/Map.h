@@ -1,11 +1,7 @@
-//
-// Created by Håkon on 25.03.2020.
-//
-
 #ifndef EXAM_MAP_H
 #define EXAM_MAP_H
 
-#include <SDL.h>
+#include <SDL2/SDL.h>
 #include <vector>
 #include "Pellet.h"
 
@@ -28,4 +24,4 @@ private:
 };
 
 
-#endif //EXAM_MAP_H
+#endif

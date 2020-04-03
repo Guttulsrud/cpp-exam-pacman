@@ -1,14 +1,8 @@
-//
-// Created by mathi on 3/25/2020.
-//
-
 #include "../include/GameObject.h"
 #include "../include/Game.h"
-#include "../include/TextureManager.h"
 
 
 GameObject::GameObject(SDL_Texture *texturePtr, int w, int h, int x, int y, int id) {
-
     texture = texturePtr;
     m_positionRectangle.x = x;
     m_positionRectangle.y = y;
@@ -33,7 +27,6 @@ void GameObject::render(SDL_Texture *alternativeTexture) {
         SDL_RenderCopy(Game::renderer, texture, &m_sourceRectangle, &m_positionRectangle);
     }
 }
-
 
 GameObject::~GameObject() {
 

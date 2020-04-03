@@ -1,15 +1,8 @@
-//
-// Created by mathiss on 3/25/2020.
-//
-
 #include "../include/Player.h"
 #include "../include/InputManager.h"
 #include "../include/Game.h"
-#include "../include/Pellet.h"
 #include <iostream>
-#include <algorithm>
 
-//enum GameObjectType{WALL, PELLET};
 
 void Player::update() {
     SDL_Rect possiblePosition = m_positionRectangle;
@@ -66,11 +59,8 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
             }
         }
     }
-
-
     return didNotCollideWithWall;
 }
-
 
 std::string Player::getType() {
     return "Player";

@@ -1,10 +1,5 @@
-//
-// Created by mathi on 3/25/2020.
-//
-
 #ifndef EXAM_PLAYER_H
 #define EXAM_PLAYER_H
-
 
 #include "GameObject.h"
 #include "TextureManager.h"
@@ -29,4 +24,4 @@ private:
 };
 
 
-#endif //EXAM_PLAYER_H
+#endif

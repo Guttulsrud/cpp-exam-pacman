@@ -1,12 +1,8 @@
-//
-// Created by Halo_ on 25.03.2020.
-//
-
 #ifndef EXAM_TEXTUREMANAGER_H
 #define EXAM_TEXTUREMANAGER_H
 
 
-#include "SDL.h"
+#include <SDL2/SDL.h>
 
 class TextureManager {
 public:
@@ -17,4 +13,4 @@ public:
 
 
 
-#endif //EXAM_TEXTUREMANAGER_H
+#endif

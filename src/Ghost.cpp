@@ -1,8 +1,3 @@
-//
-// Created by mathi on 3/31/2020.
-//
-
-#include <iostream>
 #include <map>
 #include <random>
 #include "../include/Ghost.h"
@@ -81,7 +76,6 @@ void Ghost::update() {
     }
 
     prevDirections = possibleDirectionsVector;
-
 }
 
 

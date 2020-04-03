@@ -1,16 +1,20 @@
 #ifndef GAME_H
 #define GAME_H
 
-
+#include <SDL2/SDL.h>
 #include <vector>
 #include "GameObject.h"
 #include "Map.h"
-
-#include <SDL.h>
-#include <SDL_image.h>
-
 #include <memory>
-
+#include "../include/InputManager.h"
+#include "../include/GameObject.h"
+#include "../include/Player.h"
+#include "../include/Map.h"
+#include "../include/Pellet.h"
+#include "../include/VoidWarp.h"
+#include "../include/Ghost.h"
+#include <iostream>
+#include <algorithm>
 
 class Game {
 public:
@@ -23,7 +27,6 @@ public:
         return instance;
     }
 
-
     void update();
 
     void render();
@@ -35,7 +38,6 @@ public:
     }
 
     static SDL_Renderer *renderer;
-
 
     std::vector<std::shared_ptr<GameObject>> gameObjects;
     std::vector<std::shared_ptr<Map>> maps;
@@ -52,12 +54,8 @@ public:
 
 private:
     Game() = default;
-
     bool isRunning;
     SDL_Window *window;
-
-
 };
-
 
 #endif

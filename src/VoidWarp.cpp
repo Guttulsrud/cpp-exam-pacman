@@ -1,7 +1,3 @@
-//
-// Created by marti on 30/03/2020.
-//
-
 #include "../include/VoidWarp.h"
 #include "../include/Game.h"
 

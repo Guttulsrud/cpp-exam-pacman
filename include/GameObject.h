@@ -1,14 +1,8 @@
-//
-// Created by mathi on 3/25/2020.
-//
-
 #ifndef EXAM_GAMEOBJECT_H
 #define EXAM_GAMEOBJECT_H
 
-
-#include <SDL_rect.h>
-#include <SDL_render.h>
 #include <string>
+#include <SDL2/SDL.h>
 
 class GameObject {
 public:
