@@ -14,6 +14,7 @@ int main(int argc, char *argv[]) {
     Game game = Game::getInstance();
     game.init("Pacman", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 800, false);
 
+
     while (game.running()) {
 
         frameStart = SDL_GetTicks();

@@ -5,6 +5,7 @@
 #include "../include/Map.h"
 #include "../include/Pellet.h"
 #include "../include/VoidWarp.h"
+#include "../include/Ghost.h"
 #include <iostream>
 #include <algorithm>
 
@@ -37,11 +38,45 @@ void Game::init(const char *title, int xPos, int yPos, int width, int height, bo
 
     addGameObject(std::make_shared<Player>(
             TextureManager::loadTexture("../resources/img/pacman-closed.png"),
-            49, 49, 60, 25, 0, 3));
+            50, 50, 60, 25, 0, 1));
 
     ///TODO: Draw with map class
-    addGameObject(std::make_shared<VoidWarp>(TextureManager::loadTexture("../resources/img/red.jpg"), 50, 50, -100, 350, 2, 0));
-    addGameObject(std::make_shared<VoidWarp>(TextureManager::loadTexture("../resources/img/red.jpg"), 50, 50, 775, 350, 2, 1));
+    addGameObject(std::make_shared<Ghost>(
+            TextureManager::loadTexture("../resources/img/ghost_red.png"),
+            50, 50, 60, 25, 0, 1));
+   addGameObject(std::make_shared<Ghost>(
+            TextureManager::loadTexture("../resources/img/ghost_red.png"),
+            50, 50, 60, 25, 0, 1));
+   addGameObject(std::make_shared<Ghost>(
+            TextureManager::loadTexture("../resources/img/ghost_red.png"),
+            50, 50, 60, 25, 0, 1));
+   addGameObject(std::make_shared<Ghost>(
+            TextureManager::loadTexture("../resources/img/ghost_red.png"),
+            50, 50, 60, 25, 0, 1));
+   addGameObject(std::make_shared<Ghost>(
+            TextureManager::loadTexture("../resources/img/ghost_red.png"),
+            50, 50, 60, 25, 0, 1));
+   addGameObject(std::make_shared<Ghost>(
+            TextureManager::loadTexture("../resources/img/ghost_red.png"),
+            50, 50, 60, 25, 0, 1));
+   addGameObject(std::make_shared<Ghost>(
+            TextureManager::loadTexture("../resources/img/ghost_red.png"),
+            50, 50, 60, 25, 0, 1));
+   addGameObject(std::make_shared<Ghost>(
+            TextureManager::loadTexture("../resources/img/ghost_red.png"),
+            50, 50, 60, 25, 0, 1));
+   addGameObject(std::make_shared<Ghost>(
+            TextureManager::loadTexture("../resources/img/ghost_red.png"),
+            50, 50, 60, 25, 0, 1));
+
+
+
+    addGameObject(
+            std::make_shared<VoidWarp>(TextureManager::loadTexture("../resources/img/red.jpg"), 50, 50, -95, 350, 2,
+                                       0));
+    addGameObject(
+            std::make_shared<VoidWarp>(TextureManager::loadTexture("../resources/img/red.jpg"), 50, 50, 770, 350, 2,
+                                       1));
 
     addMap(std::make_shared<Map>());
 

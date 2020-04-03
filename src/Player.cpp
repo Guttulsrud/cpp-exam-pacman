@@ -18,15 +18,15 @@ void Player::update() {
 
     if (!InputManager::getInstance().KeyStillUp(SDL_SCANCODE_W)) {
         possibleMovementChange.x = 0;
-        possibleMovementChange.y = -2;
+        possibleMovementChange.y = -m_movementSpeed;
     } else if (!InputManager::getInstance().KeyStillUp(SDL_SCANCODE_A)) {
-        possibleMovementChange.x = -2;
+        possibleMovementChange.x = -m_movementSpeed;
         possibleMovementChange.y = 0;
     } else if (!InputManager::getInstance().KeyStillUp(SDL_SCANCODE_S)) {
         possibleMovementChange.x = 0;
-        possibleMovementChange.y = 2;
+        possibleMovementChange.y = m_movementSpeed;
     } else if (!InputManager::getInstance().KeyStillUp(SDL_SCANCODE_D)) {
-        possibleMovementChange.x = 2;
+        possibleMovementChange.x = m_movementSpeed;
         possibleMovementChange.y = 0;
     }
 
