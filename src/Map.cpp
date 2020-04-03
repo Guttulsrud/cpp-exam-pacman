@@ -13,34 +13,34 @@
 
 int levelOne[32][32] = {
         {1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 },
-        {1 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 7 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 },
+        {1 , 15, 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 7 , 15, 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 },
         {1 , 0 , 0 , 0 , 0 , 0 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 7 , 0 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 1 },
         {1 , 0 , 0 , 12, 1 , 13, 0 , 2 , 12, 1 , 1 , 13, 0 , 2 , 7 , 0 , 2 , 12, 1 , 1 , 13, 0 , 2 , 12, 1 , 13, 0 , 2 , 1 },
         {1 , 0 , 5 , 11, 1 , 14, 0 , 2 , 11, 1 , 1 , 14, 0 , 2 , 10, 0 , 2 , 11, 1 , 1 , 14, 0 , 2 , 11, 1 , 14, 0 , 3 , 1 },
         {1 , 0 , 2 , 0 , 0 , 0 , 0 , 2 , 0 , 0 , 0 , 0 , 0 , 2 , 0 , 0 , 2 , 0 , 0 , 0 , 0 , 0 , 2 , 0 , 0 , 0 , 0 , 2 , 1 },
         {1 , 0 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 1 },
-        {1 , 0 , 2 , 8 , 1 , 9 , 0 , 2 , 6 , 0 , 2 , 8 , 1 , 1 , 1 , 1 , 1 , 9 , 0 , 2 , 6 , 0 , 2 , 8 , 1 , 9 , 0 , 2 , 1 },
-        {1 , 0 , 2 , 0 , 0 , 0 , 0 , 2 , 7 , 0 , 2 , 0 , 0 , 0 , 7 , 0 , 0 , 0 , 0 , 2 , 7 , 0 , 2 , 0 , 0 , 0 , 0 , 2 , 1 },
+        {1 , 0 , 2 , 8 , 16, 9 , 0 , 2 , 6 , 0 , 2 , 8 , 16, 16, 1 , 16, 16, 9 , 0 , 2 , 6 , 0 , 2 , 8 , 16, 9 , 0 , 2 , 1 },
+        {1 , 0 , 2 , 0 , 0 , 0 , 0 , 2 , 7 , 0 , 2 , 0 , 0 , 0 , 7 , 15, 0 , 0 , 0 , 2 , 7 , 0 , 2 , 0 , 0 , 0 , 0 , 2 , 1 },
         {1 , 0 , 2 , 2 , 2 , 2 , 2 , 2 , 7 , 0 , 2 , 2 , 2 , 2 , 7 , 0 , 2 , 2 , 2 , 2 , 7 , 0 , 2 , 2 , 2 , 2 , 2 , 2 , 1 },
-        {1 , 1 , 1 , 1 , 1 , 13, 0 , 2 , 1 , 1 , 1 , 9 , 0 , 2 , 10, 0 , 2 , 8 , 1 , 1 , 1 , 0 , 2 , 12, 1 , 1 , 1 , 1 , 1 },
-        {0 , 0 , 0 , 0 , 0 , 1 , 0 , 2 , 7 , 0 , 0 , 0 , 0 , 2 , 0 , 0 , 2 , 0 , 0 , 0 , 7 , 0 , 2 , 1 , 0 , 0 , 0 , 0 , 0 },
+        {1 , 1 , 1 , 1 , 1 , 13, 0 , 2 , 1 , 16, 16, 9 , 0 , 2 , 10, 0 , 2 , 8 , 16, 16, 1 , 0 , 2 , 12, 1 , 1 , 1 , 1 , 1 },
+        {0 , 0 , 0 , 0 , 0 , 1 , 0 , 2 , 7 , 15, 0 , 0 , 0 , 2 , 0 , 0 , 2 , 0 , 0 , 0 , 7 , 0 , 2 , 1 , 0 , 0 , 0 , 0 , 0 },
         {0 , 0 , 0 , 0 , 0 , 1 , 0 , 2 , 7 , 0 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 7 , 0 , 2 , 1 , 0 , 0 , 0 , 0 , 0 },
-        {1 , 1 , 1 , 1 , 1 , 14, 0 , 2 , 10, 0 , 2 , 12, 1 , 1 , 1 , 1 , 1 , 13, 0 , 2 , 10, 0 , 2 , 11, 1 , 1 , 1 , 1 , 1 },
-        {0 , 0 , 0 , 0 , 0 , 0 , 0 , 2 , 0 , 0 , 2 , 7 , 0 , 0 , 0 , 0 , 0 , 7 , 0 , 2 , 0 , 0 , 2 , 0 , 0 , 0 , 0 , 0 , 0 },
+        {1 , 1 , 1 , 1 , 1 , 14, 0 , 2 , 10, 0 , 2 , 12, 16, 16, 16, 16, 16, 13, 0 , 2 , 10, 0 , 2 , 11, 1 , 1 , 1 , 1 , 1 },
+        {0 , 0 , 0 , 0 , 0 , 0 , 0 , 2 , 0 , 0 , 2 , 7 , 15, 0 , 0 , 0 , 0 , 7 , 0 , 2 , 0 , 0 , 2 , 0 , 0 , 0 , 0 , 0 , 0 },
         {2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 7 , 0 , 0 , 0 , 0 , 0 , 7 , 0 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 },
-        {1 , 1 , 1 , 1 , 1 , 13, 0 , 2 , 6 , 0 , 2 , 11, 1 , 1 , 1 , 1 , 1 , 14, 0 , 2 , 6 , 0 , 2 , 12, 1 , 1 , 1 , 1 , 1 },
+        {1 , 1 , 1 , 1 , 1 , 13, 0 , 2 , 6 , 0 , 2 , 11, 16, 16, 16, 16, 16, 14, 0 , 2 , 6 , 0 , 2 , 12, 1 , 1 , 1 , 1 , 1 },
         {0 , 0 , 0 , 0 , 0 , 1 , 0 , 2 , 7 , 0 , 2 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 2 , 7 , 0 , 2 , 1 , 0 , 0 , 0 , 0 , 0 },
         {0 , 0 , 0 , 0 , 0 , 1 , 0 , 2 , 7 , 0 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 7 , 0 , 2 , 1 , 0 , 0 , 0 , 0 , 0 },
-        {1 , 1 , 1 , 1 , 1 , 14, 0 , 2 , 10, 0 , 2 , 8 , 1 , 1 , 1 , 1 , 1 , 9 , 0 , 2 , 10, 0 , 2 , 11, 1 , 1 , 1 , 1 , 1 },
-        {1 , 0 , 0 , 0 , 0 , 0 , 0 , 2 , 0 , 0 , 2 , 0 , 0 , 0 , 7 , 0 , 0 , 0 , 0 , 2 , 0 , 0 , 2 , 0 , 0 , 0 , 0 , 0 , 1 },
+        {1 , 1 , 1 , 1 , 1 , 14, 0 , 2 , 10, 0 , 2 , 8 , 16, 16, 1 , 16, 16, 9 , 0 , 2 , 10, 0 , 2 , 11, 1 , 1 , 1 , 1 , 1 },
+        {1 , 15, 0 , 0 , 0 , 0 , 0 , 2 , 0 , 0 , 2 , 0 , 0 , 0 , 7 , 15, 0 , 0 , 0 , 2 , 0 , 0 , 2 , 0 , 0 , 0 , 0 , 0 , 1 },
         {1 , 0 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 7 , 0 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 1 },
-        {1 , 0 , 2 , 8 , 1 , 13, 0 , 2 , 8 , 1 , 1 , 9 , 0 , 2 , 10, 0 , 2 , 8 , 1 , 1 , 9 , 0 , 2 , 12, 1 , 9 , 0 , 2 , 1 },
-        {1 , 0 , 5 , 0 , 0 , 7 , 0 , 2 , 0 , 0 , 0 , 0 , 0 , 2 , 0 , 0 , 2 , 0 , 0 , 0 , 0 , 0 , 2 , 7 , 0 , 0 , 0 , 4 , 1 },
+        {1 , 0 , 2 , 8 , 16, 13, 0 , 2 , 8 , 16, 16, 9 , 0 , 2 , 10, 0 , 2 , 8 , 16, 16, 9 , 0 , 2 , 12, 16, 9 , 0 , 2 , 1 },
+        {1 , 0 , 5 , 0 , 0 , 7 , 0 , 2 , 0 , 0 , 0 , 0 , 0 , 2 , 0 , 0 , 2 , 0 , 0 , 0 , 0 , 0 , 2 , 7 , 15, 0 , 0 , 4 , 1 },
         {1 , 0 , 2 , 2 , 2 , 7 , 0 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 7 , 0 , 2 , 2 , 2 , 1 },
-        {1 , 1 , 9 , 0 , 2 , 10, 0 , 2 , 6 , 0 , 2 , 8 , 1 , 1 , 1 , 1 , 1 , 9 , 0 , 2 , 6 , 0 , 2 , 10, 0 , 2 , 8 , 1 , 1 },
-        {1 , 0 , 0 , 0 , 2 , 0 , 0 , 2 , 7 , 0 , 2 , 0 , 0 , 0 , 7 , 0 , 0 , 0 , 0 , 2 , 7 , 0 , 2 , 0 , 0 , 2 , 0 , 0 , 1 },
+        {1 , 16, 9 , 0 , 2 , 10, 0 , 2 , 6 , 0 , 2 , 8 , 16, 16, 1 , 16, 16, 9 , 0 , 2 , 6 , 0 , 2 , 10, 0 , 2 , 8 , 16, 1 },
+        {1 , 15, 0 , 0 , 2 , 0 , 0 , 2 , 7 , 0 , 2 , 0 , 0 , 0 , 7 , 15, 0 , 0 , 0 , 2 , 7 , 0 , 2 , 0 , 0 , 2 , 0 , 0 , 1 },
         {1 , 0 , 2 , 2 , 2 , 2 , 2 , 2 , 7 , 0 , 2 , 2 , 2 , 2 , 7 , 0 , 2 , 2 , 2 , 2 , 7 , 0 , 2 , 2 , 2 , 2 , 2 , 2 , 1 },
-        {1 , 0 , 2 , 8 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 9 , 0 , 2 , 10, 0 , 2 , 8 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 9 , 0 , 2 , 1 },
+        {1 , 0 , 2 , 8 , 16, 16, 16, 16, 1 , 16, 16, 9 , 0 , 2 , 10, 0 , 2 , 8 , 16, 16, 1 , 16, 16, 16, 16, 9 , 0 , 2 , 1 },
         {1 , 0 , 2 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 2 , 0 , 0 , 2 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 2 , 1 },
         {1 , 0 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 1 },
         {1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 }
@@ -53,13 +53,15 @@ Map::Map() {
     pelletLarge = TextureManager::loadTexture("../resources/img/pellet_large.png");
     roundedWallUp = TextureManager::loadTexture("../resources/img/rounded_corner_N.png");       //6
     roundedWallDown = TextureManager::loadTexture("../resources/img/rounded_corner_S.png");     //10
-    wallDoubleEdge = TextureManager::loadTexture("../resources/img/wall_double_edge_WE.png");   //7
+    wallDoubleEdgeWE = TextureManager::loadTexture("../resources/img/wall_double_edge_WE.png"); //7
+    wallDoubleEdgeNS = TextureManager::loadTexture("../resources/img/wall_double_edge_NS.png"); //16
     roundedWallLeft = TextureManager::loadTexture("../resources/img/rounded_corner_W.png");     //8
     roundedWallRight = TextureManager::loadTexture("../resources/img/rounded_corner_E.png");    //9
     cornerSE = TextureManager::loadTexture("../resources/img/single_corner_SE.png");            //14
     cornerSW = TextureManager::loadTexture("../resources/img/single_corner_SW.png");            //11
     cornerNE = TextureManager::loadTexture("../resources/img/single_corner_NE.png");            //13
     cornerNW = TextureManager::loadTexture("../resources/img/single_corner_NW.png");            //12
+    insideCornerNW = TextureManager::loadTexture("../resources/img/inside_single_corner_NW.png");//15
 
 
     loadLevelMap(levelOne);
@@ -95,7 +97,7 @@ void Map::loadLevelMap(int array[32][32]) {
                     Game::addGameObject(std::make_shared<WallEntity>(roundedWallUp, 25, 25, row * 25, column * 25, idIncrementer));
                     break;
                 case 7:
-                    Game::addGameObject(std::make_shared<WallEntity>(wallDoubleEdge, 25, 25, row * 25, column * 25, idIncrementer));
+                    Game::addGameObject(std::make_shared<WallEntity>(wallDoubleEdgeWE, 25, 25, row * 25, column * 25, idIncrementer));
                     break;
                 case 8:
                     Game::addGameObject(std::make_shared<WallEntity>(roundedWallLeft, 25, 25, row * 25, column * 25, idIncrementer));
@@ -117,6 +119,12 @@ void Map::loadLevelMap(int array[32][32]) {
                     break;
                 case 14:
                     Game::addGameObject(std::make_shared<WallEntity>(cornerSE, 25, 25, row * 25, column * 25, idIncrementer));
+                    break;
+                case 15:
+                    Game::addGameObject(std::make_shared<WallEntity>(insideCornerNW, 25, 25, row * 25, column * 25, idIncrementer));
+                    break;
+                case 16:
+                    Game::addGameObject(std::make_shared<WallEntity>(wallDoubleEdgeNS, 25, 25, row * 25, column * 25, idIncrementer));
                     break;
                 default:;
                 //todo: Consider different approach to large pellet positions. Will be different on other maps
