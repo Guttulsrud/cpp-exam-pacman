@@ -48,20 +48,20 @@ int levelOne[32][32] = {
 
 
 Map::Map() {
-    wall = TextureManager::loadTexture("../resources/img/wall.png");
+    wall = TextureManager::loadTexture("../resources/img/walls/wall.png");
     pellet = TextureManager::loadTexture("../resources/img/pellet.png");
     pelletLarge = TextureManager::loadTexture("../resources/img/pellet_large.png");
-    roundedWallUp = TextureManager::loadTexture("../resources/img/rounded_corner_N.png");       //6
-    roundedWallDown = TextureManager::loadTexture("../resources/img/rounded_corner_S.png");     //10
-    wallDoubleEdgeWE = TextureManager::loadTexture("../resources/img/wall_double_edge_WE.png"); //7
-    wallDoubleEdgeNS = TextureManager::loadTexture("../resources/img/wall_double_edge_NS.png"); //16
-    roundedWallLeft = TextureManager::loadTexture("../resources/img/rounded_corner_W.png");     //8
-    roundedWallRight = TextureManager::loadTexture("../resources/img/rounded_corner_E.png");    //9
-    cornerSE = TextureManager::loadTexture("../resources/img/single_corner_SE.png");            //14
-    cornerSW = TextureManager::loadTexture("../resources/img/single_corner_SW.png");            //11
-    cornerNE = TextureManager::loadTexture("../resources/img/single_corner_NE.png");            //13
-    cornerNW = TextureManager::loadTexture("../resources/img/single_corner_NW.png");            //12
-    insideCornerNW = TextureManager::loadTexture("../resources/img/inside_single_corner_NW.png");//15
+    roundedWallUp = TextureManager::loadTexture("../resources/img/walls/rounded_corner_N.png");       //6
+    roundedWallDown = TextureManager::loadTexture("../resources/img/walls/rounded_corner_S.png");     //10
+    wallDoubleEdgeWE = TextureManager::loadTexture("../resources/img/walls/wall_double_edge_WE.png"); //7
+    wallDoubleEdgeNS = TextureManager::loadTexture("../resources/img/walls/wall_double_edge_NS.png"); //16
+    roundedWallLeft = TextureManager::loadTexture("../resources/img/walls/rounded_corner_W.png");     //8
+    roundedWallRight = TextureManager::loadTexture("../resources/img/walls/rounded_corner_E.png");    //9
+    cornerSE = TextureManager::loadTexture("../resources/img/walls/single_corner_SE.png");            //14
+    cornerSW = TextureManager::loadTexture("../resources/img/walls/single_corner_SW.png");            //11
+    cornerNE = TextureManager::loadTexture("../resources/img/walls/single_corner_NE.png");            //13
+    cornerNW = TextureManager::loadTexture("../resources/img/walls/single_corner_NW.png");            //12
+    insideCornerNW = TextureManager::loadTexture("../resources/img/walls/inside_single_corner_NW.png");//15
 
 
     loadLevelMap(levelOne);
