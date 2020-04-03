@@ -8,6 +8,7 @@
 #include "../include/Game.h"
 #include "../include/TextureManager.h"
 #include "../include/WallEntity.h"
+#include "../include/Hallway.h"
 
 
 int levelOne[32][32] = {
@@ -121,7 +122,7 @@ void Map::loadLevelMap(int array[32][32]) {
                     Game::addGameObject(std::make_shared<WallEntity>(cornerSE, tileLength, tileLength, row * tileLength+30, column * tileLength+30, idIncrementer));
                     break;
                 case 15:
-                    Game::addGameObject(std::make_shared<WallEntity>(insideCornerNW, tileLength, tileLength, row * tileLength+30, column * tileLength+30, idIncrementer));
+                    Game::addGameObject(std::make_shared<Hallway>(insideCornerNW, tileLength, tileLength, row * tileLength+30, column * tileLength+30, idIncrementer));
                     break;
                 case 16:
                     Game::addGameObject(std::make_shared<WallEntity>(wallDoubleEdgeNS, tileLength, tileLength, row * tileLength+30, column * tileLength+30, idIncrementer));

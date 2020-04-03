@@ -1,13 +1,5 @@
 #include "../include/Game.h"
-#include "../include/InputManager.h"
-#include "../include/GameObject.h"
-#include "../include/Player.h"
-#include "../include/Map.h"
-#include "../include/Pellet.h"
-#include "../include/VoidWarp.h"
-#include "../include/Ghost.h"
-#include <iostream>
-#include <algorithm>
+
 
 SDL_Renderer *Game::renderer = nullptr;
 
@@ -38,18 +30,27 @@ void Game::init(const char *title, int xPos, int yPos, int width, int height, bo
 
     addGameObject(std::make_shared<Player>(
             TextureManager::loadTexture("../resources/img/pacman-closed.png"),
-            60, 60, 60, 60, 0, 2));
+            60, 60, 120, 60, 0, 2));
 
     ///TODO: Draw with map class
     addGameObject(std::make_shared<Ghost>(
-            TextureManager::loadTexture("../resources/img/ghost_red.png"),
+            TextureManager::loadTexture("../resources/img/ghosts/green_ghost_E1.png"),
             60, 60, 60, 60, 0, 2));
+    addGameObject(std::make_shared<Ghost>(
+            TextureManager::loadTexture("../resources/img/ghosts/orange_ghost_E1.png"),
+            60, 60, 120, 60, 0, 2));
+    addGameObject(std::make_shared<Ghost>(
+            TextureManager::loadTexture("../resources/img/ghosts/red_ghost_E1.png"),
+            60, 60, 180, 60, 0, 2));
+    addGameObject(std::make_shared<Ghost>(
+            TextureManager::loadTexture("../resources/img/ghosts/purple_ghost_E1.png"),
+            60, 60, 240, 60, 0, 2));
 
     addGameObject(
-            std::make_shared<VoidWarp>(TextureManager::loadTexture("../resources/img/red.jpg"), 60, 60, -80, 480, 2,
+            std::make_shared<VoidWarp>(TextureManager::loadTexture("../resources/img/red.jpg"), 60, 60, -80, 450, 2,
                                        0));
     addGameObject(
-            std::make_shared<VoidWarp>(TextureManager::loadTexture("../resources/img/red.jpg"), 60, 60, 1000, 480, 2,
+            std::make_shared<VoidWarp>(TextureManager::loadTexture("../resources/img/red.jpg"), 60, 60, 950, 450, 2,
                                        1));
 
     addMap(std::make_shared<Map>());
