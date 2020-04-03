@@ -98,7 +98,7 @@ Direction Ghost::getDirectionToPlayer(const std::map<Direction, SDL_Rect> &possi
             shortestLength = lenToPlayer;
             closestToPlayer = directionPosition.first;
         }
-        std::cout << closestToPlayer << std::endl;
+//        std::cout << closestToPlayer << std::endl;
     }
     return closestToPlayer;
 }
