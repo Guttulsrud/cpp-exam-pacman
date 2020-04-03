@@ -12,6 +12,8 @@
 
 
 int levelOne[32][32] = {
+
+
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
         {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
         {1, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1},
@@ -64,6 +66,7 @@ Map::Map() {
 void Map::loadLevelMap(int array[32][32]) {
     int tileType = 0;
     int idIncrementer = 0;
+    int tileLength = 30;
 
     for (int column = 0; column < 32; column++) {
         for (int row = 0; row < 32; row++) {
@@ -72,31 +75,31 @@ void Map::loadLevelMap(int array[32][32]) {
             idIncrementer++;
             switch (tileType) {
                 case 1:
-                    Game::addGameObject(std::make_shared<WallEntity>(wall, 25, 25, row * 25, column * 25, idIncrementer));
+                    Game::addGameObject(std::make_shared<WallEntity>(wall, tileLength, tileLength, row * tileLength, column * tileLength+60, idIncrementer));
                     break;
                 case 2:
-                    Game::addGameObject(std::make_shared<Pellet>(pellet, 5, 5, row * 24.9, column * 25, idIncrementer));
+                    Game::addGameObject(std::make_shared<Pellet>(pellet, 5, 5, row * tileLength, column * tileLength+60, idIncrementer));
                     break;
                 case 3:
-                    Game::addGameObject(std::make_shared<Pellet>(pelletLarge, 15, 15, row * 24.73, column * 23.9, idIncrementer));
+                    Game::addGameObject(std::make_shared<Pellet>(pelletLarge, 15, 15, row * tileLength, column * tileLength+60, idIncrementer));
                     break;
                 case 4:
-                    Game::addGameObject(std::make_shared<Pellet>(pelletLarge, 15, 15, row * 24.73, column * 24.8, idIncrementer));
+                    Game::addGameObject(std::make_shared<Pellet>(pelletLarge, 15, 15, row * tileLength, column * tileLength+60, idIncrementer));
                     break;
                 case 5:
-                    Game::addGameObject(std::make_shared<Pellet>(pelletLarge, 15, 15, row * 22, column * 24.8, idIncrementer));
+                    Game::addGameObject(std::make_shared<Pellet>(pelletLarge, 15, 15, row * tileLength, column * tileLength+60, idIncrementer));
                     break;
                 case 6:
-                    Game::addGameObject(std::make_shared<WallEntity>(roundedWallUp, 25, 25, row * 25, column * 25, idIncrementer));
+                    Game::addGameObject(std::make_shared<WallEntity>(roundedWallUp, tileLength, tileLength, row * tileLength, column * tileLength+60, idIncrementer));
                     break;
                 case 7:
-                    Game::addGameObject(std::make_shared<WallEntity>(roundedWallDown, 25, 25, row * 25, column * 25, idIncrementer));
+                    Game::addGameObject(std::make_shared<WallEntity>(roundedWallDown, tileLength, tileLength, row * tileLength, column * tileLength+60, idIncrementer));
                     break;
                 case 8:
-                    Game::addGameObject(std::make_shared<WallEntity>(roundedWallLeft, 25, 25, row * 25, column * 25, idIncrementer));
+                    Game::addGameObject(std::make_shared<WallEntity>(roundedWallLeft, tileLength, tileLength, row * tileLength, column * tileLength+60, idIncrementer));
                     break;
                 case 9:
-                    Game::addGameObject(std::make_shared<WallEntity>(roundedWallRight, 25, 25, row * 25, column * 25, idIncrementer));
+                    Game::addGameObject(std::make_shared<WallEntity>(roundedWallRight, tileLength, tileLength, row * tileLength, column * tileLength+60 , idIncrementer));
                     break;
                 default:;
                 //todo: Consider different approach to large pellet positions. Will be different on other maps
