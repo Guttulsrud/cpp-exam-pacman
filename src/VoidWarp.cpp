@@ -8,12 +8,16 @@
 void VoidWarp::update() {
 
 
-    //Player collides with VoidWarp
-    if(SDL_HasIntersection(&Game::getGameObjects()[0].get()->m_positionRectangle, &m_positionRectangle)) {
-        if(m_side == 1){
-            Game::getGameObjects()[0].get()->m_positionRectangle.x = -50;
-        } else if(m_side == 0) {
-            Game::getGameObjects()[0].get()->m_positionRectangle.x = 725;
+    //Player or ghost collides with VoidWarp
+    for (auto &object : Game::getGameObjects()) {
+        if (object->getType() == "Player" || object->getType() == "Ghost") {
+            if (SDL_HasIntersection(&object->m_positionRectangle, &m_positionRectangle)) {
+                if (m_side == 1) {
+                    object->m_positionRectangle.x = -45;
+                } else if (m_side == 0) {
+                    object->m_positionRectangle.x = 720;
+                }
+            }
         }
     }
 

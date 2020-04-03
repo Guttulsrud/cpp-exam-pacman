@@ -36,16 +36,16 @@ void Ghost::update() {
     std::map<Direction, SDL_Rect> positions;
 
     SDL_Rect temp = m_positionRectangle;
-    temp.y -= 1;
+    temp.y -= m_movementSpeed;
     positions.insert({UP, temp});
     temp = m_positionRectangle;
-    temp.y += 1;
+    temp.y += m_movementSpeed;
     positions.insert({DOWN, temp});
     temp = m_positionRectangle;
-    temp.x -= 1;
+    temp.x -= m_movementSpeed;
     positions.insert({LEFT, temp});
     temp = m_positionRectangle;
-    temp.x += 1;
+    temp.x += m_movementSpeed;
     positions.insert({RIGHT, temp});
 
     std::map<Direction, SDL_Rect> possibleDirections;
@@ -66,28 +66,6 @@ void Ghost::update() {
         }
     }
 
-    std::cout << "Can move: ";
-    for (auto d : possibleDirections) {
-        switch (d.first) {
-            case UP:
-                std::cout << "UP ";
-                break;
-            case DOWN:
-                std::cout << "DOWN ";
-                break;
-            case LEFT:
-                std::cout << "LEFT ";
-                break;
-            case RIGHT:
-                std::cout << "RIGHT ";
-                break;
-        }
-    }
-
-    std::cout << " | " << possibleDirections.size() << std::endl;
-
-
-    //En intersection er en sving og et kryss
     if ((prevDirections != possibleDirectionsVector || possibleDirections.size() > 2) && !wasAtIntersection){
         auto item = possibleDirections.begin();
         std::random_device rd;
