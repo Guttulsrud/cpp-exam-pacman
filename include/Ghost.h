@@ -34,4 +34,4 @@ public:
 };
 
 
-#endif
+#endif //EXAM_GHOST_H

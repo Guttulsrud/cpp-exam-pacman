@@ -1,5 +1,6 @@
 #include "../include/GameObject.h"
 #include "../include/Game.h"
+#include "../include/TextureManager.h"
 
 
 GameObject::GameObject(SDL_Texture *texturePtr, int w, int h, int x, int y, int id) {

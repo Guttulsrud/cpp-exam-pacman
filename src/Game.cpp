@@ -1,5 +1,13 @@
 #include "../include/Game.h"
-
+#include "../include/InputManager.h"
+#include "../include/GameObject.h"
+#include "../include/Player.h"
+#include "../include/Map.h"
+#include "../include/Pellet.h"
+#include "../include/VoidWarp.h"
+#include "../include/Ghost.h"
+#include <iostream>
+#include <algorithm>
 
 SDL_Renderer *Game::renderer = nullptr;
 

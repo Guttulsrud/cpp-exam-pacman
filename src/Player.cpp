@@ -1,7 +1,9 @@
 #include "../include/Player.h"
 #include "../include/InputManager.h"
 #include "../include/Game.h"
+#include "../include/Pellet.h"
 #include <iostream>
+#include <algorithm>
 
 
 void Player::update() {
