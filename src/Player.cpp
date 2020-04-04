@@ -20,6 +20,7 @@ void Player::update() {
         possibleMovementChange.x = -m_movementSpeed;
         possibleMovementChange.y = 0;
         direction = LEFT;
+
     } else if (!InputManager::getInstance().KeyStillUp(SDL_SCANCODE_S)) {
         possibleMovementChange.x = 0;
         possibleMovementChange.y = m_movementSpeed;
@@ -46,6 +47,7 @@ void Player::update() {
         }
     }
     movementChange = possibleMovementChange;
+
 
 }
 
@@ -80,5 +82,40 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
 
 TYPE Player::getType() {
     return PLAYER;
+}
+
+
+void Player::setPlayerAnimationDirectionLarge() {
+    switch (direction) {
+        case UP:
+            texture = largeOpenUp;
+            break;
+        case DOWN:
+            texture = largeOpenDown;
+            break;
+        case LEFT:
+            texture = largeOpenLeft;
+            break;
+        case RIGHT:
+            texture = largeOpenRight;
+            break;
+    }
+}
+
+void Player::setPlayerAnimationDirectionMedium() {
+    switch (direction) {
+        case UP:
+            texture = mediumOpenUp;
+            break;
+        case DOWN:
+            texture = mediumOpenDown;
+            break;
+        case LEFT:
+            texture = mediumOpenLeft;
+            break;
+        case RIGHT:
+            texture = mediumOpenRight;
+            break;
+    }
 }
 
