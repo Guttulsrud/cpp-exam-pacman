@@ -25,6 +25,7 @@ public:
     Direction direction = RIGHT;
     std::vector<Direction> prevDirections;
     bool wasAtIntersection = false;
+    bool powerPelletState = false;
 
     void update() override;
 

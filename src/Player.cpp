@@ -54,6 +54,14 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
             if (object->getType() == "Wall") {
                 didNotCollideWithWall = false;
             } else if (object->getType() == "Pellet") {
+                if (dynamic_cast<Pellet *>(object.get())->m_isPowerPellet) {
+                    ///TODO: Trenger bare loope igjennom ghost
+                    for (auto &object : Game::getGameObjects()) {
+                        if (object->getType() == "Ghost") {
+                            dynamic_cast<Ghost *>(object.get())->powerPelletState = true;
+                        }
+                    }
+                }
                 dynamic_cast<Pellet *>(object.get())->eaten = true;
 
 
