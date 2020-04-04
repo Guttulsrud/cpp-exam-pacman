@@ -25,25 +25,27 @@ Direction getOppositeDirection(Direction direction) {
 void Ghost::update() {
 
 
-    std::map<Direction, SDL_Rect> positions;
+    std::map<Direction, SDL_Rect> directions;
 
     SDL_Rect temp = m_positionRectangle;
     temp.y -= m_movementSpeed;
-    positions.insert({UP, temp});
+    directions.insert({UP, temp});
     temp = m_positionRectangle;
     temp.y += m_movementSpeed;
-    positions.insert({DOWN, temp});
+    directions.insert({DOWN, temp});
     temp = m_positionRectangle;
     temp.x -= m_movementSpeed;
-    positions.insert({LEFT, temp});
+    directions.insert({LEFT, temp});
     temp = m_positionRectangle;
     temp.x += m_movementSpeed;
-    positions.insert({RIGHT, temp});
+    directions.insert({RIGHT, temp});
 
     std::map<Direction, SDL_Rect> possibleDirections;
     std::vector<Direction> possibleDirectionsVector;
 
-    for (auto &directionPosition : positions) {
+
+    //Finds valid move direction
+    for (auto &directionPosition : directions) {
         bool didNotCollideWithWall = true;
         for (auto &object : Game::getGameObjects()) {
             if (object->getType() == "Wall") {
@@ -60,11 +62,11 @@ void Ghost::update() {
 
     if (possibleDirections.empty()) {
         direction = getOppositeDirection(direction);
-        m_positionRectangle = positions[direction];
+        m_positionRectangle = directions[direction];
         return;
     }
 
-
+    //decides which way
     if ((prevDirections != possibleDirectionsVector || possibleDirections.size() > 2) && !wasAtIntersection) {
         auto item = possibleDirections.begin();
         std::random_device rd;
@@ -82,7 +84,12 @@ void Ghost::update() {
         }
         wasAtIntersection = true;
     } else {
-        m_positionRectangle = positions[direction];
+        if(switchedToPowerPelletState){
+            direction = getDirectionToPlayer(directions);
+            powerPelletState = true;
+            switchedToPowerPelletState = false;
+        }
+        m_positionRectangle = directions[direction];
         wasAtIntersection = false;
     }
 
@@ -100,7 +107,7 @@ Direction Ghost::getDirectionToPlayer(const std::map<Direction, SDL_Rect> &possi
         int yLen = abs(playerPosition.y - directionPosition.second.y);
         float lenToPlayer = sqrt((xLen * xLen) + (yLen * yLen));
 
-        if (powerPelletState) {
+        if (powerPelletState || switchedToPowerPelletState) {
             if (lenToPlayer > longestLength) {
                 longestLength = lenToPlayer;
                 closestToPlayer = directionPosition.first;
@@ -111,7 +118,6 @@ Direction Ghost::getDirectionToPlayer(const std::map<Direction, SDL_Rect> &possi
             if (lenToPlayer < shortestLength) {
                 shortestLength = lenToPlayer;
                 closestToPlayer = directionPosition.first;
-
             }
         }
 //        std::cout << closestToPlayer << std::endl;

@@ -26,6 +26,7 @@ public:
     std::vector<Direction> prevDirections;
     bool wasAtIntersection = false;
     bool powerPelletState = false;
+    bool switchedToPowerPelletState = false;
 
     void update() override;
 

@@ -58,7 +58,7 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
                     ///TODO: Trenger bare loope igjennom ghost
                     for (auto &object : Game::getGameObjects()) {
                         if (object->getType() == "Ghost") {
-                            dynamic_cast<Ghost *>(object.get())->powerPelletState = true;
+                            dynamic_cast<Ghost *>(object.get())->switchedToPowerPelletState = true;
                         }
                     }
                 }
