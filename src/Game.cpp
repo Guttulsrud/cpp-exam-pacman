@@ -31,7 +31,7 @@ void Game::init(const char *title, int xPos, int yPos, int width, int height, bo
     }
 
     addGameObject(std::make_shared<Player>(
-            TextureManager::loadTexture("../resources/img/pacman-closed.png"),
+            TextureManager::loadTexture("../resources/img/pacman/base.png"),
             60, 60, 120, 60, 0, 2));
 
     ///TODO: Draw with map class
@@ -72,7 +72,25 @@ void removeGameObjects(std::vector<std::shared_ptr<GameObject>> &objects) {
 
 
 void Game::update() {
+    frameCount++;
     std::vector<std::shared_ptr<GameObject>> &objects = Game::getGameObjects();
+
+    auto *player = dynamic_cast<Player *>(objects[0].get());
+
+    if (frameCount > 5) {
+        player->texture = player->base;
+    }
+    if (frameCount > 10) {
+        player->setPlayerAnimationDirectionMedium();
+    }
+    if (frameCount > 15) {
+        player->setPlayerAnimationDirectionLarge();
+    }
+    if (frameCount > 20) {
+        player->setPlayerAnimationDirectionMedium();
+        frameCount = 0;
+    }
+
 
     for (auto &gameObject : objects) {
         gameObject->update();
@@ -83,24 +101,14 @@ void Game::update() {
 
 }
 
-int test = 0;
 
 void Game::render() {
+
     SDL_RenderClear(renderer);
     for (auto &gameObject : Game::getGameObjects()) {
         gameObject->render();
     }
 
-    //todo: Player animation below. Needs to be a function
-    test++;
-    auto *player = dynamic_cast<Player *>(Game::getGameObjects()[0].get());
-    SDL_Texture *altTex = player->playerClosed;
-    if (test > 19) {
-        player->render(altTex);
-    }
-    if (test > 40) {
-        test = 0;
-    }
 
     SDL_RenderPresent(renderer);
 }
@@ -131,20 +139,5 @@ std::vector<std::shared_ptr<GameObject>> &Game::getGameObjects() {
 }
 
 Game::~Game() {
-
-}
-
-void Game::removePellet(const std::shared_ptr<GameObject> &object) {
-    std::vector<std::shared_ptr<GameObject>> &objects = Game::getGameObjects();
-
-
-    objects.erase(
-            std::remove_if(
-                    objects.begin(),
-                    objects.end(),
-                    [object](const std::shared_ptr<GameObject> &p) { return p->m_id == object->m_id; }
-            ),
-            objects.end()
-    );
 
 }

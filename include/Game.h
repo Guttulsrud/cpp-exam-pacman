@@ -50,14 +50,12 @@ public:
 
     static void addMap(const std::shared_ptr<Map> &map);
 
-    static void removePellet(const std::shared_ptr<GameObject> &object);
 
 private:
     Game() = default;
     bool isRunning;
     SDL_Window *window;
-
-
+    int frameCount = 0;
 };
 
 #endif

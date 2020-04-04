@@ -15,7 +15,7 @@ public:
         if()
     }
 */
-    //TODO: Adde ting fra Game og over hit, Pacman, andre renders, etc.
+    //TODO: Adde ting fra Game og over hit, pacman, andre renders, etc.
 
 
 private:
