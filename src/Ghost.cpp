@@ -17,6 +17,8 @@ Direction getOppositeDirection(Direction direction) {
             return RIGHT;
         case RIGHT:
             return LEFT;
+        default:
+            return UP;
     }
 }
 
@@ -102,16 +104,19 @@ Direction Ghost::getDirectionToPlayer(const std::map<Direction, SDL_Rect> &possi
             if (lenToPlayer > longestLength) {
                 longestLength = lenToPlayer;
                 closestToPlayer = directionPosition.first;
+
             }
         }
         else {
             if (lenToPlayer < shortestLength) {
                 shortestLength = lenToPlayer;
                 closestToPlayer = directionPosition.first;
+
             }
         }
 //        std::cout << closestToPlayer << std::endl;
     }
+
 
 
     return closestToPlayer;
