@@ -17,7 +17,7 @@ void Game::init(const char *title, int xPos, int yPos, int width, int height, bo
 
         TTF_Init();
 
-        TTF_Font * font = TTF_OpenFont("../resources/arial.ttf", 20);
+        TTF_Font * font = TTF_OpenFont("../resources/fonts/arial.ttf", 20);
         SDL_Color white = {255, 0, 255};
         if(font == NULL) {
 
