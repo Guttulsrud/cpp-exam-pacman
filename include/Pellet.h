@@ -5,11 +5,14 @@
 
 class Pellet : public GameObject{
 public:
-    Pellet(SDL_Texture *texturePtr, int w, int h, int x, int y, int id) : GameObject(texturePtr, w, h, x, y, id){}
+    Pellet(SDL_Texture *texturePtr, int w, int h, int x, int y, int id, bool isPowerPellet = false) : GameObject(texturePtr, w, h, x, y, id){
+        m_isPowerPellet = isPowerPellet;
+    }
     void update() override;
     std::string getType() override;
 
     bool eaten = false;
+    bool m_isPowerPellet;
 
 };
 

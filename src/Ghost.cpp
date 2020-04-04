@@ -22,6 +22,7 @@ Direction getOppositeDirection(Direction direction) {
 
 void Ghost::update() {
 
+
     std::map<Direction, SDL_Rect> positions;
 
     SDL_Rect temp = m_positionRectangle;
@@ -55,7 +56,7 @@ void Ghost::update() {
         }
     }
 
-    if(possibleDirections.empty()){
+    if (possibleDirections.empty()) {
         direction = getOppositeDirection(direction);
         m_positionRectangle = positions[direction];
         return;
@@ -89,17 +90,30 @@ void Ghost::update() {
 Direction Ghost::getDirectionToPlayer(const std::map<Direction, SDL_Rect> &possibleDirections) const {
     Direction closestToPlayer = UP;
     float shortestLength = 1000.0f;
+    float longestLength = 0.0f;
+
     auto playerPosition = Game::getGameObjects()[0]->m_positionRectangle;
     for (auto &directionPosition : possibleDirections) {
         int xLen = abs(playerPosition.x - directionPosition.second.x);
         int yLen = abs(playerPosition.y - directionPosition.second.y);
         float lenToPlayer = sqrt((xLen * xLen) + (yLen * yLen));
-        if (lenToPlayer < shortestLength) {
-            shortestLength = lenToPlayer;
-            closestToPlayer = directionPosition.first;
+
+        if (powerPelletState) {
+            if (lenToPlayer > longestLength) {
+                longestLength = lenToPlayer;
+                closestToPlayer = directionPosition.first;
+            }
+        }
+        else {
+            if (lenToPlayer < shortestLength) {
+                shortestLength = lenToPlayer;
+                closestToPlayer = directionPosition.first;
+            }
         }
 //        std::cout << closestToPlayer << std::endl;
     }
+
+
     return closestToPlayer;
 }
 
