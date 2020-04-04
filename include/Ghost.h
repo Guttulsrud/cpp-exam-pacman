@@ -21,7 +21,7 @@ public:
     }
 
     int m_movementSpeed;
-    int difficulty = 10;
+    int difficulty = 4;
     Direction direction = RIGHT;
     std::vector<Direction> prevDirections;
     bool wasAtIntersection = false;

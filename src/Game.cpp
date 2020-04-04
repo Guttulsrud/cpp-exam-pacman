@@ -1,7 +1,6 @@
 #include "../include/Game.h"
 
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_ttf.h>
 
 SDL_Renderer *Game::renderer = nullptr;
 
@@ -13,21 +12,6 @@ void Game::init(const char *title, int xPos, int yPos, int width, int height, bo
         flags = SDL_WINDOW_FULLSCREEN | SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL;
     }
     if (SDL_Init(SDL_INIT_VIDEO) == 0) {
-
-
-        TTF_Init();
-
-        TTF_Font * font = TTF_OpenFont("../resources/fonts/arial.ttf", 20);
-        SDL_Color white = {255, 0, 255};
-        if(font == NULL) {
-
-            std::cout << "no font!!" << std::endl;
-        }
-//
-//        SDL_Surface * message = TTF_RenderText_Solid(font, "hellooowoooooooooooo", white);
-//
-
-
 
 
         std::cout << "Initializing.." << std::endl;
