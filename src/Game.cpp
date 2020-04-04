@@ -36,7 +36,7 @@ void Game::init(const char *title, int xPos, int yPos, int width, int height, bo
 
     addGameObject(std::make_shared<Player>(
             TextureManager::loadTexture("../resources/img/pacman/base.png"),
-            60, 60, 120, 60, 0, 2));
+            60, 60, 120, 60, 0, 3));
 
     ///TODO: Draw with map class
     addGameObject(std::make_shared<Ghost>(
