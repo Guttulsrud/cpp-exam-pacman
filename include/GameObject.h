@@ -3,6 +3,25 @@
 
 #include <string>
 #include <SDL2/SDL.h>
+#include "TextureManager.h"
+
+enum TYPE{
+    PLAYER,
+    GHOST,
+    WALL,
+    PELLET,
+    HALLWAY,
+    VOIDWARP
+};
+enum Direction {
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT,
+    NONE
+};
+
+
 
 class GameObject {
 public:
@@ -17,13 +36,12 @@ public:
     SDL_Rect m_sourceRectangle, m_positionRectangle;
     int m_id;
 
-    virtual std::string getType() = 0;
+    virtual TYPE getType() = 0;
 
     SDL_Texture *texture;
 
 private:
     SDL_Renderer *renderer;
-protected:
 };
 
 

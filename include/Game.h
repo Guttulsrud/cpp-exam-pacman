@@ -3,18 +3,13 @@
 
 #include <SDL2/SDL.h>
 #include <vector>
-#include "GameObject.h"
 #include "Map.h"
+#include "GameObject.h"
 #include <memory>
-#include "../include/InputManager.h"
-#include "../include/GameObject.h"
-#include "../include/Player.h"
-#include "../include/Map.h"
-#include "../include/Pellet.h"
-#include "../include/VoidWarp.h"
-#include "../include/Ghost.h"
 #include <iostream>
 #include <algorithm>
+
+
 
 class Game {
 public:

@@ -12,7 +12,7 @@ public:
     }
 
     void update() override ;
-    std::string getType() override;
+    TYPE getType() override;
 };
 
 

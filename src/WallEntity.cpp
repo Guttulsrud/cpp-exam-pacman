@@ -4,6 +4,6 @@ void WallEntity::update() {
 
 }
 
-std::string WallEntity::getType() {
-    return "Wall";
+TYPE WallEntity::getType() {
+    return WALL;
 }

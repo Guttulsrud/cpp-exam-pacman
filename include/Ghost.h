@@ -1,17 +1,8 @@
 #ifndef EXAM_GHOST_H
 #define EXAM_GHOST_H
 
-
-#include <map>
-#include <experimental/vector>
 #include "GameObject.h"
-
-enum Direction {
-    UP,
-    DOWN,
-    LEFT,
-    RIGHT
-};
+#include <map>
 
 class Ghost : public GameObject {
 public:
@@ -30,7 +21,7 @@ public:
 
     void update() override;
 
-    std::string getType() override;
+    TYPE getType() override;
 
     Direction getDirectionToPlayer(const std::map<Direction, SDL_Rect> &possibleDirections) const;
 };

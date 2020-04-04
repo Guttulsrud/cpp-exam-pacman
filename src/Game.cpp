@@ -1,4 +1,8 @@
 #include "../include/Game.h"
+#include "../include/Player.h"
+#include "../include/Ghost.h"
+#include "../include/VoidWarp.h"
+#include "../include/Pellet.h"
 
 #include <SDL2/SDL.h>
 
@@ -32,7 +36,7 @@ void Game::init(const char *title, int xPos, int yPos, int width, int height, bo
 
     addGameObject(std::make_shared<Player>(
             TextureManager::loadTexture("../resources/img/pacman-closed.png"),
-            60, 60, 120, 60, 0, 2));
+            60, 60, 14*30, 18*30, 0, 3));
 
     ///TODO: Draw with map class
     addGameObject(std::make_shared<Ghost>(
@@ -65,7 +69,7 @@ void removeGameObjects(std::vector<std::shared_ptr<GameObject>> &objects) {
     objects.erase(
             std::remove_if(objects.begin(), objects.end(),
                            [](const std::shared_ptr<GameObject> &pellet) {
-                               return pellet->getType() == "Pellet" && dynamic_cast<Pellet *>(pellet.get())->eaten;
+                               return pellet->getType() == PELLET && dynamic_cast<Pellet *>(pellet.get())->eaten;
                            }),
             objects.end());
 }

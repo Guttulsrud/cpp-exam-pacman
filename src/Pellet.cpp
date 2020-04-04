@@ -1,8 +1,8 @@
 #include <iostream>
-#include "../include/Game.h"
+#include "../include/Pellet.h"
 
-std::string Pellet::getType() {
-    return "Pellet";
+TYPE Pellet::getType() {
+    return PELLET;
 }
 
 void Pellet::update() {

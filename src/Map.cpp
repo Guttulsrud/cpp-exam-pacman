@@ -9,6 +9,7 @@
 #include "../include/TextureManager.h"
 #include "../include/WallEntity.h"
 #include "../include/Hallway.h"
+#include "../include/Pellet.h"
 
 
 int levelOne[32][29] = {

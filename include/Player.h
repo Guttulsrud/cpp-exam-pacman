@@ -2,8 +2,6 @@
 #define EXAM_PLAYER_H
 
 #include "GameObject.h"
-#include "TextureManager.h"
-#include "Ghost.h"
 
 class Player : public GameObject {
 public:
@@ -13,7 +11,7 @@ public:
     }
 
     void update() override;
-    std::string getType() override;
+    TYPE getType() override;
     Direction direction;
     SDL_Texture * playerClosed;
     int points;

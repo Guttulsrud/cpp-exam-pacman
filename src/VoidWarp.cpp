@@ -6,7 +6,7 @@ void VoidWarp::update() {
 
     //Player or ghost collides with VoidWarp
     for (auto &object : Game::getGameObjects()) {
-        if (object->getType() == "Player" || object->getType() == "Ghost") {
+        if (object->getType() == PLAYER || object->getType() == GHOST) {
             if (SDL_HasIntersection(&object->m_positionRectangle, &m_positionRectangle)) {
                 if (m_side == 1) {
                     object->m_positionRectangle.x = -20;
@@ -19,6 +19,6 @@ void VoidWarp::update() {
 
 }
 
-std::string VoidWarp::getType() {
-    return "VoidWarp";
+TYPE VoidWarp::getType() {
+    return VOIDWARP;
 }

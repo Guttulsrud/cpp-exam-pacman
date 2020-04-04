@@ -3,7 +3,6 @@
 
 #include <SDL2/SDL.h>
 #include <vector>
-#include "Pellet.h"
 
 class Map {
 

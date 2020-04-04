@@ -9,7 +9,7 @@ public:
         m_isPowerPellet = isPowerPellet;
     }
     void update() override;
-    std::string getType() override;
+    TYPE getType() override;
 
     bool eaten = false;
     bool m_isPowerPellet;

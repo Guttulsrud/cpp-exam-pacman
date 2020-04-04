@@ -3,8 +3,8 @@
 #include "../include/Ghost.h"
 #include "../include/Game.h"
 
-std::string Ghost::getType() {
-    return "Ghost";
+TYPE Ghost::getType() {
+    return GHOST;
 }
 
 Direction getOppositeDirection(Direction direction) {
@@ -48,7 +48,7 @@ void Ghost::update() {
     for (auto &directionPosition : directions) {
         bool didNotCollideWithWall = true;
         for (auto &object : Game::getGameObjects()) {
-            if (object->getType() == "Wall") {
+            if (object->getType() == WALL) {
                 if (SDL_HasIntersection(&directionPosition.second, &object->m_positionRectangle)) {
                     didNotCollideWithWall = false;
                 }

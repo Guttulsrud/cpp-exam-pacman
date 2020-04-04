@@ -2,6 +2,7 @@
 #include "../include/InputManager.h"
 #include "../include/Game.h"
 #include "../include/Pellet.h"
+#include "../include/Ghost.h"
 #include <iostream>
 #include <algorithm>
 
@@ -55,20 +56,21 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
     for (auto &object : Game::getGameObjects()) {
 
         if (SDL_HasIntersection(&possiblePosition, &object->m_positionRectangle)) {
-            if (object->getType() == "Wall") {
+            if (object->getType() == WALL) {
                 didNotCollideWithWall = false;
-            } else if (object->getType() == "Pellet") {
+            } else if (object->getType() == GHOST) {
+                std::cout << "OH no, PACMAN be dead" << std::endl;
+                //PACMAN IS DEAD
+            } else if (object->getType() == PELLET) {
                 if (dynamic_cast<Pellet *>(object.get())->m_isPowerPellet) {
                     ///TODO: Trenger bare loope igjennom ghost
                     for (auto &object : Game::getGameObjects()) {
-                        if (object->getType() == "Ghost") {
+                        if (object->getType() == GHOST) {
                             dynamic_cast<Ghost *>(object.get())->switchedToPowerPelletState = true;
                         }
                     }
                 }
                 dynamic_cast<Pellet *>(object.get())->eaten = true;
-
-
                 points++;
             }
         }
@@ -76,7 +78,7 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
     return didNotCollideWithWall;
 }
 
-std::string Player::getType() {
-    return "Player";
+TYPE Player::getType() {
+    return PLAYER;
 }
 

@@ -12,7 +12,7 @@ class Hallway : public GameObject {
 
     void update() override;
 
-    std::string getType() override;
+    TYPE getType() override;
 
 public:
     Hallway(SDL_Texture * texturePtr, int w, int h, int x, int y, int id) : GameObject(texturePtr, w, h, x, y, id){}

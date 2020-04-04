@@ -8,6 +8,6 @@ void Hallway::update() {
 
 }
 
-std::string Hallway::getType() {
-    return "Hallway";
+TYPE Hallway::getType() {
+    return HALLWAY;
 }
