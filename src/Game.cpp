@@ -23,9 +23,9 @@ void Game::init(const char *title, int xPos, int yPos, int width, int height, bo
 
             std::cout << "no font!!" << std::endl;
         }
-
-        SDL_Surface * message = TTF_RenderText_Solid(font, "hellooowoooooooooooo", white);
-
+//
+//        SDL_Surface * message = TTF_RenderText_Solid(font, "hellooowoooooooooooo", white);
+//
 
 
 

@@ -15,7 +15,6 @@
 #include "../include/Ghost.h"
 #include <iostream>
 #include <algorithm>
-#include <SDL2/SDL_ttf.h>
 
 class Game {
 public:
