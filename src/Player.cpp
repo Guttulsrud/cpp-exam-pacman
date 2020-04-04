@@ -14,15 +14,19 @@ void Player::update() {
     if (!InputManager::getInstance().KeyStillUp(SDL_SCANCODE_W)) {
         possibleMovementChange.x = 0;
         possibleMovementChange.y = -m_movementSpeed;
+        direction = UP;
     } else if (!InputManager::getInstance().KeyStillUp(SDL_SCANCODE_A)) {
         possibleMovementChange.x = -m_movementSpeed;
         possibleMovementChange.y = 0;
+        direction = LEFT;
     } else if (!InputManager::getInstance().KeyStillUp(SDL_SCANCODE_S)) {
         possibleMovementChange.x = 0;
         possibleMovementChange.y = m_movementSpeed;
+        direction = DOWN;
     } else if (!InputManager::getInstance().KeyStillUp(SDL_SCANCODE_D)) {
         possibleMovementChange.x = m_movementSpeed;
         possibleMovementChange.y = 0;
+        direction = RIGHT;
     }
 
     possiblePosition.x += possibleMovementChange.x;
