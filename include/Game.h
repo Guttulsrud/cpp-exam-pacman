@@ -15,6 +15,7 @@
 #include "../include/Ghost.h"
 #include <iostream>
 #include <algorithm>
+#include <SDL2/SDL_ttf.h>
 
 class Game {
 public:
@@ -56,6 +57,8 @@ private:
     Game() = default;
     bool isRunning;
     SDL_Window *window;
+
+
 };
 
 #endif
