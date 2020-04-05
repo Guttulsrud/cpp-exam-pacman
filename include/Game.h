@@ -34,6 +34,7 @@ public:
 
     static SDL_Renderer *renderer;
 
+    std::shared_ptr<Player> m_player;
     std::vector<std::shared_ptr<GameObject>> gameObjects;
     std::vector<std::shared_ptr<Map>> maps;
 
@@ -42,6 +43,7 @@ public:
     static std::vector<std::shared_ptr<Map>> &getMaps();
 
     static std::shared_ptr<Player> &getPlayer();
+    static void setPlayer(const std::shared_ptr<Player> &object);
 
     static void addGameObject(const std::shared_ptr<GameObject> &object);
 
@@ -54,7 +56,6 @@ private:
     bool isRunning;
     SDL_Window *window;
     int frameCount = 0;
-    std::shared_ptr<Player> m_player;
 
 };
 

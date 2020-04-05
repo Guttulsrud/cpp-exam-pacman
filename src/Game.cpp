@@ -34,10 +34,9 @@ void Game::init(const char *title, int xPos, int yPos, int width, int height, bo
         isRunning = true;
     }
 
-    m_player = std::make_shared<Player>(TextureManager::loadTexture("../resources/img/pacman/base.png"),
-                                        60, 60, 120, 60, 0, 3);
 
-
+    setPlayer(std::make_shared<Player>(TextureManager::loadTexture("../resources/img/pacman/base.png"),
+                                       60, 60, 120, 60, 0, 3));
     ///TODO: Draw with map class
     addGameObject(std::make_shared<Ghost>(
             TextureManager::loadTexture("../resources/img/ghosts/green_ghost_E1.png"),
@@ -78,28 +77,27 @@ void removeGameObjects(std::vector<std::shared_ptr<GameObject>> &objects) {
 void Game::update() {
     frameCount++;
     std::vector<std::shared_ptr<GameObject>> &objects = Game::getGameObjects();
+    std::shared_ptr<Player> &player = Game::getPlayer();
 
     if (frameCount > 5) {
-        m_player->texture = m_player->base;
+        player->texture = player->base;
     }
     if (frameCount > 10) {
-        m_player->setPlayerAnimationDirectionMedium();
+        player->setPlayerAnimationDirectionMedium();
     }
     if (frameCount > 15) {
-        m_player->setPlayerAnimationDirectionLarge();
+        player->setPlayerAnimationDirectionLarge();
     }
     if (frameCount > 20) {
-        m_player->setPlayerAnimationDirectionMedium();
+        player->setPlayerAnimationDirectionMedium();
         frameCount = 0;
     }
 
 
     for (auto &gameObject : objects) {
-        if (gameObject.get()->getType() != GHOST) {
-            gameObject->update();
-        }
+        gameObject->update();
     }
-    m_player->update();
+    player->update();
 
     removeGameObjects(objects);
 
@@ -113,7 +111,7 @@ void Game::render() {
     for (auto &gameObject : Game::getGameObjects()) {
         gameObject->render();
     }
-    m_player->render();
+    Game::getPlayer()->render();
 
 
     SDL_RenderPresent(renderer);
@@ -133,6 +131,10 @@ void Game::addMap(const std::shared_ptr<Map> &m) {
 
 void Game::addGameObject(std::shared_ptr<GameObject> const &object) {
     getGameObjects().emplace_back(object);
+}
+
+void Game::setPlayer(std::shared_ptr<Player> const &object) {
+    getInstance().m_player = object;
 }
 
 
