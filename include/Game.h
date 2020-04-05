@@ -50,6 +50,7 @@ public:
     static std::shared_ptr<Player> &getPlayer();
     static void setPlayer(const std::shared_ptr<Player> &object);
 
+    static void setUpGameObjects();
     static void addGameObject(const std::shared_ptr<GameObject> &object);
     static void addMovableGameObject(const std::shared_ptr<MovableObject> &object);
     static void addStationaryGameObject(const std::shared_ptr<StationaryObject> &object);

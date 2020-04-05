@@ -32,44 +32,8 @@ void Game::init(const char *title, int xPos, int yPos, int width, int height, bo
             std::cout << "Renderer created!" << std::endl;
         }
         isRunning = true;
+        setUpGameObjects();
     }
-
-
-    setPlayer(std::make_shared<Player>(TextureManager::loadTexture("../resources/img/pacman/base.png"),
-                                       120, 60, 0, 2));
-    ///TODO: Draw with map class
-    addMovableGameObject(std::make_shared<Ghost>(
-            TextureManager::loadTexture("../resources/img/ghosts/green_ghost_E1.png"),
-            60, 60, 0, 2));
-
-
-//    addGameObject(std::make_shared<Ghost>(
-//            TextureManager::loadTexture("../resources/img/ghosts/green_ghost_E1.png"),
-//            60, 60, 0, 2));
-//
-
-
-
-    addMovableGameObject(std::make_shared<Ghost>(
-            TextureManager::loadTexture("../resources/img/ghosts/orange_ghost_E1.png"),
-            120, 60, 0, 2));
-    addMovableGameObject(std::make_shared<Ghost>(
-            TextureManager::loadTexture("../resources/img/ghosts/red_ghost_E1.png"),
-            180, 60, 0, 2));
-    addMovableGameObject(std::make_shared<Ghost>(
-            TextureManager::loadTexture("../resources/img/ghosts/purple_ghost_E1.png"),
-            240, 60, 0, 2));
-
-    addStationaryGameObject(
-            std::make_shared<VoidWarp>(TextureManager::loadTexture("../resources/img/red.jpg"), 60, 60, -80, 450, 2,
-                                       0));
-    addStationaryGameObject(
-            (
-            std::make_shared<VoidWarp>(TextureManager::loadTexture("../resources/img/red.jpg"), 60, 60, 950, 450, 2,
-                                       1)));
-
-    addMap(std::make_shared<Map>());
-
 }
 
 
@@ -106,7 +70,6 @@ void Game::render() {
     std::shared_ptr<Player> &player = Game::getPlayer();
 
 
-
     for (auto &m :movables) {
         m->render();
     }
@@ -131,11 +94,6 @@ void Game::addMap(const std::shared_ptr<Map> &m) {
 }
 
 void Game::addGameObject(std::shared_ptr<GameObject> const &object) {
-//    if(dynamic_cast<Ghost *>(object.get())) {
-//        addMovableGameObject();
-//
-//    };
-
     getGameObjects().emplace_back(object);
 }
 
@@ -174,6 +132,41 @@ std::vector<std::shared_ptr<StationaryObject>> &Game::getStationaryGameObjects()
 
 void Game::addStationaryGameObject(const std::shared_ptr<StationaryObject> &object) {
     getStationaryGameObjects().emplace_back(object);
+}
+
+void Game::setUpGameObjects() {
+
+    setPlayer(std::make_shared<Player>(TextureManager::loadTexture("../resources/img/pacman/base.png"),
+                                       440, 540, 0, 2));
+    //TODO: Draw with map class
+    addMovableGameObject(std::make_shared<Ghost>(
+            TextureManager::loadTexture("../resources/img/ghosts/green_ghost_E1.png"),
+            440, 450, 0, 2));
+
+    addMovableGameObject(std::make_shared<Ghost>(
+            TextureManager::loadTexture("../resources/img/ghosts/orange_ghost_E1.png"),
+            440, 450, 0, 2));
+
+    addMovableGameObject(std::make_shared<Ghost>(
+            TextureManager::loadTexture("../resources/img/ghosts/red_ghost_E1.png"),
+            440, 450, 0, 2));
+
+    addMovableGameObject(std::make_shared<Ghost>(
+            TextureManager::loadTexture("../resources/img/ghosts/purple_ghost_E1.png"),
+            440, 450, 0, 2));
+
+    addStationaryGameObject(
+            std::make_shared<VoidWarp>(TextureManager::loadTexture("../resources/img/red.jpg"), 60, 60, -80, 450, 2,
+                                       0));
+    addStationaryGameObject(
+            (
+                    std::make_shared<VoidWarp>(TextureManager::loadTexture("../resources/img/red.jpg"), 60, 60, 950,
+                                               450, 2,
+                                               1)));
+
+    addMap(std::make_shared<Map>());
+
+
 }
 
 
