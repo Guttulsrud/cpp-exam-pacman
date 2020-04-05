@@ -41,6 +41,15 @@ void Game::init(const char *title, int xPos, int yPos, int width, int height, bo
     addMovableGameObject(std::make_shared<Ghost>(
             TextureManager::loadTexture("../resources/img/ghosts/green_ghost_E1.png"),
             60, 60, 0, 2));
+
+
+//    addGameObject(std::make_shared<Ghost>(
+//            TextureManager::loadTexture("../resources/img/ghosts/green_ghost_E1.png"),
+//            60, 60, 0, 2));
+//
+
+
+
     addMovableGameObject(std::make_shared<Ghost>(
             TextureManager::loadTexture("../resources/img/ghosts/orange_ghost_E1.png"),
             120, 60, 0, 2));
@@ -122,6 +131,11 @@ void Game::addMap(const std::shared_ptr<Map> &m) {
 }
 
 void Game::addGameObject(std::shared_ptr<GameObject> const &object) {
+//    if(dynamic_cast<Ghost *>(object.get())) {
+//        addMovableGameObject();
+//
+//    };
+
     getGameObjects().emplace_back(object);
 }
 
@@ -161,4 +175,5 @@ std::vector<std::shared_ptr<StationaryObject>> &Game::getStationaryGameObjects()
 void Game::addStationaryGameObject(const std::shared_ptr<StationaryObject> &object) {
     getStationaryGameObjects().emplace_back(object);
 }
+
 

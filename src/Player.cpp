@@ -56,17 +56,28 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
     bool didNotCollideWithWall = true;
 
 
+    // Check for collision with moving game objects
+    for (auto &movable : Game::getMovableGameObjects()) {
+        if (SDL_HasIntersection(&possiblePosition, &movable->m_positionRectangle) && movable->getType() == GHOST) {
+            std::cout << "OH no, PACMAN be dead" << std::endl;
+
+        }
+    }
+
+
+    // Check for collision with stationary game objects
     for (auto &stationary : Game::getStationaryGameObjects()) {
 
         if (SDL_HasIntersection(&possiblePosition, &stationary->m_positionRectangle)) {
             if (stationary->getType() == WALL) {
                 didNotCollideWithWall = false;
-            } else if (stationary->getType() == GHOST) {
-                std::cout << "OH no, PACMAN be dead" << std::endl;
-                //PACMAN IS DEAD
-            } else if (stationary->getType() == PELLET) {
+            }
+
+            if (stationary->getType() == PELLET) {
                 if (dynamic_cast<Pellet *>(stationary.get())->m_isPowerPellet) {
-                    ///TODO: Trenger bare loope igjennom ghost
+                    //TODO: Trenger bare loope igjennom ghost
+
+                    //TODO:  Denne bør være en egen funksjon, eventuelt bruke loopen over og sjekke power state et annet sted?
                     for (auto &o : Game::getMovableGameObjects()) {
                         if (o->getType() == GHOST) {
                             dynamic_cast<Ghost *>(o.get())->switchedToPowerPelletState = true;
