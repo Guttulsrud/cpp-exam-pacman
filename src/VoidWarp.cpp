@@ -5,7 +5,7 @@ void VoidWarp::update() {
 
 
     //Player or ghost collides with VoidWarp
-    for (auto &object : Game::getGameObjects()) {
+    for (auto &object : Game::getMovableGameObjects()) {
         if (object->getType() == PLAYER || object->getType() == GHOST) {
             if (SDL_HasIntersection(&object->m_positionRectangle, &m_positionRectangle)) {
                 if (m_side == 1) {

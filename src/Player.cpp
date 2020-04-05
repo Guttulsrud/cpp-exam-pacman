@@ -56,24 +56,24 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
     bool didNotCollideWithWall = true;
 
 
-    for (auto &object : Game::getGameObjects()) {
+    for (auto &stationary : Game::getStationaryGameObjects()) {
 
-        if (SDL_HasIntersection(&possiblePosition, &object->m_positionRectangle)) {
-            if (object->getType() == WALL) {
+        if (SDL_HasIntersection(&possiblePosition, &stationary->m_positionRectangle)) {
+            if (stationary->getType() == WALL) {
                 didNotCollideWithWall = false;
-            } else if (object->getType() == GHOST) {
+            } else if (stationary->getType() == GHOST) {
                 std::cout << "OH no, PACMAN be dead" << std::endl;
                 //PACMAN IS DEAD
-            } else if (object->getType() == PELLET) {
-                if (dynamic_cast<Pellet *>(object.get())->m_isPowerPellet) {
+            } else if (stationary->getType() == PELLET) {
+                if (dynamic_cast<Pellet *>(stationary.get())->m_isPowerPellet) {
                     ///TODO: Trenger bare loope igjennom ghost
-                    for (auto &object : Game::getGameObjects()) {
-                        if (object->getType() == GHOST) {
-                            dynamic_cast<Ghost *>(object.get())->switchedToPowerPelletState = true;
+                    for (auto &o : Game::getMovableGameObjects()) {
+                        if (o->getType() == GHOST) {
+                            dynamic_cast<Ghost *>(o.get())->switchedToPowerPelletState = true;
                         }
                     }
                 }
-                dynamic_cast<Pellet *>(object.get())->eaten = true;
+                dynamic_cast<Pellet *>(stationary.get())->eaten = true;
                 points++;
             }
         }

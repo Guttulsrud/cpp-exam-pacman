@@ -47,7 +47,7 @@ void Ghost::update() {
     //Finds valid move direction
     for (auto &directionPosition : directions) {
         bool didNotCollideWithWall = true;
-        for (auto &object : Game::getGameObjects()) {
+        for (auto &object : Game::getStationaryGameObjects()) {
             if (object->getType() == WALL) {
                 if (SDL_HasIntersection(&directionPosition.second, &object->m_positionRectangle)) {
                     didNotCollideWithWall = false;
@@ -102,7 +102,7 @@ Direction Ghost::getDirectionToPlayer(const std::map<Direction, SDL_Rect> &possi
     float longestLength = 0.0f;
 
 
-    auto playerPosition = Game::getPlayer().get()->m_positionRectangle;
+    auto playerPosition = Game::getPlayer()->m_positionRectangle;
     for (auto &directionPosition : possibleDirections) {
         int xLen = abs(playerPosition.x - directionPosition.second.x);
         int yLen = abs(playerPosition.y - directionPosition.second.y);

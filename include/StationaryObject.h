@@ -9,13 +9,14 @@
 #include "GameObject.h"
 
 class StationaryObject : public GameObject{
-    TYPE getType() override;
-    TYPE m_type;
+
 public:
     StationaryObject( TYPE t, int id, int x, int y, SDL_Texture * texturePtr, int h = 30, int w = 30) : GameObject(w, h, x, y, id, texturePtr){
 
         m_type = t;
     }
+    TYPE getType() override;
+    TYPE m_type;
 };
 
 

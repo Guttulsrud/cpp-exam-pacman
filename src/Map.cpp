@@ -148,7 +148,7 @@ void Map::createWallWithTexture(int map[32][29], int row, int column) {
         } else {
             tileTexture = fill;
         }
-        Game::addGameObject(
+        Game::addStationaryGameObject(
                 std::make_shared<StationaryObject>(WALL, 0, column * tileLength + tileLength,
                                                    row * tileLength + tileLength, tileTexture));
 
@@ -175,7 +175,7 @@ void Map::createWallWithTexture(int map[32][29], int row, int column) {
                 tileTexture = insideCornerNE;
             }
         }
-        Game::addGameObject(
+        Game::addStationaryGameObject(
                 std::make_shared<StationaryObject>(HALLWAY, 0, column * tileLength + tileLength,
                                           row * tileLength + tileLength, tileTexture));
     }
@@ -194,20 +194,20 @@ void Map::loadLevelMap(int array[32][29]) {
             idIncrementer++;
             switch (tileType) {
                 case 3:
-                    Game::addGameObject(std::make_shared<Pellet>(pelletLarge, row * tileLength + 30,
+                    Game::addStationaryGameObject(std::make_shared<Pellet>(pelletLarge, row * tileLength + 30,
                                                                  column * tileLength + 30, idIncrementer,  15 ,15, true ));
                     break;
                 case 4:
-                    Game::addGameObject(std::make_shared<Pellet>(pelletLarge, row * tileLength + 30,
+                    Game::addStationaryGameObject(std::make_shared<Pellet>(pelletLarge, row * tileLength + 30,
                                                                  column * tileLength + 30, idIncrementer,  15 ,15, true ));
                     break;
                 case 5:
-                    Game::addGameObject(std::make_shared<Pellet>(pelletLarge, row * tileLength + 30,
+                    Game::addStationaryGameObject(std::make_shared<Pellet>(pelletLarge, row * tileLength + 30,
                                                                  column * tileLength + 30, idIncrementer,  15 ,15, true ));
                     break;
 
                 case 2:
-                    Game::addGameObject(
+                    Game::addStationaryGameObject(
                             std::make_shared<Pellet>(pellet, row * tileLength + 30, column * tileLength + 30,
                                                      idIncrementer, 5, 5 ));
                 default:
