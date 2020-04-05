@@ -2,14 +2,14 @@
 #define EXAM_GHOST_H
 
 #include "GameObject.h"
-#include "Movable.h"
+#include "MovableObject.h"
 #include <map>
 
-class Ghost : public Movable {
+class Ghost : public MovableObject {
 public:
-    Ghost(SDL_Texture *texturePtr, int w, int h, int x, int y, int id, int movementSpeed) : Movable(texturePtr, w, h, x,
-                                                                                                    y, id,
-                                                                                                    movementSpeed) {}
+    Ghost(SDL_Texture *texturePtr, int w, int h, int x, int y, int id, int movementSpeed) : MovableObject(texturePtr, w, h, x,
+                                                                                                          y, id,
+                                                                                                          movementSpeed) {}
 
     int difficulty = 4;
     Direction direction = RIGHT;

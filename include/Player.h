@@ -2,11 +2,11 @@
 #define EXAM_PLAYER_H
 
 #include "GameObject.h"
-#include "Movable.h"
+#include "MovableObject.h"
 
-class Player : public Movable {
+class Player : public MovableObject {
 public:
-    Player(SDL_Texture * texturePtr, int w, int h, int x, int y, int id, int movementSpeed) : Movable(texturePtr, w, h, x, y, id, movementSpeed){
+    Player(SDL_Texture * texturePtr, int w, int h, int x, int y, int id, int movementSpeed) : MovableObject(texturePtr, w, h, x, y, id, movementSpeed){
         base = TextureManager::loadTexture("../resources/img/pacman/base.png");
         mediumOpenRight = TextureManager::loadTexture("../resources/img/pacman/medium-open-right.png");
         mediumOpenLeft = TextureManager::loadTexture("../resources/img/pacman/medium-open-left.png");
