@@ -12,6 +12,7 @@ int main(int argc, char *argv[]) {
     Uint32 frameTime;
 
     Game game = Game::getInstance();
+
     game.init("pacman", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 930, 1020, false);
 
 

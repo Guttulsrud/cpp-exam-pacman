@@ -101,7 +101,11 @@ Direction Ghost::getDirectionToPlayer(const std::map<Direction, SDL_Rect> &possi
     float shortestLength = 1000.0f;
     float longestLength = 0.0f;
 
-    auto playerPosition = Game::getGameObjects()[0]->m_positionRectangle;
+    auto test1 = Game::getPlayer();
+    auto test2 = Game::getGameObjects()[0];
+
+
+    auto &playerPosition = Game::getPlayer()->m_positionRectangle;
     for (auto &directionPosition : possibleDirections) {
         int xLen = abs(playerPosition.x - directionPosition.second.x);
         int yLen = abs(playerPosition.y - directionPosition.second.y);

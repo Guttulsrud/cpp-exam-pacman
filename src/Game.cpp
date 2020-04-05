@@ -34,9 +34,9 @@ void Game::init(const char *title, int xPos, int yPos, int width, int height, bo
         isRunning = true;
     }
 
-    addGameObject(std::make_shared<Player>(
-            TextureManager::loadTexture("../resources/img/pacman/base.png"),
-            60, 60, 120, 60, 0, 3));
+    m_player = std::make_shared<Player>(TextureManager::loadTexture("../resources/img/pacman/base.png"),
+                                        60, 60, 120, 60, 0, 3);
+
 
     ///TODO: Draw with map class
     addGameObject(std::make_shared<Ghost>(
@@ -79,26 +79,27 @@ void Game::update() {
     frameCount++;
     std::vector<std::shared_ptr<GameObject>> &objects = Game::getGameObjects();
 
-    auto *player = dynamic_cast<Player *>(objects[0].get());
-
     if (frameCount > 5) {
-        player->texture = player->base;
+        m_player->texture = m_player->base;
     }
     if (frameCount > 10) {
-        player->setPlayerAnimationDirectionMedium();
+        m_player->setPlayerAnimationDirectionMedium();
     }
     if (frameCount > 15) {
-        player->setPlayerAnimationDirectionLarge();
+        m_player->setPlayerAnimationDirectionLarge();
     }
     if (frameCount > 20) {
-        player->setPlayerAnimationDirectionMedium();
+        m_player->setPlayerAnimationDirectionMedium();
         frameCount = 0;
     }
 
 
     for (auto &gameObject : objects) {
-        gameObject->update();
+        if (gameObject.get()->getType() != GHOST) {
+            gameObject->update();
+        }
     }
+    m_player->update();
 
     removeGameObjects(objects);
 
@@ -112,6 +113,7 @@ void Game::render() {
     for (auto &gameObject : Game::getGameObjects()) {
         gameObject->render();
     }
+    m_player->render();
 
 
     SDL_RenderPresent(renderer);
@@ -144,4 +146,8 @@ std::vector<std::shared_ptr<GameObject>> &Game::getGameObjects() {
 
 Game::~Game() {
 
+}
+
+std::shared_ptr<Player> &Game::getPlayer() {
+    return getInstance().m_player;
 }

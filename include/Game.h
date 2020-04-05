@@ -5,10 +5,10 @@
 #include <vector>
 #include "Map.h"
 #include "GameObject.h"
+#include "Player.h"
 #include <memory>
 #include <iostream>
 #include <algorithm>
-
 
 
 class Game {
@@ -41,6 +41,8 @@ public:
 
     static std::vector<std::shared_ptr<Map>> &getMaps();
 
+    static std::shared_ptr<Player> &getPlayer();
+
     static void addGameObject(const std::shared_ptr<GameObject> &object);
 
     static void addMap(const std::shared_ptr<Map> &map);
@@ -48,9 +50,12 @@ public:
 
 private:
     Game() = default;
+
     bool isRunning;
     SDL_Window *window;
     int frameCount = 0;
+    std::shared_ptr<Player> m_player;
+
 };
 
 #endif

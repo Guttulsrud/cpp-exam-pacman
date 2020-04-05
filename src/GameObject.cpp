@@ -13,7 +13,6 @@ GameObject::GameObject(SDL_Texture *texturePtr, int w, int h, int x, int y, int 
     m_sourceRectangle.h = 1600;
     m_sourceRectangle.w = 1600 ;
     m_id = id;
-
 }
 
 void GameObject::update() {

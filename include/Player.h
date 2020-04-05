@@ -2,11 +2,11 @@
 #define EXAM_PLAYER_H
 
 #include "GameObject.h"
+#include "Movable.h"
 
-class Player : public GameObject {
+class Player : public Movable {
 public:
-    Player(SDL_Texture * texturePtr, int w, int h, int x, int y, int id, int movementSpeed) : GameObject(texturePtr, w, h, x, y, id){
-        m_movementSpeed = movementSpeed;
+    Player(SDL_Texture * texturePtr, int w, int h, int x, int y, int id, int movementSpeed) : Movable(texturePtr, w, h, x, y, id, movementSpeed){
         base = TextureManager::loadTexture("../resources/img/pacman/base.png");
         mediumOpenRight = TextureManager::loadTexture("../resources/img/pacman/medium-open-right.png");
         mediumOpenLeft = TextureManager::loadTexture("../resources/img/pacman/medium-open-left.png");
@@ -38,7 +38,6 @@ public:
     void setPlayerAnimationDirectionMedium();
 
 private:
-    int m_movementSpeed;
     SDL_Point movementChange;
 
     bool positionIsValid(SDL_Rect &possiblePosition);
