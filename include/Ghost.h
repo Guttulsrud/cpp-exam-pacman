@@ -18,7 +18,7 @@ public:
     bool powerPelletState = false;
     bool switchedToPowerPelletState = false;
 
-    void update();
+    void update() override;
 
     TYPE getType() override;
 

@@ -11,6 +11,7 @@ public:
         m_texture = texturePtr;
     }
     SDL_Texture * m_texture;
+    virtual void update() = 0;
 protected:
     int m_movementSpeed;
 };

@@ -18,7 +18,7 @@ public:
         largeOpenDown = TextureManager::loadTexture("../resources/img/pacman/large-open-down.png");
     }
 
-    void update();
+    void update() override ;
     TYPE getType() override;
     Direction direction;
 

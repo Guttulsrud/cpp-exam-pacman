@@ -12,7 +12,8 @@ class StationaryObject : public GameObject{
     TYPE getType() override;
     TYPE m_type;
 public:
-    StationaryObject(SDL_Texture * texturePtr, int x, int y, int id, TYPE t) : GameObject(30, 30, x, y, id, texturePtr){
+    StationaryObject( TYPE t, int id, int x, int y, SDL_Texture * texturePtr, int h = 30, int w = 30) : GameObject(w, h, x, y, id, texturePtr){
+
         m_type = t;
     }
 };

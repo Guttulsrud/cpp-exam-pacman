@@ -83,7 +83,6 @@ void Map::createWallWithTexture(int map[32][29], int row, int column) {
 ///TODO: Player needs to be rendered last so that its in front
     int wall = 1;
 
-
     int westTile = map[row][column - 1] == wall ? wall : 0;
     int eastTile = map[row][column + 1] == wall ? wall : 0;
     int northTile = map[row - 1][column] == wall ? wall : 0;
@@ -150,8 +149,8 @@ void Map::createWallWithTexture(int map[32][29], int row, int column) {
             tileTexture = fill;
         }
         Game::addGameObject(
-                std::make_shared<StationaryObject>(tileTexture, column * tileLength + tileLength,
-                                             row * tileLength + tileLength, 0, WALL));
+                std::make_shared<StationaryObject>(WALL, 0, column * tileLength + tileLength,
+                                                   row * tileLength + tileLength, tileTexture));
 
 
     }
@@ -177,8 +176,8 @@ void Map::createWallWithTexture(int map[32][29], int row, int column) {
             }
         }
         Game::addGameObject(
-                std::make_shared<StationaryObject>(tileTexture, column * tileLength + tileLength,
-                                          row * tileLength + tileLength, 0, HALLWAY));
+                std::make_shared<StationaryObject>(HALLWAY, 0, column * tileLength + tileLength,
+                                          row * tileLength + tileLength, tileTexture));
     }
 }
 
@@ -196,21 +195,21 @@ void Map::loadLevelMap(int array[32][29]) {
             switch (tileType) {
                 case 3:
                     Game::addGameObject(std::make_shared<Pellet>(pelletLarge, row * tileLength + 30,
-                                                                 column * tileLength + 30, idIncrementer, true));
+                                                                 column * tileLength + 30, idIncrementer,  15 ,15, true ));
                     break;
                 case 4:
                     Game::addGameObject(std::make_shared<Pellet>(pelletLarge, row * tileLength + 30,
-                                                                 column * tileLength + 30, idIncrementer, true));
+                                                                 column * tileLength + 30, idIncrementer,  15 ,15, true ));
                     break;
                 case 5:
                     Game::addGameObject(std::make_shared<Pellet>(pelletLarge, row * tileLength + 30,
-                                                                 column * tileLength + 30, idIncrementer, true));
+                                                                 column * tileLength + 30, idIncrementer,  15 ,15, true ));
                     break;
 
                 case 2:
                     Game::addGameObject(
                             std::make_shared<Pellet>(pellet, row * tileLength + 30, column * tileLength + 30,
-                                                     idIncrementer));
+                                                     idIncrementer, 5, 5 ));
                 default:
                     createWallWithTexture(array, column, row);
                     //todo: Consider different approach to large pellet positions. Will be different on other maps

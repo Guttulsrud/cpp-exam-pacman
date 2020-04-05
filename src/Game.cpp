@@ -38,23 +38,23 @@ void Game::init(const char *title, int xPos, int yPos, int width, int height, bo
     setPlayer(std::make_shared<Player>(TextureManager::loadTexture("../resources/img/pacman/base.png"),
                                        120, 60, 0, 3));
     ///TODO: Draw with map class
-    addGameObject(std::make_shared<Ghost>(
+    addMovableGameObject(std::make_shared<Ghost>(
             TextureManager::loadTexture("../resources/img/ghosts/green_ghost_E1.png"),
             60, 60, 0, 2));
-    addGameObject(std::make_shared<Ghost>(
+    addMovableGameObject(std::make_shared<Ghost>(
             TextureManager::loadTexture("../resources/img/ghosts/orange_ghost_E1.png"),
             120, 60, 0, 2));
-    addGameObject(std::make_shared<Ghost>(
+    addMovableGameObject(std::make_shared<Ghost>(
             TextureManager::loadTexture("../resources/img/ghosts/red_ghost_E1.png"),
             180, 60, 0, 2));
-    addGameObject(std::make_shared<Ghost>(
+    addMovableGameObject(std::make_shared<Ghost>(
             TextureManager::loadTexture("../resources/img/ghosts/purple_ghost_E1.png"),
             240, 60, 0, 2));
 
-    addGameObject(
+    addMovableGameObject(
             std::make_shared<VoidWarp>(TextureManager::loadTexture("../resources/img/red.jpg"), 60, 60, -80, 450, 2,
                                        0));
-    addGameObject(
+    addMovableGameObject(
             std::make_shared<VoidWarp>(TextureManager::loadTexture("../resources/img/red.jpg"), 60, 60, 950, 450, 2,
                                        1));
 
@@ -63,7 +63,7 @@ void Game::init(const char *title, int xPos, int yPos, int width, int height, bo
 }
 
 
-void removeGameObjects(std::vector<std::shared_ptr<GameObject>> &objects) {
+void removeEatenPellets(std::vector<std::shared_ptr<GameObject>> &objects) {
 
     objects.erase(
             std::remove_if(objects.begin(), objects.end(),
@@ -76,7 +76,7 @@ void removeGameObjects(std::vector<std::shared_ptr<GameObject>> &objects) {
 
 void Game::update() {
     frameCount++;
-    std::vector<std::shared_ptr<GameObject>> &objects = Game::getGameObjects();
+    std::vector<std::shared_ptr<MovableObject>> &movables = Game::getMovableGameObjects();
     std::shared_ptr<Player> &player = Game::getPlayer();
 
     if (frameCount > 5) {
@@ -94,12 +94,12 @@ void Game::update() {
     }
 
 
-//    for (auto &gameObject : objects) {
-//        gameObject->update();
-//    }
+    for (auto &movableGameObject : movables) {
+        movableGameObject->update();
+    }
     player->update();
 
-    removeGameObjects(objects);
+    removeEatenPellets(Game::getGameObjects());
 
 
 }
@@ -111,7 +111,11 @@ void Game::render() {
     for (auto &gameObject : Game::getGameObjects()) {
         gameObject->render();
     }
+    for (auto &movableGameObject : Game::getMovableGameObjects()) {
+        movableGameObject->render();
+    }
 
+    Game::getPlayer()->render();
 
     SDL_RenderPresent(renderer);
 }
@@ -151,4 +155,13 @@ Game::~Game() {
 
 std::shared_ptr<Player> &Game::getPlayer() {
     return getInstance().m_player;
+}
+
+std::vector<std::shared_ptr<MovableObject>> &Game::getMovableGameObjects() {
+    return getInstance().movableGameObjects;
+}
+
+void Game::addMovableGameObject(const std::shared_ptr<MovableObject> &object) {
+    getMovableGameObjects().emplace_back(object);
+
 }
