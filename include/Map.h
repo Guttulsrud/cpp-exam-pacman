@@ -12,11 +12,14 @@ public:
     ~Map();
 
     void loadLevelMap(int array[32][29]);
-
-
 private:
     void createWallWithTexture(int map[32][29], int row, int column);
     int tileLength = 30;
+public:
+    int getTileLength() const;
+
+private:
+
 
     SDL_Texture *fill;
     SDL_Texture *round;

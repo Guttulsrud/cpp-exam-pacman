@@ -7,9 +7,8 @@
 #include "../include/Map.h"
 #include "../include/Game.h"
 #include "../include/TextureManager.h"
-#include "../include/WallEntity.h"
-#include "../include/Hallway.h"
 #include "../include/Pellet.h"
+#include "../include/StationaryObject.h"
 
 
 int levelOne[32][29] = {
@@ -151,8 +150,8 @@ void Map::createWallWithTexture(int map[32][29], int row, int column) {
             tileTexture = fill;
         }
         Game::addGameObject(
-                std::make_shared<WallEntity>(tileTexture, tileLength, tileLength, column * tileLength + tileLength,
-                                             row * tileLength + 30, 0));
+                std::make_shared<StationaryObject>(tileTexture, column * tileLength + tileLength,
+                                             row * tileLength + tileLength, 0, WALL));
 
 
     }
@@ -178,8 +177,8 @@ void Map::createWallWithTexture(int map[32][29], int row, int column) {
             }
         }
         Game::addGameObject(
-                std::make_shared<Hallway>(tileTexture, tileLength, tileLength, column * tileLength + tileLength,
-                                          row * tileLength + tileLength, 0));
+                std::make_shared<StationaryObject>(tileTexture, column * tileLength + tileLength,
+                                          row * tileLength + tileLength, 0, HALLWAY));
     }
 }
 
@@ -196,21 +195,21 @@ void Map::loadLevelMap(int array[32][29]) {
             idIncrementer++;
             switch (tileType) {
                 case 3:
-                    Game::addGameObject(std::make_shared<Pellet>(pelletLarge, 15, 15, row * tileLength + 30,
+                    Game::addGameObject(std::make_shared<Pellet>(pelletLarge, row * tileLength + 30,
                                                                  column * tileLength + 30, idIncrementer, true));
                     break;
                 case 4:
-                    Game::addGameObject(std::make_shared<Pellet>(pelletLarge, 15, 15, row * tileLength + 30,
+                    Game::addGameObject(std::make_shared<Pellet>(pelletLarge, row * tileLength + 30,
                                                                  column * tileLength + 30, idIncrementer, true));
                     break;
                 case 5:
-                    Game::addGameObject(std::make_shared<Pellet>(pelletLarge, 15, 15, row * tileLength + 30,
+                    Game::addGameObject(std::make_shared<Pellet>(pelletLarge, row * tileLength + 30,
                                                                  column * tileLength + 30, idIncrementer, true));
                     break;
 
                 case 2:
                     Game::addGameObject(
-                            std::make_shared<Pellet>(pellet, 5, 5, row * tileLength + 30, column * tileLength + 30,
+                            std::make_shared<Pellet>(pellet, row * tileLength + 30, column * tileLength + 30,
                                                      idIncrementer));
                 default:
                     createWallWithTexture(array, column, row);
@@ -223,4 +222,8 @@ void Map::loadLevelMap(int array[32][29]) {
 
 Map::~Map() {
 
+}
+
+int Map::getTileLength() const {
+    return tileLength;
 }

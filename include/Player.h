@@ -6,7 +6,7 @@
 
 class Player : public MovableObject {
 public:
-    Player(SDL_Texture * texturePtr, int w, int h, int x, int y, int id, int movementSpeed) : MovableObject(texturePtr, w, h, x, y, id, movementSpeed){
+    Player(SDL_Texture * texturePtr, int x, int y, int id, int movementSpeed) : MovableObject(texturePtr, x, y, id, movementSpeed){
         base = TextureManager::loadTexture("../resources/img/pacman/base.png");
         mediumOpenRight = TextureManager::loadTexture("../resources/img/pacman/medium-open-right.png");
         mediumOpenLeft = TextureManager::loadTexture("../resources/img/pacman/medium-open-left.png");
@@ -18,7 +18,7 @@ public:
         largeOpenDown = TextureManager::loadTexture("../resources/img/pacman/large-open-down.png");
     }
 
-    void update() override;
+    void update();
     TYPE getType() override;
     Direction direction;
 

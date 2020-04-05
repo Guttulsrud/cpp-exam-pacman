@@ -3,3 +3,7 @@
 //
 
 #include "../include/StationaryObject.h"
+
+TYPE StationaryObject::getType() {
+    return m_type;
+}

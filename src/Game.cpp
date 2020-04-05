@@ -36,20 +36,20 @@ void Game::init(const char *title, int xPos, int yPos, int width, int height, bo
 
 
     setPlayer(std::make_shared<Player>(TextureManager::loadTexture("../resources/img/pacman/base.png"),
-                                       60, 60, 120, 60, 0, 3));
+                                       120, 60, 0, 3));
     ///TODO: Draw with map class
     addGameObject(std::make_shared<Ghost>(
             TextureManager::loadTexture("../resources/img/ghosts/green_ghost_E1.png"),
-            60, 60, 60, 60, 0, 2));
+            60, 60, 0, 2));
     addGameObject(std::make_shared<Ghost>(
             TextureManager::loadTexture("../resources/img/ghosts/orange_ghost_E1.png"),
-            60, 60, 120, 60, 0, 2));
+            120, 60, 0, 2));
     addGameObject(std::make_shared<Ghost>(
             TextureManager::loadTexture("../resources/img/ghosts/red_ghost_E1.png"),
-            60, 60, 180, 60, 0, 2));
+            180, 60, 0, 2));
     addGameObject(std::make_shared<Ghost>(
             TextureManager::loadTexture("../resources/img/ghosts/purple_ghost_E1.png"),
-            60, 60, 240, 60, 0, 2));
+            240, 60, 0, 2));
 
     addGameObject(
             std::make_shared<VoidWarp>(TextureManager::loadTexture("../resources/img/red.jpg"), 60, 60, -80, 450, 2,
@@ -80,7 +80,7 @@ void Game::update() {
     std::shared_ptr<Player> &player = Game::getPlayer();
 
     if (frameCount > 5) {
-        player->texture = player->base;
+        player->m_texture = player->base;
     }
     if (frameCount > 10) {
         player->setPlayerAnimationDirectionMedium();
@@ -94,9 +94,9 @@ void Game::update() {
     }
 
 
-    for (auto &gameObject : objects) {
-        gameObject->update();
-    }
+//    for (auto &gameObject : objects) {
+//        gameObject->update();
+//    }
     player->update();
 
     removeGameObjects(objects);
@@ -111,7 +111,6 @@ void Game::render() {
     for (auto &gameObject : Game::getGameObjects()) {
         gameObject->render();
     }
-    Game::getPlayer()->render();
 
 
     SDL_RenderPresent(renderer);

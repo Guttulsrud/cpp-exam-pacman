@@ -6,11 +6,11 @@
 
 class MovableObject : public GameObject {
 public:
-    MovableObject(SDL_Texture * texturePtr, int w, int h, int x, int y, int id, int movementSpeed) : GameObject(texturePtr, w, h, x, y, id){
+    MovableObject(SDL_Texture * texturePtr, int x, int y, int id, int movementSpeed) : GameObject(60, 60, x, y, id, texturePtr){
         m_movementSpeed = movementSpeed;
-
+        m_texture = texturePtr;
     }
-
+    SDL_Texture * m_texture;
 protected:
     int m_movementSpeed;
 };

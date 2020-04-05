@@ -7,9 +7,9 @@
 
 class Ghost : public MovableObject {
 public:
-    Ghost(SDL_Texture *texturePtr, int w, int h, int x, int y, int id, int movementSpeed) : MovableObject(texturePtr, w, h, x,
-                                                                                                          y, id,
-                                                                                                          movementSpeed) {}
+    Ghost(SDL_Texture *texturePtr, int x, int y, int id, int movementSpeed) : MovableObject(texturePtr, x,
+                                                                                            y, id,
+                                                                                            movementSpeed) {}
 
     int difficulty = 4;
     Direction direction = RIGHT;
@@ -18,7 +18,7 @@ public:
     bool powerPelletState = false;
     bool switchedToPowerPelletState = false;
 
-    void update() override;
+    void update();
 
     TYPE getType() override;
 

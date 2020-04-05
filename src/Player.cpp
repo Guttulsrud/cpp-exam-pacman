@@ -88,16 +88,16 @@ TYPE Player::getType() {
 void Player::setPlayerAnimationDirectionLarge() {
     switch (direction) {
         case UP:
-            texture = largeOpenUp;
+            m_texture = largeOpenUp;
             break;
         case DOWN:
-            texture = largeOpenDown;
+            m_texture = largeOpenDown;
             break;
         case LEFT:
-            texture = largeOpenLeft;
+            m_texture = largeOpenLeft;
             break;
         case RIGHT:
-            texture = largeOpenRight;
+            m_texture = largeOpenRight;
             break;
     }
 }
@@ -105,16 +105,16 @@ void Player::setPlayerAnimationDirectionLarge() {
 void Player::setPlayerAnimationDirectionMedium() {
     switch (direction) {
         case UP:
-            texture = mediumOpenUp;
+            m_texture = mediumOpenUp;
             break;
         case DOWN:
-            texture = mediumOpenDown;
+            m_texture = mediumOpenDown;
             break;
         case LEFT:
-            texture = mediumOpenLeft;
+            m_texture = mediumOpenLeft;
             break;
         case RIGHT:
-            texture = mediumOpenRight;
+            m_texture = mediumOpenRight;
             break;
     }
 }
