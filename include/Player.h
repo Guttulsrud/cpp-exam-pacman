@@ -33,9 +33,7 @@ public:
     SDL_Texture * largeOpenDown;
     int points;
 
-
-    void setPlayerAnimationDirectionLarge();
-    void setPlayerAnimationDirectionMedium();
+    void handleAnimations();
 
 private:
     SDL_Point movementChange;

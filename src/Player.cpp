@@ -8,6 +8,7 @@
 
 
 void Player::update() {
+    framesSinceTextureChange++;
     SDL_Rect possiblePosition = m_positionRectangle;
 
     SDL_Point possibleMovementChange = movementChange;
@@ -84,38 +85,6 @@ TYPE Player::getType() {
     return PLAYER;
 }
 
+void Player::handleAnimations() {
 
-void Player::setPlayerAnimationDirectionLarge() {
-    switch (direction) {
-        case UP:
-            m_texture = largeOpenUp;
-            break;
-        case DOWN:
-            m_texture = largeOpenDown;
-            break;
-        case LEFT:
-            m_texture = largeOpenLeft;
-            break;
-        case RIGHT:
-            m_texture = largeOpenRight;
-            break;
-    }
 }
-
-void Player::setPlayerAnimationDirectionMedium() {
-    switch (direction) {
-        case UP:
-            m_texture = mediumOpenUp;
-            break;
-        case DOWN:
-            m_texture = mediumOpenDown;
-            break;
-        case LEFT:
-            m_texture = mediumOpenLeft;
-            break;
-        case RIGHT:
-            m_texture = mediumOpenRight;
-            break;
-    }
-}
-

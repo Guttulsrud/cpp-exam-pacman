@@ -75,24 +75,8 @@ void removeEatenPellets(std::vector<std::shared_ptr<GameObject>> &objects) {
 
 
 void Game::update() {
-    frameCount++;
     std::vector<std::shared_ptr<MovableObject>> &movables = Game::getMovableGameObjects();
     std::shared_ptr<Player> &player = Game::getPlayer();
-
-    if (frameCount > 5) {
-        player->m_texture = player->base;
-    }
-    if (frameCount > 10) {
-        player->setPlayerAnimationDirectionMedium();
-    }
-    if (frameCount > 15) {
-        player->setPlayerAnimationDirectionLarge();
-    }
-    if (frameCount > 20) {
-        player->setPlayerAnimationDirectionMedium();
-        frameCount = 0;
-    }
-
 
     for (auto &movableGameObject : movables) {
         movableGameObject->update();
@@ -100,8 +84,6 @@ void Game::update() {
     player->update();
 
     removeEatenPellets(Game::getGameObjects());
-
-
 }
 
 
