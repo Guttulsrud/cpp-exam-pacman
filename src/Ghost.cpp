@@ -92,7 +92,7 @@ void Ghost::update() {
         m_positionRectangle = directions[direction];
         wasAtIntersection = false;
     }
-
+    m_animator.animate(&m_texture, direction);
     prevDirections = possibleDirectionsVector;
 }
 

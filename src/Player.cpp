@@ -35,7 +35,7 @@ void Player::update() {
     if (positionIsValid(possiblePosition)) {
         determineDirection(possiblePosition);
         m_positionRectangle = possiblePosition;
-        m_animator.animate();
+        m_animator.animate(&m_texture, direction);
     } else {
         possiblePosition = m_positionRectangle;
         possibleMovementChange = movementChange;
@@ -45,7 +45,7 @@ void Player::update() {
         if (positionIsValid(possiblePosition)) {
             determineDirection(possiblePosition);
             m_positionRectangle = possiblePosition;
-            m_animator.animate();
+            m_animator.animate(&m_texture, direction);
         }
     }
     movementChange = possibleMovementChange;
