@@ -9,7 +9,7 @@
 SDL_Renderer *Game::renderer = nullptr;
 
 
-void Game::init(const char *title, int xPos, int yPos, int width, int height, bool fullscreen) {
+int Game::init(const char *title, int xPos, int yPos, int width, int height, bool fullscreen) {
 
     Uint32 flags = SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL;
     if (fullscreen) {
@@ -34,8 +34,8 @@ void Game::init(const char *title, int xPos, int yPos, int width, int height, bo
         isRunning = true;
         setGameObjects();
     }
+    return 0;
 }
-
 
 void removeEatenPellets(std::vector<std::shared_ptr<StationaryObject>> &objects) {
 
@@ -86,10 +86,10 @@ void Game::clean() {
     std::cout << "Cleaned.." << std::endl;
 }
 
+
 void Game::addMap(const std::shared_ptr<Map> &m) {
     getMaps().emplace_back(m);
 }
-
 
 void Game::setPlayer(std::shared_ptr<Player> const &object) {
     getInstance().m_player = object;
@@ -97,9 +97,8 @@ void Game::setPlayer(std::shared_ptr<Player> const &object) {
 
 
 std::shared_ptr<Map> &Game::getMap(int levelNumber) {
-    return getMaps()[levelNumber];
+    return getMaps()[levelNumber-1];
 }
-
 
 Game::~Game() {
 
@@ -162,6 +161,10 @@ void Game::setGameObjects() {
                                                                }
                                                        }})
 
+
+//
+    setPlayer(std::make_shared<Player>(TextureManager::loadTexture("../resources/img/pacman/base.png"),
+                                       30 * 15, 30 * 18, 0, 3, kek
     ));
 
 
@@ -298,12 +301,12 @@ void Game::resetRound() {
     std::cout << "Reset round" << std::endl;
     //todo: play death animation here
     getPlayer()->lives--;
-    getPlayer()->m_positionRectangle.x = 30*15;
-    getPlayer()->m_positionRectangle.y = 30*18;
+    getPlayer()->m_positionRectangle.x = 30 * 15;
+    getPlayer()->m_positionRectangle.y = 30 * 18;
     for (auto const &ghost : getMovableGameObjects()) {
-        ghost->m_positionRectangle.x = 30*15;
-        ghost->m_positionRectangle.y = 30*15;
-        dynamic_cast<Ghost*>(ghost.get())->powerPelletState = false;
+        ghost->m_positionRectangle.x = 30 * 15;
+        ghost->m_positionRectangle.y = 30 * 15;
+        dynamic_cast<Ghost *>(ghost.get())->powerPelletState = false;
     }
     SDL_Delay(1500);
 }
@@ -312,7 +315,7 @@ void Game::gameOver() {
     std::cout << "Game over" << std::endl;
 
 
-    getMap(0)->loadLevelMap(getMap(0)->backupArr);
+    getMap(1)->loadLevelMap(getMap(1)->currentMap);
     resetRound();
     getPlayer()->lives = 2;
 
