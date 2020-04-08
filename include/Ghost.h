@@ -17,6 +17,7 @@ public:
     std::vector<Direction> prevDirections;
     bool wasAtIntersection = false;
     bool powerPelletState = false;
+    bool dead = false;
     bool switchedToPowerPelletState = false;
     EntityAnimator m_animator;
 

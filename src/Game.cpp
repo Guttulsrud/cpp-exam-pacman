@@ -295,10 +295,8 @@ void Game::setGameObjects() {
 void Game::resetRound() {
 
     std::cout << "Reset round" << std::endl;
-    //todo: play death animation here
-    getPlayer()->lives--;
-    getPlayer()->m_positionRectangle.x = 30 * 15;
-    getPlayer()->m_positionRectangle.y = 30 * 18;
+    getPlayer()->reset();
+
     for (auto const &ghost : getMovableGameObjects()) {
         ghost->m_positionRectangle.x = 30 * 15;
         ghost->m_positionRectangle.y = 30 * 15;
@@ -310,8 +308,7 @@ void Game::resetRound() {
 void Game::gameOver() {
     std::cout << "Game over" << std::endl;
 
-
-    getMap(1)->loadLevelMap(getMap(1)->currentMap);
+    getMap(1)->redrawPelletsOnMap();
     resetRound();
     getPlayer()->lives = 2;
 

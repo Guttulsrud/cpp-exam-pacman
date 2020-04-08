@@ -52,13 +52,13 @@ void Player::update() {
 }
 
 void Player::determineDirection(const SDL_Rect &possiblePosition) {
-    if(possiblePosition.x > m_positionRectangle.x){
+    if (possiblePosition.x > m_positionRectangle.x) {
         direction = RIGHT;
-    } else if(possiblePosition.x < m_positionRectangle.x){
+    } else if (possiblePosition.x < m_positionRectangle.x) {
         direction = LEFT;
-    } else if(possiblePosition.y < m_positionRectangle.y){
+    } else if (possiblePosition.y < m_positionRectangle.y) {
         direction = UP;
-    } else if(possiblePosition.y > m_positionRectangle.y){
+    } else if (possiblePosition.y > m_positionRectangle.y) {
         direction = DOWN;
     } else {
         direction = NONE;
@@ -72,8 +72,13 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
     // Check for collision with moving game objects
     for (auto &movable : Game::getMovableGameObjects()) {
         if (SDL_HasIntersection(&possiblePosition, &movable->m_positionRectangle) && movable->getType() == GHOST) {
-            lives < 1 ? Game::gameOver() : Game::resetRound();
-            return false;
+            auto ghost = dynamic_cast<Ghost *>(movable.get());
+            if (ghost->powerPelletState) {
+                 ghost->dead = true;
+            } else {
+                lives < 1 ? Game::gameOver() : Game::resetRound();
+                return false;
+            }
         }
     }
 
@@ -107,4 +112,12 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
 
 TYPE Player::getType() {
     return PLAYER;
+}
+
+void Player::reset() {
+
+    //todo: play death animation here
+    lives--;
+    m_positionRectangle.x = 30 * 15;
+    m_positionRectangle.y = 30 * 18;
 }
