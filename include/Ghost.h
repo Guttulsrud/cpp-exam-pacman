@@ -3,13 +3,14 @@
 
 #include "GameObject.h"
 #include "MovableObject.h"
+#include "EntityAnimator.h"
 #include <map>
 
 class Ghost : public MovableObject {
 public:
-    Ghost(SDL_Texture *texturePtr, int x, int y, int id, int movementSpeed) : MovableObject(texturePtr, x,
-                                                                                            y, id,
-                                                                                            movementSpeed) {}
+    Ghost(SDL_Texture *texturePtr, int x, int y, int id, int movementSpeed, EntityAnimator animator) :
+            MovableObject(texturePtr, x, y, id, movementSpeed),
+            m_animator(animator) {}
 
     int difficulty = 4;
     Direction direction = RIGHT;
@@ -17,6 +18,7 @@ public:
     bool wasAtIntersection = false;
     bool powerPelletState = false;
     bool switchedToPowerPelletState = false;
+    EntityAnimator m_animator;
 
     void update() override;
 

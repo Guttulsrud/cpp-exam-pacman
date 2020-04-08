@@ -5,20 +5,20 @@
 #include "../include/EntityAnimator.h"
 #include "../include/Game.h"
 
-void EntityAnimator::animate() {
-    Direction playerDirection = Game::getPlayer()->direction;
-    if(playerDirection == NONE){
+void EntityAnimator::animate(SDL_Texture **entityTexturePtr, Direction direction) {
+
+    if (direction == NONE) {
         Game::getPlayer()->m_texture = textures[UP][0];
-        std::cout << "LEL" << std::endl;
         return;
     }
+    if (frameCount == 10) {
+        animationIndex++;
+        frameCount = 0;
+    }
+    if (animationIndex == textures[direction].size()) {
+        animationIndex = 0;
+    }
 
-    if(frameCount<10) animationIndex = 0;
-    else if(frameCount<20) animationIndex = 1;
-    else if(frameCount<30) animationIndex = 2;
-    else if(frameCount>30) frameCount = 0;
-
-    Game::getPlayer()->m_texture = textures[playerDirection][animationIndex];
-
+    *entityTexturePtr = textures[direction][animationIndex];
     frameCount++;
 }
