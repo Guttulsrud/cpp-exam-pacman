@@ -93,8 +93,11 @@ void Ghost::update() {
         wasAtIntersection = false;
     }
 
+    //todo: Fix animation on below:::
     if (dead) {
-        m_texture = TextureManager::loadTexture("../resources/img/pacman/medium-open-up.png");
+        m_texture = TextureManager::loadTexture("../resources/img/ghosts/ghost_eyes_E.png");
+    } else if (powerPelletState) {
+        m_texture = TextureManager::loadTexture("../resources/img/ghosts/ghost_badTripState_1.png");
     } else {
         m_animator.animate(&m_texture, direction);
     }
