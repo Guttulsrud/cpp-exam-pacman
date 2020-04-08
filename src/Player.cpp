@@ -8,25 +8,27 @@
 
 
 void Player::update() {
+    InputManager IM = InputManager::getInstance();
+
     framesSinceTextureChange++;
     SDL_Rect possiblePosition = m_positionRectangle;
-
     SDL_Point possibleMovementChange = movementChange;
 
-    if (!InputManager::getInstance().KeyStillUp(SDL_SCANCODE_W)) {
+
+    if (!IM.KeyStillUp(SDL_SCANCODE_W) || !IM.KeyStillUp(SDL_SCANCODE_UP)) {
         possibleMovementChange.x = 0;
         possibleMovementChange.y = -m_movementSpeed;
         direction = UP;
-    } else if (!InputManager::getInstance().KeyStillUp(SDL_SCANCODE_A)) {
+    } else if (!IM.KeyStillUp(SDL_SCANCODE_A) || !IM.KeyStillUp(SDL_SCANCODE_LEFT)) {
         possibleMovementChange.x = -m_movementSpeed;
         possibleMovementChange.y = 0;
         direction = LEFT;
 
-    } else if (!InputManager::getInstance().KeyStillUp(SDL_SCANCODE_S)) {
+    } else if (!IM.KeyStillUp(SDL_SCANCODE_S) || !IM.KeyStillUp(SDL_SCANCODE_DOWN)) {
         possibleMovementChange.x = 0;
         possibleMovementChange.y = m_movementSpeed;
         direction = DOWN;
-    } else if (!InputManager::getInstance().KeyStillUp(SDL_SCANCODE_D)) {
+    } else if (!IM.KeyStillUp(SDL_SCANCODE_D) || !IM.KeyStillUp(SDL_SCANCODE_RIGHT)) {
         possibleMovementChange.x = m_movementSpeed;
         possibleMovementChange.y = 0;
         direction = RIGHT;
