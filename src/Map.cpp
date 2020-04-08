@@ -196,9 +196,8 @@ void Map::loadLevelMap(int array[32][29]) {
             switch (tileType) {
                 case 3:
                     Game::addStationaryGameObject(std::make_shared<Pellet>(pelletLarge, row * tileLength + 25,
-                                                                 column * tileLength + 30 , idIncrementer,  15 ,15, true ));
+                            column * tileLength + 30 , idIncrementer,  15 ,15, true ));
                     break;
-
                 case 2:
                     Game::addStationaryGameObject(
                             std::make_shared<Pellet>(pellet, row * tileLength + 30, column * tileLength + 30,
