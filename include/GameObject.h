@@ -11,7 +11,8 @@ enum TYPE{
     WALL,
     PELLET,
     HALLWAY,
-    VOIDWARP
+    VOIDWARP,
+    FRUIT
 };
 enum Direction {
     UP,

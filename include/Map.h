@@ -51,6 +51,7 @@ private:
 
     SDL_Texture *pellet;
     SDL_Texture *pelletLarge;
+    SDL_Texture *fruit;
 };
 
 

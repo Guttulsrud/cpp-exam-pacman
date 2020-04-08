@@ -3,6 +3,7 @@
 #include "../include/Ghost.h"
 #include "../include/VoidWarp.h"
 #include "../include/Pellet.h"
+#include "../include/Fruit.h"
 
 #include <SDL2/SDL.h>
 
@@ -101,7 +102,6 @@ void Game::setPlayer(std::shared_ptr<Player> const &object) {
     getInstance().m_player = object;
 }
 
-
 std::vector<std::shared_ptr<Map>> &Game::getMaps() {
     return getInstance().maps;
 }
@@ -138,6 +138,7 @@ void Game::setUpGameObjects() {
     setPlayer(std::make_shared<Player>(TextureManager::loadTexture("../resources/img/pacman/base.png"),
                                        440, 540, 0, 2));
     //TODO: Draw with map class
+
     addMovableGameObject(std::make_shared<Ghost>(
             TextureManager::loadTexture("../resources/img/ghosts/green_ghost_E1.png"),
             440, 450, 0, 2));
@@ -146,11 +147,12 @@ void Game::setUpGameObjects() {
             TextureManager::loadTexture("../resources/img/ghosts/orange_ghost_E1.png"),
             440, 450, 0, 2));
 
-    addMovableGameObject(std::make_shared<Ghost>(
+    //TODO: Skift tilbake til ghost istedenfor player, ghosts be ghosts
+    addMovableGameObject(std::make_shared<Player>(
             TextureManager::loadTexture("../resources/img/ghosts/red_ghost_E1.png"),
             440, 450, 0, 2));
 
-    addMovableGameObject(std::make_shared<Ghost>(
+    addMovableGameObject(std::make_shared<Player>(
             TextureManager::loadTexture("../resources/img/ghosts/purple_ghost_E1.png"),
             440, 450, 0, 2));
 
