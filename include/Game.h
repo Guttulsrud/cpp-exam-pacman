@@ -36,26 +36,23 @@ public:
     static SDL_Renderer *renderer;
 
     std::shared_ptr<Player> m_player;
-    std::vector<std::shared_ptr<GameObject>> gameObjects;
     std::vector<std::shared_ptr<MovableObject>> movableGameObjects;
     std::vector<std::shared_ptr<StationaryObject>> stationaryGameObjects;
     std::vector<std::shared_ptr<Map>> maps;
 
-    static std::vector<std::shared_ptr<GameObject>> &getGameObjects();
     static std::vector<std::shared_ptr<MovableObject>> &getMovableGameObjects();
     static std::vector<std::shared_ptr<StationaryObject>> &getStationaryGameObjects();
-
     static std::vector<std::shared_ptr<Map>> &getMaps();
-
+    static std::shared_ptr<Map> &getMap(int levelNumber);
     static std::shared_ptr<Player> &getPlayer();
-    static void setPlayer(const std::shared_ptr<Player> &object);
 
-    static void setUpGameObjects();
-    static void addGameObject(const std::shared_ptr<GameObject> &object);
+    static void setPlayer(const std::shared_ptr<Player> &object);
+    static void setGameObjects();
     static void addMovableGameObject(const std::shared_ptr<MovableObject> &object);
     static void addStationaryGameObject(const std::shared_ptr<StationaryObject> &object);
-
     static void addMap(const std::shared_ptr<Map> &map);
+    static void resetRound();
+    static void gameOver();
 
 
 private:

@@ -16,6 +16,7 @@ public:
     Direction direction = UP;
     EntityAnimator m_animator;
     int points;
+    int lives = 2;
 
 private:
     SDL_Point movementChange;

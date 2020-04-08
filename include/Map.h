@@ -11,6 +11,8 @@ public:
 
     ~Map();
 
+    int backupArr[32][29];
+
     void loadLevelMap(int array[32][29]);
 private:
     void createWallWithTexture(int map[32][29], int row, int column);

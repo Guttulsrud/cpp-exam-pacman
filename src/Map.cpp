@@ -184,12 +184,13 @@ void Map::createWallWithTexture(int map[32][29], int row, int column) {
 
 
 void Map::loadLevelMap(int array[32][29]) {
+
     int tileType = 0;
     int idIncrementer = 0;
 
     for (int column = 0; column < 32; column++) {
         for (int row = 0; row < 29; row++) {
-
+            backupArr[column][row] = array[column][row];
 
             tileType = array[column][row];
             idIncrementer++;

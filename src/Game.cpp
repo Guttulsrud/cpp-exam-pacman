@@ -32,7 +32,7 @@ void Game::init(const char *title, int xPos, int yPos, int width, int height, bo
             std::cout << "Renderer created!" << std::endl;
         }
         isRunning = true;
-        setUpGameObjects();
+        setGameObjects();
     }
 }
 
@@ -54,7 +54,7 @@ void Game::update() {
 
     player->update();
 
-    for (auto &m : movables) {
+    for (auto const &m : movables) {
         m->update();
     }
 
@@ -69,10 +69,10 @@ void Game::render() {
     std::vector<std::shared_ptr<StationaryObject>> &stationary = Game::getStationaryGameObjects();
     std::shared_ptr<Player> &player = Game::getPlayer();
 
-    for (auto &m :movables) {
+    for (auto const &m :movables) {
         m->render();
     }
-    for (auto &s : stationary) {
+    for (auto const &s : stationary) {
         s->render();
     }
     player->render();
@@ -90,22 +90,16 @@ void Game::addMap(const std::shared_ptr<Map> &m) {
     getMaps().emplace_back(m);
 }
 
-void Game::addGameObject(std::shared_ptr<GameObject> const &object) {
-    getGameObjects().emplace_back(object);
-}
 
 void Game::setPlayer(std::shared_ptr<Player> const &object) {
     getInstance().m_player = object;
 }
 
 
-std::vector<std::shared_ptr<Map>> &Game::getMaps() {
-    return getInstance().maps;
+std::shared_ptr<Map> &Game::getMap(int levelNumber) {
+    return getMaps()[levelNumber];
 }
 
-std::vector<std::shared_ptr<GameObject>> &Game::getGameObjects() {
-    return getInstance().gameObjects;
-}
 
 Game::~Game() {
 
@@ -131,7 +125,7 @@ void Game::addStationaryGameObject(const std::shared_ptr<StationaryObject> &obje
     getStationaryGameObjects().emplace_back(object);
 }
 
-void Game::setUpGameObjects() {
+void Game::setGameObjects() {
 
     EntityAnimator kek = EntityAnimator({
                                                   {UP,
@@ -203,6 +197,35 @@ void Game::setUpGameObjects() {
     addMap(std::make_shared<Map>());
 
 
+}
+
+void Game::resetRound() {
+
+    std::cout << "Reset round" << std::endl;
+    //todo: play death animation here
+    getPlayer()->lives--;
+    getPlayer()->m_positionRectangle.x = 30*15;
+    getPlayer()->m_positionRectangle.y = 30*18;
+    for (auto const &ghost : getMovableGameObjects()) {
+        ghost->m_positionRectangle.x = 30*15;
+        ghost->m_positionRectangle.y = 30*15;
+        dynamic_cast<Ghost*>(ghost.get())->powerPelletState = false;
+    }
+    SDL_Delay(1500);
+}
+
+void Game::gameOver() {
+    std::cout << "Game over" << std::endl;
+
+
+    getMap(0)->loadLevelMap(getMap(0)->backupArr);
+    resetRound();
+    getPlayer()->lives = 2;
+
+}
+
+std::vector<std::shared_ptr<Map>> &Game::getMaps() {
+    return getInstance().maps;
 }
 
 

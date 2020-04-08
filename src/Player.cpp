@@ -72,8 +72,8 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
     // Check for collision with moving game objects
     for (auto &movable : Game::getMovableGameObjects()) {
         if (SDL_HasIntersection(&possiblePosition, &movable->m_positionRectangle) && movable->getType() == GHOST) {
-            std::cout << "OH no, PACMAN be dead" << std::endl;
-
+            lives < 1 ? Game::gameOver() : Game::resetRound();
+            return false;
         }
     }
 
