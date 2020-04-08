@@ -161,10 +161,6 @@ void Game::setGameObjects() {
                                                                }
                                                        }})
 
-
-//
-    setPlayer(std::make_shared<Player>(TextureManager::loadTexture("../resources/img/pacman/base.png"),
-                                       30 * 15, 30 * 18, 0, 3, kek
     ));
 
 
