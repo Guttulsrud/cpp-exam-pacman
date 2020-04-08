@@ -133,43 +133,41 @@ void Game::addStationaryGameObject(const std::shared_ptr<StationaryObject> &obje
 
 void Game::setUpGameObjects() {
 
-    EntityAnimator kek = EntityAnimator({
-                                                  {UP,
-                                                          {
-                                                                  "../resources/img/pacman/base.png",
-                                                                  "../resources/img/pacman/medium-open-up.png",
-                                                                  "../resources/img/pacman/large-open-up.png"
-                                                          }
-
-                                                  },
-                                                  {DOWN,
-                                                          {
-                                                                  "../resources/img/pacman/base.png",
-                                                                  "../resources/img/pacman/medium-open-down.png",
-                                                                  "../resources/img/pacman/large-open-down.png"
-                                                          }
-                                                  },
-                                                  {LEFT,
-                                                          {
-                                                                  "../resources/img/pacman/base.png",
-                                                                  "../resources/img/pacman/medium-open-left.png",
-                                                                  "../resources/img/pacman/large-open-left.png"
-                                                          }
-                                                  },
-                                                  {RIGHT,
-
-                                                          {
-                                                                  "../resources/img/pacman/base.png",
-                                                                  "../resources/img/pacman/medium-open-right.png",
-                                                                  "../resources/img/pacman/large-open-right.png"
-                                                          }
-
-                                                  }});
-
-
-//
     setPlayer(std::make_shared<Player>(TextureManager::loadTexture("../resources/img/pacman/base.png"),
-                                       30*15, 30*18, 0, 3, kek
+                                       30 * 15, 30 * 18, 0, 3,
+                                       EntityAnimator({{UP,
+                                                               {
+                                                                       "../resources/img/pacman/base.png",
+                                                                       "../resources/img/pacman/medium-open-up.png",
+                                                                       "../resources/img/pacman/large-open-up.png",
+                                                                       "../resources/img/pacman/medium-open-up.png"
+                                                               }
+                                                       },
+                                                       {DOWN,
+                                                               {
+                                                                       "../resources/img/pacman/base.png",
+                                                                       "../resources/img/pacman/medium-open-down.png",
+                                                                       "../resources/img/pacman/large-open-down.png",
+                                                                       "../resources/img/pacman/medium-open-down.png"
+                                                               }
+                                                       },
+                                                       {LEFT,
+                                                               {
+                                                                       "../resources/img/pacman/base.png",
+                                                                       "../resources/img/pacman/medium-open-left.png",
+                                                                       "../resources/img/pacman/large-open-left.png",
+                                                                       "../resources/img/pacman/medium-open-left.png"
+                                                               }
+                                                       },
+                                                       {RIGHT,
+                                                               {
+                                                                       "../resources/img/pacman/base.png",
+                                                                       "../resources/img/pacman/medium-open-right.png",
+                                                                       "../resources/img/pacman/large-open-right.png",
+                                                                       "../resources/img/pacman/medium-open-right.png"
+                                                               }
+                                                       }})
+
     ));
 
 
@@ -177,19 +175,115 @@ void Game::setUpGameObjects() {
     //TODO: Draw with map class
     addMovableGameObject(std::make_shared<Ghost>(
             TextureManager::loadTexture("../resources/img/ghosts/green_ghost_E1.png"),
-            30*15, 30*15, 0, 3));
+            30 * 15, 30 * 15, 0, 3,
+            EntityAnimator({{UP,
+                                    {
+                                            "../resources/img/ghosts/green_ghost_N1.png",
+                                            "../resources/img/ghosts/green_ghost_N2.png"
+                                    }
+                            },
+                            {DOWN,
+                                    {
+                                            "../resources/img/ghosts/green_ghost_S1.png",
+                                            "../resources/img/ghosts/green_ghost_S2.png"
+                                    }
+                            },
+                            {LEFT,
+                                    {
+                                            "../resources/img/ghosts/green_ghost_W1.png",
+                                            "../resources/img/ghosts/green_ghost_W2.png"
+                                    }
+                            },
+                            {RIGHT,
+                                    {
+                                            "../resources/img/ghosts/green_ghost_E1.png",
+                                            "../resources/img/ghosts/green_ghost_E2.png"
+                                    }
+                            }})));
 
     addMovableGameObject(std::make_shared<Ghost>(
             TextureManager::loadTexture("../resources/img/ghosts/orange_ghost_E1.png"),
-            30*15, 30*15, 0, 3));
+            30 * 15, 30 * 15, 0, 3,
+            EntityAnimator({{UP,
+                                    {
+                                            "../resources/img/ghosts/purple_ghost_N1.png",
+                                            "../resources/img/ghosts/purple_ghost_N2.png"
+                                    }
+                            },
+                            {DOWN,
+                                    {
+                                            "../resources/img/ghosts/purple_ghost_S1.png",
+                                            "../resources/img/ghosts/purple_ghost_S2.png"
+                                    }
+                            },
+                            {LEFT,
+                                    {
+                                            "../resources/img/ghosts/purple_ghost_W1.png",
+                                            "../resources/img/ghosts/purple_ghost_W2.png"
+                                    }
+                            },
+                            {RIGHT,
+                                    {
+                                            "../resources/img/ghosts/purple_ghost_E1.png",
+                                            "../resources/img/ghosts/purple_ghost_E2.png"
+                                    }
+                            }})));
 
     addMovableGameObject(std::make_shared<Ghost>(
             TextureManager::loadTexture("../resources/img/ghosts/red_ghost_E1.png"),
-            30*15, 30*15, 0, 3));
+            30 * 15, 30 * 15, 0, 3,
+            EntityAnimator({{UP,
+                                    {
+                                            "../resources/img/ghosts/red_ghost_N1.png",
+                                            "../resources/img/ghosts/red_ghost_N2.png"
+                                    }
+                            },
+                            {DOWN,
+                                    {
+                                            "../resources/img/ghosts/red_ghost_S1.png",
+                                            "../resources/img/ghosts/red_ghost_S2.png"
+                                    }
+                            },
+                            {LEFT,
+                                    {
+                                            "../resources/img/ghosts/red_ghost_W1.png",
+                                            "../resources/img/ghosts/red_ghost_W2.png"
+                                    }
+                            },
+                            {RIGHT,
+                                    {
+                                            "../resources/img/ghosts/red_ghost_E1.png",
+                                            "../resources/img/ghosts/red_ghost_E2.png"
+                                    }
+                            }})));
 
     addMovableGameObject(std::make_shared<Ghost>(
             TextureManager::loadTexture("../resources/img/ghosts/purple_ghost_E1.png"),
-            30*15, 30*15, 0, 3));
+            30 * 15, 30 * 15, 0, 3,
+            EntityAnimator({{UP,
+                                    {
+                                            "../resources/img/ghosts/orange_ghost_N1.png",
+                                            "../resources/img/ghosts/orange_ghost_N2.png"
+                                    }
+                            },
+                            {DOWN,
+                                    {
+                                            "../resources/img/ghosts/orange_ghost_S1.png",
+                                            "../resources/img/ghosts/orange_ghost_S2.png"
+                                    }
+                            },
+                            {LEFT,
+                                    {
+                                            "../resources/img/ghosts/orange_ghost_W1.png",
+                                            "../resources/img/ghosts/orange_ghost_W2.png"
+                                    }
+                            },
+                            {RIGHT,
+                                    {
+                                            "../resources/img/ghosts/orange_ghost_E1.png",
+                                            "../resources/img/ghosts/orange_ghost_E2.png"
+                                    }
+                            }})));
 
     addStationaryGameObject(
             std::make_shared<VoidWarp>(TextureManager::loadTexture("../resources/img/red.jpg"), 60, 60, -80, 450, 2,

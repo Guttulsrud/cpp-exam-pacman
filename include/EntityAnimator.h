@@ -29,7 +29,7 @@ public:
     int frameCount = 0;
     int animationIndex = 0;
 
-    void animate();
+    void animate(SDL_Texture ** entityTexturePtr, Direction direction);
 };
 
 
