@@ -10,33 +10,29 @@
 void Player::update() {
     framesSinceTextureChange++;
     SDL_Rect possiblePosition = m_positionRectangle;
-
     SDL_Point possibleMovementChange = movementChange;
 
     if (!InputManager::getInstance().KeyStillUp(SDL_SCANCODE_W)) {
         possibleMovementChange.x = 0;
         possibleMovementChange.y = -m_movementSpeed;
-        direction = UP;
     } else if (!InputManager::getInstance().KeyStillUp(SDL_SCANCODE_A)) {
         possibleMovementChange.x = -m_movementSpeed;
         possibleMovementChange.y = 0;
-        direction = LEFT;
-
     } else if (!InputManager::getInstance().KeyStillUp(SDL_SCANCODE_S)) {
         possibleMovementChange.x = 0;
         possibleMovementChange.y = m_movementSpeed;
-        direction = DOWN;
     } else if (!InputManager::getInstance().KeyStillUp(SDL_SCANCODE_D)) {
         possibleMovementChange.x = m_movementSpeed;
         possibleMovementChange.y = 0;
-        direction = RIGHT;
     }
 
     possiblePosition.x += possibleMovementChange.x;
     possiblePosition.y += possibleMovementChange.y;
 
     if (positionIsValid(possiblePosition)) {
+        determineDirection(possiblePosition);
         m_positionRectangle = possiblePosition;
+        m_animator.animate();
     } else {
         possiblePosition = m_positionRectangle;
         possibleMovementChange = movementChange;
@@ -44,13 +40,29 @@ void Player::update() {
         possiblePosition.x += possibleMovementChange.x;
         possiblePosition.y += possibleMovementChange.y;
         if (positionIsValid(possiblePosition)) {
+            determineDirection(possiblePosition);
             m_positionRectangle = possiblePosition;
+            m_animator.animate();
         }
     }
+
     movementChange = possibleMovementChange;
-
-
 }
+
+void Player::determineDirection(const SDL_Rect &possiblePosition) {
+    if(possiblePosition.x > m_positionRectangle.x){
+        direction = RIGHT;
+    } else if(possiblePosition.x < m_positionRectangle.x){
+        direction = LEFT;
+    } else if(possiblePosition.y < m_positionRectangle.y){
+        direction = UP;
+    } else if(possiblePosition.y > m_positionRectangle.y){
+        direction = DOWN;
+    } else {
+        direction = NONE;
+    }
+}
+
 
 bool Player::positionIsValid(SDL_Rect &possiblePosition) {
     bool didNotCollideWithWall = true;
@@ -60,7 +72,6 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
     for (auto &movable : Game::getMovableGameObjects()) {
         if (SDL_HasIntersection(&possiblePosition, &movable->m_positionRectangle) && movable->getType() == GHOST) {
             std::cout << "OH no, PACMAN be dead" << std::endl;
-
         }
     }
 
@@ -94,8 +105,4 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
 
 TYPE Player::getType() {
     return PLAYER;
-}
-
-void Player::handleAnimations() {
-
 }

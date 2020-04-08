@@ -55,6 +55,7 @@ Map::Map() {
     pelletLarge = TextureManager::loadTexture("../resources/img/pellet_large.png");
 
     roundedWallN = TextureManager::loadTexture("../resources/img/walls/rounded_corner_N.png");       //
+    roundedWallN = TextureManager::loadTexture("../resources/img/walls/rounded_corner_N.png");       //
     roundedWallS = TextureManager::loadTexture("../resources/img/walls/rounded_corner_S.png");     //
     roundedWallW = TextureManager::loadTexture("../resources/img/walls/rounded_corner_W.png");     //
     roundedWallE = TextureManager::loadTexture("../resources/img/walls/rounded_corner_E.png");    //

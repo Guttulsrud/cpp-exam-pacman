@@ -69,7 +69,6 @@ void Game::render() {
     std::vector<std::shared_ptr<StationaryObject>> &stationary = Game::getStationaryGameObjects();
     std::shared_ptr<Player> &player = Game::getPlayer();
 
-
     for (auto &m :movables) {
         m->render();
     }
@@ -77,12 +76,10 @@ void Game::render() {
         s->render();
     }
     player->render();
-
     SDL_RenderPresent(renderer);
 }
 
 void Game::clean() {
-
     SDL_DestroyWindow(window);
     SDL_DestroyRenderer(renderer);
     SDL_Quit();
@@ -135,24 +132,64 @@ void Game::addStationaryGameObject(const std::shared_ptr<StationaryObject> &obje
 }
 
 void Game::setUpGameObjects() {
+
+    EntityAnimator kek = EntityAnimator({
+                                                  {UP,
+                                                          {
+                                                                  "../resources/img/pacman/base.png",
+                                                                  "../resources/img/pacman/medium-open-up.png",
+                                                                  "../resources/img/pacman/large-open-up.png"
+                                                          }
+
+                                                  },
+                                                  {DOWN,
+                                                          {
+                                                                  "../resources/img/pacman/base.png",
+                                                                  "../resources/img/pacman/medium-open-down.png",
+                                                                  "../resources/img/pacman/large-open-down.png"
+                                                          }
+                                                  },
+                                                  {LEFT,
+                                                          {
+                                                                  "../resources/img/pacman/base.png",
+                                                                  "../resources/img/pacman/medium-open-left.png",
+                                                                  "../resources/img/pacman/large-open-left.png"
+                                                          }
+                                                  },
+                                                  {RIGHT,
+
+                                                          {
+                                                                  "../resources/img/pacman/base.png",
+                                                                  "../resources/img/pacman/medium-open-right.png",
+                                                                  "../resources/img/pacman/large-open-right.png"
+                                                          }
+
+                                                  }});
+
+
+//
     setPlayer(std::make_shared<Player>(TextureManager::loadTexture("../resources/img/pacman/base.png"),
-                                       440, 540, 0, 2));
+                                       30*15, 30*18, 0, 3, kek
+    ));
+
+
+
     //TODO: Draw with map class
     addMovableGameObject(std::make_shared<Ghost>(
             TextureManager::loadTexture("../resources/img/ghosts/green_ghost_E1.png"),
-            440, 450, 0, 2));
+            30*15, 30*15, 0, 3));
 
     addMovableGameObject(std::make_shared<Ghost>(
             TextureManager::loadTexture("../resources/img/ghosts/orange_ghost_E1.png"),
-            440, 450, 0, 2));
+            30*15, 30*15, 0, 3));
 
     addMovableGameObject(std::make_shared<Ghost>(
             TextureManager::loadTexture("../resources/img/ghosts/red_ghost_E1.png"),
-            440, 450, 0, 2));
+            30*15, 30*15, 0, 3));
 
     addMovableGameObject(std::make_shared<Ghost>(
             TextureManager::loadTexture("../resources/img/ghosts/purple_ghost_E1.png"),
-            440, 450, 0, 2));
+            30*15, 30*15, 0, 3));
 
     addStationaryGameObject(
             std::make_shared<VoidWarp>(TextureManager::loadTexture("../resources/img/red.jpg"), 60, 60, -80, 450, 2,

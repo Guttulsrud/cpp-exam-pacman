@@ -3,43 +3,26 @@
 
 #include "GameObject.h"
 #include "MovableObject.h"
+#include "EntityAnimator.h"
 
 class Player : public MovableObject {
 public:
-    Player(SDL_Texture * texturePtr, int x, int y, int id, int movementSpeed) : MovableObject(texturePtr, x, y, id, movementSpeed){
-        base = TextureManager::loadTexture("../resources/img/pacman/base.png");
-        mediumOpenRight = TextureManager::loadTexture("../resources/img/pacman/medium-open-right.png");
-        mediumOpenLeft = TextureManager::loadTexture("../resources/img/pacman/medium-open-left.png");
-        mediumOpenUp = TextureManager::loadTexture("../resources/img/pacman/medium-open-up.png");
-        mediumOpenDown = TextureManager::loadTexture("../resources/img/pacman/medium-open-down.png");
-        largeOpenRight = TextureManager::loadTexture("../resources/img/pacman/large-open-right.png");
-        largeOpenLeft = TextureManager::loadTexture("../resources/img/pacman/large-open-left.png");
-        largeOpenUp = TextureManager::loadTexture("../resources/img/pacman/large-open-up.png");
-        largeOpenDown = TextureManager::loadTexture("../resources/img/pacman/large-open-down.png");
+    Player(SDL_Texture *texturePtr, int x, int y, int id, int movementSpeed, EntityAnimator animator) :
+            MovableObject(texturePtr, x, y, id, movementSpeed), m_animator(animator) {
     }
 
-    void update() override ;
+    void update() override;
     TYPE getType() override;
-    Direction direction;
-
-    SDL_Texture * base;
-    SDL_Texture * mediumOpenRight;
-    SDL_Texture * mediumOpenLeft;
-    SDL_Texture * mediumOpenUp;
-    SDL_Texture * mediumOpenDown;
-    SDL_Texture * largeOpenRight;
-    SDL_Texture * largeOpenLeft;
-    SDL_Texture * largeOpenUp;
-    SDL_Texture * largeOpenDown;
+    Direction direction = UP;
+    EntityAnimator m_animator;
     int points;
-
-    void handleAnimations();
 
 private:
     SDL_Point movementChange;
 
     bool positionIsValid(SDL_Rect &possiblePosition);
 
+    void determineDirection(const SDL_Rect &possiblePosition);
 };
 
 
