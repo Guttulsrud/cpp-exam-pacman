@@ -135,7 +135,6 @@ void Game::addStationaryGameObject(const std::shared_ptr<StationaryObject> &obje
 }
 
 void Game::setUpGameObjects() {
-
     setPlayer(std::make_shared<Player>(TextureManager::loadTexture("../resources/img/pacman/base.png"),
                                        440, 540, 0, 2));
     //TODO: Draw with map class
