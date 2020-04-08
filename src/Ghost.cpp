@@ -84,7 +84,7 @@ void Ghost::update() {
         }
         wasAtIntersection = true;
     } else {
-        if(switchedToPowerPelletState){
+        if (switchedToPowerPelletState) {
             direction = getDirectionToPlayer(directions);
             powerPelletState = true;
             switchedToPowerPelletState = false;
@@ -92,7 +92,14 @@ void Ghost::update() {
         m_positionRectangle = directions[direction];
         wasAtIntersection = false;
     }
-    m_animator.animate(&m_texture, direction);
+
+    if (dead) {
+        m_texture = TextureManager::loadTexture("../resources/img/pacman/medium-open-up.png");
+    } else {
+        m_animator.animate(&m_texture, direction);
+    }
+
+
     prevDirections = possibleDirectionsVector;
 }
 
@@ -114,8 +121,7 @@ Direction Ghost::getDirectionToPlayer(const std::map<Direction, SDL_Rect> &possi
                 closestToPlayer = directionPosition.first;
 
             }
-        }
-        else {
+        } else {
             if (lenToPlayer < shortestLength) {
                 shortestLength = lenToPlayer;
                 closestToPlayer = directionPosition.first;
@@ -123,7 +129,6 @@ Direction Ghost::getDirectionToPlayer(const std::map<Direction, SDL_Rect> &possi
         }
 //        std::cout << closestToPlayer << std::endl;
     }
-
 
 
     return closestToPlayer;
