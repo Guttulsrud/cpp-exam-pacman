@@ -9,7 +9,6 @@ void EntityAnimator::animate() {
     Direction playerDirection = Game::getPlayer()->direction;
     if(playerDirection == NONE){
         Game::getPlayer()->m_texture = textures[UP][0];
-        std::cout << "LEL" << std::endl;
         return;
     }
 

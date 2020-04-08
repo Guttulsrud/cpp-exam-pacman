@@ -5,11 +5,12 @@
 #include "../include/Pellet.h"
 
 #include <SDL2/SDL.h>
+#include <fstream>
 
 SDL_Renderer *Game::renderer = nullptr;
 
 
-void Game::init(const char *title, int xPos, int yPos, int width, int height, bool fullscreen) {
+int Game::init(const char *title, int xPos, int yPos, int width, int height, bool fullscreen) {
 
     Uint32 flags = SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL;
     if (fullscreen) {
@@ -34,7 +35,9 @@ void Game::init(const char *title, int xPos, int yPos, int width, int height, bo
         isRunning = true;
         setGameObjects();
     }
+    return 0;
 }
+
 
 
 void removeEatenPellets(std::vector<std::shared_ptr<StationaryObject>> &objects) {
@@ -97,7 +100,7 @@ void Game::setPlayer(std::shared_ptr<Player> const &object) {
 
 
 std::shared_ptr<Map> &Game::getMap(int levelNumber) {
-    return getMaps()[levelNumber];
+    return getMaps()[levelNumber-1];
 }
 
 
@@ -128,42 +131,42 @@ void Game::addStationaryGameObject(const std::shared_ptr<StationaryObject> &obje
 void Game::setGameObjects() {
 
     EntityAnimator kek = EntityAnimator({
-                                                  {UP,
-                                                          {
-                                                                  "../resources/img/pacman/base.png",
-                                                                  "../resources/img/pacman/medium-open-up.png",
-                                                                  "../resources/img/pacman/large-open-up.png"
-                                                          }
+                                                {UP,
+                                                        {
+                                                                "../resources/img/pacman/base.png",
+                                                                "../resources/img/pacman/medium-open-up.png",
+                                                                "../resources/img/pacman/large-open-up.png"
+                                                        }
 
-                                                  },
-                                                  {DOWN,
-                                                          {
-                                                                  "../resources/img/pacman/base.png",
-                                                                  "../resources/img/pacman/medium-open-down.png",
-                                                                  "../resources/img/pacman/large-open-down.png"
-                                                          }
-                                                  },
-                                                  {LEFT,
-                                                          {
-                                                                  "../resources/img/pacman/base.png",
-                                                                  "../resources/img/pacman/medium-open-left.png",
-                                                                  "../resources/img/pacman/large-open-left.png"
-                                                          }
-                                                  },
-                                                  {RIGHT,
+                                                },
+                                                {DOWN,
+                                                        {
+                                                                "../resources/img/pacman/base.png",
+                                                                "../resources/img/pacman/medium-open-down.png",
+                                                                "../resources/img/pacman/large-open-down.png"
+                                                        }
+                                                },
+                                                {LEFT,
+                                                        {
+                                                                "../resources/img/pacman/base.png",
+                                                                "../resources/img/pacman/medium-open-left.png",
+                                                                "../resources/img/pacman/large-open-left.png"
+                                                        }
+                                                },
+                                                {RIGHT,
 
-                                                          {
-                                                                  "../resources/img/pacman/base.png",
-                                                                  "../resources/img/pacman/medium-open-right.png",
-                                                                  "../resources/img/pacman/large-open-right.png"
-                                                          }
+                                                        {
+                                                                "../resources/img/pacman/base.png",
+                                                                "../resources/img/pacman/medium-open-right.png",
+                                                                "../resources/img/pacman/large-open-right.png"
+                                                        }
 
-                                                  }});
+                                                }});
 
 
 //
     setPlayer(std::make_shared<Player>(TextureManager::loadTexture("../resources/img/pacman/base.png"),
-                                       30*15, 30*18, 0, 3, kek
+                                       30 * 15, 30 * 18, 0, 3, kek
     ));
 
 
@@ -171,19 +174,19 @@ void Game::setGameObjects() {
     //TODO: Draw with map class
     addMovableGameObject(std::make_shared<Ghost>(
             TextureManager::loadTexture("../resources/img/ghosts/green_ghost_E1.png"),
-            30*15, 30*15, 0, 3));
+            30 * 15, 30 * 15, 0, 3));
 
     addMovableGameObject(std::make_shared<Ghost>(
             TextureManager::loadTexture("../resources/img/ghosts/orange_ghost_E1.png"),
-            30*15, 30*15, 0, 3));
+            30 * 15, 30 * 15, 0, 3));
 
     addMovableGameObject(std::make_shared<Ghost>(
             TextureManager::loadTexture("../resources/img/ghosts/red_ghost_E1.png"),
-            30*15, 30*15, 0, 3));
+            30 * 15, 30 * 15, 0, 3));
 
     addMovableGameObject(std::make_shared<Ghost>(
             TextureManager::loadTexture("../resources/img/ghosts/purple_ghost_E1.png"),
-            30*15, 30*15, 0, 3));
+            30 * 15, 30 * 15, 0, 3));
 
     addStationaryGameObject(
             std::make_shared<VoidWarp>(TextureManager::loadTexture("../resources/img/red.jpg"), 60, 60, -80, 450, 2,
@@ -204,12 +207,12 @@ void Game::resetRound() {
     std::cout << "Reset round" << std::endl;
     //todo: play death animation here
     getPlayer()->lives--;
-    getPlayer()->m_positionRectangle.x = 30*15;
-    getPlayer()->m_positionRectangle.y = 30*18;
+    getPlayer()->m_positionRectangle.x = 30 * 15;
+    getPlayer()->m_positionRectangle.y = 30 * 18;
     for (auto const &ghost : getMovableGameObjects()) {
-        ghost->m_positionRectangle.x = 30*15;
-        ghost->m_positionRectangle.y = 30*15;
-        dynamic_cast<Ghost*>(ghost.get())->powerPelletState = false;
+        ghost->m_positionRectangle.x = 30 * 15;
+        ghost->m_positionRectangle.y = 30 * 15;
+        dynamic_cast<Ghost *>(ghost.get())->powerPelletState = false;
     }
     SDL_Delay(1500);
 }
@@ -218,7 +221,7 @@ void Game::gameOver() {
     std::cout << "Game over" << std::endl;
 
 
-    getMap(0)->loadLevelMap(getMap(0)->backupArr);
+    getMap(1)->loadLevelMap(getMap(1)->currentMap);
     resetRound();
     getPlayer()->lives = 2;
 
