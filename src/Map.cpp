@@ -1,50 +1,10 @@
-//
-// Created by Håkon on 25.03.2020.
-//
-
-
 #include <iostream>
+#include <fstream>
 #include "../include/Map.h"
 #include "../include/Game.h"
 #include "../include/TextureManager.h"
 #include "../include/Pellet.h"
 #include "../include/StationaryObject.h"
-
-
-int levelOne[32][29] = {
-        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-        {1, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1},
-        {1, 0, 2, 1, 1, 1, 0, 2, 1, 1, 1, 1, 0, 2, 1, 0, 2, 1, 1, 1, 1, 0, 2, 1, 1, 1, 0, 2, 1},
-        {1, 0, 3, 1, 1, 1, 0, 2, 1, 1, 1, 1, 0, 2, 1, 0, 2, 1, 1, 1, 1, 0, 2, 1, 1, 1, 0, 3, 1},
-        {1, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 2, 1},
-        {1, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1},
-        {1, 0, 2, 1, 1, 1, 0, 2, 1, 0, 2, 1, 1, 1, 1, 1, 1, 1, 0, 2, 1, 0, 2, 1, 1, 1, 0, 2, 1},
-        {1, 0, 2, 0, 0, 0, 0, 2, 1, 0, 2, 0, 0, 0, 1, 0, 0, 0, 0, 2, 1, 0, 2, 0, 0, 0, 0, 2, 1},
-        {1, 0, 2, 2, 2, 2, 2, 2, 1, 0, 2, 2, 2, 2, 1, 0, 2, 2, 2, 2, 1, 0, 2, 2, 2, 2, 2, 2, 1},
-        {1, 1, 1, 1, 1, 1, 0, 2, 1, 1, 1, 1, 0, 2, 1, 0, 2, 1, 1, 1, 1, 0, 2, 1, 1, 1, 1, 1, 1},
-        {0, 0, 0, 0, 0, 1, 0, 2, 1, 0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 0, 1, 0, 2, 1, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 1, 0, 2, 1, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0, 2, 1, 0, 0, 0, 0, 0},
-        {1, 1, 1, 1, 1, 1, 0, 2, 1, 0, 2, 1, 1, 0, 0, 0, 1, 1, 0, 2, 1, 0, 2, 1, 1, 1, 1, 1, 1},
-        {0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 2, 1, 0, 0, 0, 0, 0, 1, 0, 2, 0, 0, 2, 0, 0, 0, 0, 0, 0},
-        {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0, 0, 0, 0, 0, 1, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
-        {1, 1, 1, 1, 1, 1, 0, 2, 1, 0, 2, 1, 1, 1, 1, 1, 1, 1, 0, 2, 1, 0, 2, 1, 1, 1, 1, 1, 1},
-        {0, 0, 0, 0, 0, 1, 0, 2, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 0, 2, 1, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 1, 0, 2, 1, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0, 2, 1, 0, 0, 0, 0, 0},
-        {1, 1, 1, 1, 1, 1, 0, 2, 1, 0, 2, 1, 1, 1, 1, 1, 1, 1, 0, 2, 1, 0, 2, 1, 1, 1, 1, 1, 1},
-        {1, 0, 0, 0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 0, 1, 0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 0, 0, 0, 1},
-        {1, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1},
-        {1, 0, 2, 1, 1, 1, 0, 2, 1, 1, 1, 1, 0, 2, 1, 0, 2, 1, 1, 1, 1, 0, 2, 1, 1, 1, 0, 2, 1},
-        {1, 0, 3, 0, 0, 1, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 0, 0, 0, 2, 1, 0, 0, 0, 3, 1},
-        {1, 0, 2, 2, 2, 1, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0, 2, 2, 2, 1},
-        {1, 1, 1, 0, 2, 1, 0, 2, 1, 0, 2, 1, 1, 1, 1, 1, 1, 1, 0, 2, 1, 0, 2, 1, 0, 2, 1, 1, 1},
-        {1, 0, 0, 0, 2, 0, 0, 2, 1, 0, 2, 0, 0, 0, 1, 0, 0, 0, 0, 2, 1, 0, 2, 0, 0, 2, 0, 0, 1},
-        {1, 0, 2, 2, 2, 2, 2, 2, 1, 0, 2, 2, 2, 2, 1, 0, 2, 2, 2, 2, 1, 0, 2, 2, 2, 2, 2, 2, 1},
-        {1, 0, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 2, 1, 0, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 2, 1},
-        {1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1},
-        {1, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1},
-        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
-};
 
 
 Map::Map() {
@@ -77,11 +37,13 @@ Map::Map() {
     edgeE = TextureManager::loadTexture("../resources/img/walls/wall_single_edge_E.png"); //
     edgeW = TextureManager::loadTexture("../resources/img/walls/wall_single_edge_W.png");//
     edgeS = TextureManager::loadTexture("../resources/img/walls/wall_single_edge_S.png");//
-    loadLevelMap(levelOne);
+
+    loadMapFromFile( "../resources/maps/level_one.txt");
+    loadLevelMap(currentMap);
 }
 
 void Map::createWallWithTexture(int map[32][29], int row, int column) {
-///TODO: Player needs to be rendered last so that its in front
+    ///TODO: Player needs to be rendered last so that its in front
     int wall = 1;
 
     int westTile = map[row][column - 1] == wall ? wall : 0;
@@ -178,33 +140,33 @@ void Map::createWallWithTexture(int map[32][29], int row, int column) {
         }
         Game::addStationaryGameObject(
                 std::make_shared<StationaryObject>(HALLWAY, 0, column * tileLength + tileLength,
-                                          row * tileLength + tileLength, tileTexture));
+                                                   row * tileLength + tileLength, tileTexture));
     }
 }
 
-
-void Map::loadLevelMap(int array[32][29]) {
+void Map::loadLevelMap(int map[32][29]) {
 
     int tileType = 0;
     int idIncrementer = 0;
 
     for (int column = 0; column < 32; column++) {
         for (int row = 0; row < 29; row++) {
-            backupArr[column][row] = array[column][row];
+            currentMap[column][row] = map[column][row];
 
-            tileType = array[column][row];
+            tileType = map[column][row];
             idIncrementer++;
             switch (tileType) {
                 case 3:
                     Game::addStationaryGameObject(std::make_shared<Pellet>(pelletLarge, row * tileLength + 25,
-                            column * tileLength + 30 , idIncrementer,  15 ,15, true ));
+                                                                           column * tileLength + 30, idIncrementer, 15,
+                                                                           15, true));
                     break;
                 case 2:
                     Game::addStationaryGameObject(
                             std::make_shared<Pellet>(pellet, row * tileLength + 30, column * tileLength + 30,
-                                                     idIncrementer, 5, 5 ));
+                                                     idIncrementer, 5, 5));
                 default:
-                    createWallWithTexture(array, column, row);
+                    createWallWithTexture(map, column, row);
                     //todo: Consider different approach to large pellet positions. Will be different on other maps
             }
         }
@@ -212,10 +174,48 @@ void Map::loadLevelMap(int array[32][29]) {
 }
 
 
+
 Map::~Map() {
 
 }
 
-int Map::getTileLength() const {
-    return tileLength;
+void Map::loadMapFromFile(const char *filePath) {
+    std::ifstream file(filePath);
+    if (!file.is_open()) {
+        exit(1);
+    }
+
+    int array[32][29]{};
+    for (int column = 0; column != 32; column++) {
+        for (int row = 0; row != 29; row++) {
+            file >> currentMap[column][row];
+        }
+    }
 }
+
+void Map::redrawPelletsOnMap() {
+    int tileType = 0;
+    int idIncrementer = 0;
+
+    for (int column = 0; column < 32; column++) {
+        for (int row = 0; row < 29; row++) {
+
+            tileType = currentMap[column][row];
+            idIncrementer++;
+            switch (tileType) {
+                case 3:
+                    Game::addStationaryGameObject(std::make_shared<Pellet>(pelletLarge, row * tileLength + 25,
+                                                                           column * tileLength + 30, idIncrementer, 15,
+                                                                           15, true));
+                    break;
+                case 2:
+                    Game::addStationaryGameObject(
+                            std::make_shared<Pellet>(pellet, row * tileLength + 30, column * tileLength + 30,
+                                                     idIncrementer, 5, 5));
+
+            }
+        }
+    }
+}
+
+
