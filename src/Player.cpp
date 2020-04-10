@@ -79,6 +79,8 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
             if (ghost->powerPelletState) {
                 ghost->dead = true;
             } else {
+                playSound("../resources/sounds/pacman_death.wav");
+
                 lives < 1 ? Game::gameOver() : Game::resetRound();
                 return false;
             }
@@ -95,13 +97,9 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
             }
 
             if (stationary->getType() == PELLET) {
-
-
-
                 if (!Mix_Playing(-1)) {
-                    futures.emplace_back(std::async(std::launch::async, playSoundWithFuture));
+                    playSound("../resources/sounds/pacman_chomp.wav");
                 }
-
 
                 if (dynamic_cast<Pellet *>(stationary.get())->m_isPowerPellet) {
                     //TODO: Trenger bare loope igjennom ghost
@@ -132,14 +130,10 @@ void Player::reset() {
     //todo: play death animation here
     lives--;
     m_positionRectangle.x = 30 * 14.5;
-    m_positionRectangle.y = 30 * 18;
+    m_positionRectangle.y = 30 * 24;
 }
 
-void Player::playSoundWithFuture() {
-    Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
-    Mix_Chunk *chomp = Mix_LoadWAV("../resources/sounds/pacman_chomp.wav");
-    Mix_PlayChannel(-1, chomp, 0);
-    while (Mix_Playing(-1)) {}
-    Mix_FreeChunk(chomp);
+void Player::playSound(const char *path) {
+    futures.emplace_back(std::async(std::launch::async, Game::playSoundEffect, path));
 
 }

@@ -54,6 +54,7 @@ public:
     static void resetRound();
     static void gameOver();
     static void beginRound();
+    static void playSoundEffect(const char* filePath);
 
 
 

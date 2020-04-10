@@ -21,16 +21,14 @@ public:
     EntityAnimator m_animator;
     int points;
     int lives = 2;
-
+    void playSound(const char* path);
     std::vector<std::future<void>> futures;
 private:
     SDL_Point movementChange;
 
     bool positionIsValid(SDL_Rect &possiblePosition);
-
     void determineDirection(const SDL_Rect &possiblePosition);
 
-    static void playSoundWithFuture();
 };
 
 

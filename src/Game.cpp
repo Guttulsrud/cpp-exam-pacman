@@ -123,7 +123,7 @@ void Game::addStationaryGameObject(const std::shared_ptr<StationaryObject> &obje
 void Game::setGameObjects() {
 
     setPlayer(std::make_shared<Player>(TextureManager::loadTexture("../resources/img/pacman/base.png"),
-                                       30 * 14.5, 30 * 18, 0, 3,
+                                       30 * 14.5, 30 * 24, 0, 3,
                                        EntityAnimator({{UP,
                                                                {
                                                                        "../resources/img/pacman/base.png",
@@ -313,6 +313,18 @@ std::vector<std::shared_ptr<Map>> &Game::getMaps() {
 }
 
 void Game::beginRound() {
+
+}
+
+
+void Game::playSoundEffect(const char* filePath) {
+
+
+    Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
+    Mix_Chunk *chomp = Mix_LoadWAV(filePath);
+    Mix_PlayChannel(-1, chomp, 0);
+    while (Mix_Playing(-1)) {}
+    Mix_FreeChunk(chomp);
 
 }
 
