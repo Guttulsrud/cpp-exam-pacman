@@ -15,22 +15,18 @@ int Game::init(const char *title, int xPos, int yPos, int width, int height, boo
     if (fullscreen) {
         flags = SDL_WINDOW_FULLSCREEN | SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL;
     }
-    if (SDL_Init(SDL_INIT_VIDEO) == 0) {
-
-
-        std::cout << "Initializing.." << std::endl;
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) == 0) {
         window = SDL_CreateWindow(title, xPos, yPos, width, height, flags);
 
         if (window) {
-            std::cout << "Window created!" << std::endl;
         }
 
         renderer = SDL_CreateRenderer(window, -1, flags);
 
         if (renderer) {
             SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-            std::cout << "Renderer created!" << std::endl;
         }
+        std::cout << "Game running" << std::endl;
         isRunning = true;
         setGameObjects();
     }
@@ -316,6 +312,10 @@ void Game::gameOver() {
 
 std::vector<std::shared_ptr<Map>> &Game::getMaps() {
     return getInstance().maps;
+}
+
+void Game::beginRound() {
+
 }
 
 

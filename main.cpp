@@ -2,6 +2,8 @@
 #include "include/Game.h"
 #include "include/InputManager.h"
 
+#include <SDL2/SDL_mixer.h>
+#include <thread>
 int main(int argc, char *argv[]) {
 
 
@@ -30,6 +32,7 @@ int main(int argc, char *argv[]) {
         }
     }
 
+    Mix_CloseAudio();
     game.clean();
 
     //TODO: Make wrapper class "fascade" for SDL2?
@@ -37,7 +40,7 @@ int main(int argc, char *argv[]) {
     // Hvis undermetodene tilhører klasser, blir disse klassene private medlemsvariabler i Facade klassen.
 
 
-return 0;
+    return 0;
 }
 
 

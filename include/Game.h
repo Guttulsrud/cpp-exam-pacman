@@ -53,6 +53,8 @@ public:
     static void addMap(const std::shared_ptr<Map> &map);
     static void resetRound();
     static void gameOver();
+    static void beginRound();
+
 
 
 private:

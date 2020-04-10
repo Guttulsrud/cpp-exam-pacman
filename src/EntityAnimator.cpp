@@ -1,7 +1,3 @@
-//
-// Created by mathi on 4/8/2020.
-//
-
 #include "../include/EntityAnimator.h"
 #include "../include/Game.h"
 
@@ -11,7 +7,7 @@ void EntityAnimator::animate(SDL_Texture **entityTexturePtr, Direction direction
         Game::getPlayer()->m_texture = textures[UP][0];
         return;
     }
-    if (frameCount == 10) {
+    if (frameCount == 5) {
         animationIndex++;
         frameCount = 0;
     }

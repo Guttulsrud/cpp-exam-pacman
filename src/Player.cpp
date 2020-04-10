@@ -3,9 +3,11 @@
 #include "../include/Game.h"
 #include "../include/Pellet.h"
 #include "../include/Ghost.h"
-#include <iostream>
-#include <algorithm>
+#include <SDL_mixer.h>
+#include <thread>
+#include <future>
 
+using namespace std::chrono_literals;
 
 void Player::update() {
     InputManager IM = InputManager::getInstance();
@@ -14,16 +16,16 @@ void Player::update() {
     SDL_Rect possiblePosition = m_positionRectangle;
     SDL_Point possibleMovementChange = movementChange;
 
-    if (!InputManager::getInstance().KeyStillUp(SDL_SCANCODE_W)) {
+    if (!IM.KeyStillUp(SDL_SCANCODE_W)) {
         possibleMovementChange.x = 0;
         possibleMovementChange.y = -m_movementSpeed;
-    } else if (!InputManager::getInstance().KeyStillUp(SDL_SCANCODE_A)) {
+    } else if (!IM.KeyStillUp(SDL_SCANCODE_A)) {
         possibleMovementChange.x = -m_movementSpeed;
         possibleMovementChange.y = 0;
-    } else if (!InputManager::getInstance().KeyStillUp(SDL_SCANCODE_S)) {
+    } else if (!IM.KeyStillUp(SDL_SCANCODE_S)) {
         possibleMovementChange.x = 0;
         possibleMovementChange.y = m_movementSpeed;
-    } else if (!InputManager::getInstance().KeyStillUp(SDL_SCANCODE_D)) {
+    } else if (!IM.KeyStillUp(SDL_SCANCODE_D)) {
         possibleMovementChange.x = m_movementSpeed;
         possibleMovementChange.y = 0;
         direction = RIGHT;
@@ -65,6 +67,7 @@ void Player::determineDirection(const SDL_Rect &possiblePosition) {
     }
 }
 
+
 bool Player::positionIsValid(SDL_Rect &possiblePosition) {
     bool didNotCollideWithWall = true;
 
@@ -74,7 +77,7 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
         if (SDL_HasIntersection(&possiblePosition, &movable->m_positionRectangle) && movable->getType() == GHOST) {
             auto ghost = dynamic_cast<Ghost *>(movable.get());
             if (ghost->powerPelletState) {
-                 ghost->dead = true;
+                ghost->dead = true;
             } else {
                 lives < 1 ? Game::gameOver() : Game::resetRound();
                 return false;
@@ -92,6 +95,21 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
             }
 
             if (stationary->getType() == PELLET) {
+
+
+
+                if (!Mix_Playing(-1)) {
+                    futures.emplace_back(std::async(std::launch::async, playSoundWithFuture));
+                    if (Mix_Playing(-1)) {
+
+                        for(auto &future : futures) {
+                            future.get();
+                        }
+                    }
+
+                }
+
+
                 if (dynamic_cast<Pellet *>(stationary.get())->m_isPowerPellet) {
                     //TODO: Trenger bare loope igjennom ghost
 
@@ -104,9 +122,11 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
                 }
                 dynamic_cast<Pellet *>(stationary.get())->eaten = true;
                 points++;
+
             }
         }
     }
+
     return didNotCollideWithWall;
 }
 
@@ -120,4 +140,16 @@ void Player::reset() {
     lives--;
     m_positionRectangle.x = 30 * 15;
     m_positionRectangle.y = 30 * 18;
+}
+
+void Player::playSoundWithFuture() {
+    Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
+    Mix_Chunk *chomp = Mix_LoadWAV("../resources/sounds/pacman_chomp.wav");
+    Mix_PlayChannel(-1, chomp, 0);
+
+
+    while (Mix_Playing(-1)) {}
+
+    Mix_FreeChunk(chomp);
+
 }
