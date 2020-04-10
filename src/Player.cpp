@@ -8,8 +8,6 @@
 
 
 void Player::update() {
-    InputManager IM = InputManager::getInstance();
-
     framesSinceTextureChange++;
     SDL_Rect possiblePosition = m_positionRectangle;
     SDL_Point possibleMovementChange = movementChange;

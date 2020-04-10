@@ -44,7 +44,6 @@ public:
     int m_id;
 
     SDL_Texture * m_texture;
-
 };
 
 

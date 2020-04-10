@@ -9,6 +9,8 @@ class Player : public MovableObject {
 public:
     Player(SDL_Texture *texturePtr, int x, int y, int id, int movementSpeed, EntityAnimator animator) :
             MovableObject(texturePtr, x, y, id, movementSpeed), m_animator(animator) {
+        movementChange.x = 0;
+        movementChange.y = 0;
     }
 
     void reset();

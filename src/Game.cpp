@@ -11,26 +11,13 @@ SDL_Renderer *Game::renderer = nullptr;
 
 int Game::init(const char *title, int xPos, int yPos, int width, int height, bool fullscreen) {
 
-    Uint32 flags = SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL;
-    if (fullscreen) {
-        flags = SDL_WINDOW_FULLSCREEN | SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL;
-    }
     if (SDL_Init(SDL_INIT_VIDEO) == 0) {
 
 
         std::cout << "Initializing.." << std::endl;
-        window = SDL_CreateWindow(title, xPos, yPos, width, height, flags);
-
-        if (window) {
-            std::cout << "Window created!" << std::endl;
-        }
-
-        renderer = SDL_CreateRenderer(window, -1, flags);
-
-        if (renderer) {
-            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-            std::cout << "Renderer created!" << std::endl;
-        }
+        window = SDL_CreateWindow(title, xPos, yPos, width, height, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL);
+        renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+        SDL_RenderClear(renderer);
         isRunning = true;
         setGameObjects();
     }
@@ -64,7 +51,7 @@ void Game::update() {
 
 
 void Game::render() {
-    SDL_RenderClear(renderer);
+
     std::vector<std::shared_ptr<MovableObject>> &movables = Game::getMovableGameObjects();
     std::vector<std::shared_ptr<StationaryObject>> &stationary = Game::getStationaryGameObjects();
     std::shared_ptr<Player> &player = Game::getPlayer();
@@ -77,11 +64,12 @@ void Game::render() {
     }
     player->render();
     SDL_RenderPresent(renderer);
+    SDL_RenderClear(renderer);
 }
 
 void Game::clean() {
-    SDL_DestroyWindow(window);
     SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
     SDL_Quit();
     std::cout << "Cleaned.." << std::endl;
 }
