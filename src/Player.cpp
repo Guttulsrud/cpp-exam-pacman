@@ -77,10 +77,18 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
         if (SDL_HasIntersection(&possiblePosition, &movable->m_positionRectangle) && movable->getType() == GHOST) {
             auto ghost = dynamic_cast<Ghost *>(movable.get());
             if (ghost->powerPelletState) {
+                if (!ghost->dead) {
+
+                    playSound("../resources/sounds/pacman_eatghost.wav");
+
+
+                    //todo:Must stop when ghost arrives at home
+                    playSound("../resources/sounds/ghost_return_to_home.mp3");
+
+                }
                 ghost->dead = true;
             } else {
                 playSound("../resources/sounds/pacman_death.wav");
-
                 lives < 1 ? Game::gameOver() : Game::resetRound();
                 return false;
             }
@@ -99,6 +107,8 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
                 collectedPellet = true;
 
                 if (dynamic_cast<Pellet *>(stationary.get())->m_isPowerPellet) {
+                    playSound("../resources/sounds/eat_powerpellet.mp3");
+
                     //TODO: Trenger bare loope igjennom ghost
 
                     //TODO:  Denne bør være en egen funksjon, eventuelt bruke loopen over og sjekke power state et annet sted?

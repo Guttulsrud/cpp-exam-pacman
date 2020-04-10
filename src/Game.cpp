@@ -28,7 +28,7 @@ int Game::init(const char *title, int xPos, int yPos, int width, int height, boo
         }
         std::cout << "Game running" << std::endl;
         isRunning = true;
-        setGameObjects();
+        newGame();
     }
     return 0;
 }
@@ -326,6 +326,11 @@ void Game::playSoundEffect(const char* filePath) {
     while (Mix_Playing(-1)) {}
     Mix_FreeChunk(chomp);
 
+}
+
+void Game::newGame() {
+
+    setGameObjects();
 }
 
 
