@@ -89,17 +89,14 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
 
 
     // Check for collision with stationary game objects
+    bool collectedPellet = false;
     for (auto &stationary : Game::getStationaryGameObjects()) {
-
         if (SDL_HasIntersection(&possiblePosition, &stationary->m_positionRectangle)) {
             if (stationary->getType() == WALL) {
                 didNotCollideWithWall = false;
             }
-
             if (stationary->getType() == PELLET) {
-                if (!Mix_Playing(-1)) {
-                    playSound("../resources/sounds/pacman_chomp.wav");
-                }
+                collectedPellet = true;
 
                 if (dynamic_cast<Pellet *>(stationary.get())->m_isPowerPellet) {
                     //TODO: Trenger bare loope igjennom ghost
@@ -116,8 +113,13 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
 
             }
         }
-    }
 
+    }
+    if(collectedPellet) {
+        if (!Mix_Playing(-1)) {
+            playSound("../resources/sounds/pacman_chomp.wav");
+        }
+    }
     return didNotCollideWithWall;
 }
 
