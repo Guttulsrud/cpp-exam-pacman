@@ -11,6 +11,7 @@ public:
     }
 
     virtual void update() = 0;
+    virtual void reset() = 0;
     int framesSinceTextureChange = 0;
 protected:
     int m_movementSpeed;

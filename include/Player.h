@@ -14,7 +14,7 @@ public:
             MovableObject(texturePtr, x, y, id, movementSpeed), m_animator(animator) {
     }
 
-    void reset();
+    void reset() override;
     void update() override;
     TYPE getType() override;
     Direction direction = UP;

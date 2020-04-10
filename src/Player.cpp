@@ -100,13 +100,6 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
 
                 if (!Mix_Playing(-1)) {
                     futures.emplace_back(std::async(std::launch::async, playSoundWithFuture));
-                    if (Mix_Playing(-1)) {
-
-                        for(auto &future : futures) {
-                            future.get();
-                        }
-                    }
-
                 }
 
 
@@ -138,7 +131,7 @@ void Player::reset() {
 
     //todo: play death animation here
     lives--;
-    m_positionRectangle.x = 30 * 15;
+    m_positionRectangle.x = 30 * 14.5;
     m_positionRectangle.y = 30 * 18;
 }
 
@@ -146,10 +139,7 @@ void Player::playSoundWithFuture() {
     Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
     Mix_Chunk *chomp = Mix_LoadWAV("../resources/sounds/pacman_chomp.wav");
     Mix_PlayChannel(-1, chomp, 0);
-
-
     while (Mix_Playing(-1)) {}
-
     Mix_FreeChunk(chomp);
 
 }

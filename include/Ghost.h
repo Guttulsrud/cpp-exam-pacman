@@ -22,6 +22,7 @@ public:
     EntityAnimator m_animator;
 
     void update() override;
+    void reset() override;
 
     TYPE getType() override;
 

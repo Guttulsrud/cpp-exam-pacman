@@ -11,7 +11,7 @@ SDL_Renderer *Game::renderer = nullptr;
 
 int Game::init(const char *title, int xPos, int yPos, int width, int height, bool fullscreen) {
 
-    Uint32 flags = SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL;
+    Uint32 flags = SDL_WINDOW_SHOWN;
     if (fullscreen) {
         flags = SDL_WINDOW_FULLSCREEN | SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL;
     }
@@ -123,7 +123,7 @@ void Game::addStationaryGameObject(const std::shared_ptr<StationaryObject> &obje
 void Game::setGameObjects() {
 
     setPlayer(std::make_shared<Player>(TextureManager::loadTexture("../resources/img/pacman/base.png"),
-                                       30 * 15, 30 * 18, 0, 3,
+                                       30 * 14.5, 30 * 18, 0, 3,
                                        EntityAnimator({{UP,
                                                                {
                                                                        "../resources/img/pacman/base.png",
@@ -294,9 +294,7 @@ void Game::resetRound() {
     getPlayer()->reset();
 
     for (auto const &ghost : getMovableGameObjects()) {
-        ghost->m_positionRectangle.x = 30 * 15;
-        ghost->m_positionRectangle.y = 30 * 15;
-        dynamic_cast<Ghost *>(ghost.get())->powerPelletState = false;
+        ghost->reset();
     }
     SDL_Delay(1500);
 }

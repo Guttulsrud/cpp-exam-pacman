@@ -134,4 +134,12 @@ Direction Ghost::getDirectionToPlayer(const std::map<Direction, SDL_Rect> &possi
     return closestToPlayer;
 }
 
+void Ghost::reset() {
+    m_positionRectangle.x = 30 * 15;
+    m_positionRectangle.y = 30 * 15;
+    powerPelletState = false;
+}
+
+
+
 
