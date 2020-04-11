@@ -10,6 +10,7 @@
 #include <string>
 #include <map>
 #include <iostream>
+#include <set>
 #include "GameObject.h"
 
 class EntityAnimator {
@@ -17,17 +18,19 @@ public:
     EntityAnimator(std::map<Direction, std::vector<const char *>> paths){
         std::vector<SDL_Texture * > kek;
         for(auto const& [key, vec] : paths){
-            int len = vec.size();
-            std::vector<SDL_Texture *> temp;
-            for(int i = 0; i < len; i++){
-                temp.emplace_back(TextureManager::loadTexture(vec[i]));
+            std::vector<SDL_Texture *> directionTextures;
+            for(auto &path : vec){
+                if(!createdTextures.count(path)){
+                    createdTextures[path] = TextureManager::loadTexture(path);
+                }
+                directionTextures.emplace_back(createdTextures[path]);
             }
-            textures.insert({key, temp});
+            textures.insert({key, directionTextures});
         }
     };
 
     std::map<Direction, std::vector<SDL_Texture *>> textures;
-
+    std::map<const char *, SDL_Texture *> createdTextures;
     int frameCount = 0;
     int animationIndex = 0;
 
