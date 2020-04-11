@@ -25,7 +25,9 @@ public:
             textures.insert({key, temp});
         }
     };
+
     std::map<Direction, std::vector<SDL_Texture *>> textures;
+
     int frameCount = 0;
     int animationIndex = 0;
 

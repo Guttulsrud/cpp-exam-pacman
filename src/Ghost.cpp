@@ -23,6 +23,8 @@ Direction getOppositeDirection(Direction direction) {
 }
 
 void Ghost::update() {
+
+
     std::map<Direction, SDL_Rect> directions;
 
     SDL_Rect temp = m_positionRectangle;
@@ -93,9 +95,9 @@ void Ghost::update() {
 
     //todo: Fix animation on below:::
     if (dead) {
-        m_texture = TextureManager::loadTexture("../resources/img/ghosts/eyes_E.png");
+        deadAnimator.animate(&m_texture, direction);
     } else if (powerPelletState) {
-        m_texture = TextureManager::loadTexture("../resources/img/ghosts/ghost_badTripState_1.png");
+        powerPelletStateAnimator.animate(&m_texture, direction);
     } else {
         m_animator.animate(&m_texture, direction);
     }
@@ -128,6 +130,7 @@ Direction Ghost::getDirectionToPlayer(const std::map<Direction, SDL_Rect> &possi
                 closestToPlayer = directionPosition.first;
             }
         }
+//        std::cout << closestToPlayer << std::endl;
     }
 
 
