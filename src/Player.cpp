@@ -13,16 +13,17 @@ void Player::update() {
     SDL_Rect possiblePosition = m_positionRectangle;
     SDL_Point possibleMovementChange = movementChange;
 
-    if (!IM.KeyStillUp(SDL_SCANCODE_W)) {
+    InputManager IM = InputManager::getInstance();
+    if (!IM.KeyStillUp(SDL_SCANCODE_W) || !IM.KeyStillUp(SDL_SCANCODE_UP)) {
         possibleMovementChange.x = 0;
         possibleMovementChange.y = -m_movementSpeed;
-    } else if (!IM.KeyStillUp(SDL_SCANCODE_A)) {
+    } else if (!IM.KeyStillUp(SDL_SCANCODE_A) || !IM.KeyStillUp(SDL_SCANCODE_LEFT)) {
         possibleMovementChange.x = -m_movementSpeed;
         possibleMovementChange.y = 0;
-    } else if (!IM.KeyStillUp(SDL_SCANCODE_S)) {
+    } else if (!IM.KeyStillUp(SDL_SCANCODE_S) || !IM.KeyStillUp(SDL_SCANCODE_DOWN)) {
         possibleMovementChange.x = 0;
         possibleMovementChange.y = m_movementSpeed;
-    } else if (!IM.KeyStillUp(SDL_SCANCODE_D)) {
+    } else if (!IM.KeyStillUp(SDL_SCANCODE_D) || !IM.KeyStillUp(SDL_SCANCODE_RIGHT)) {
         possibleMovementChange.x = m_movementSpeed;
         possibleMovementChange.y = 0;
         direction = RIGHT;
