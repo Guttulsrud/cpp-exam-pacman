@@ -5,6 +5,7 @@
 #include "../include/Pellet.h"
 
 #include <SDL2/SDL.h>
+#include <SDL_ttf.h>
 
 SDL_Renderer *Game::renderer = nullptr;
 
@@ -26,6 +27,12 @@ int Game::init(const char *title, int xPos, int yPos, int width, int height, boo
         if (renderer) {
             SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         }
+
+        if(TTF_Init() == 0) {
+            std::cout << "TTF init" << std::endl;
+        }
+
+
         std::cout << "Game running" << std::endl;
         isRunning = true;
         newGame();
@@ -59,8 +66,8 @@ void Game::update() {
 }
 
 
-void Game::render() {
 
+void Game::render() {
     std::vector<std::shared_ptr<MovableObject>> &movables = Game::getMovableGameObjects();
     std::vector<std::shared_ptr<StationaryObject>> &stationary = Game::getStationaryGameObjects();
     std::shared_ptr<Player> &player = Game::getPlayer();
@@ -72,6 +79,7 @@ void Game::render() {
         s->render();
     }
     player->render();
+    renderHighScore();
     SDL_RenderPresent(renderer);
     SDL_RenderClear(renderer);
 }
@@ -96,6 +104,15 @@ void Game::setPlayer(std::shared_ptr<Player> const &object) {
 std::shared_ptr<Map> &Game::getMap(int levelNumber) {
     return getMaps()[levelNumber-1];
 }
+
+
+void Game::renderHighScore() {
+    font = FC_CreateFont();
+    FC_LoadFont(font, renderer, "../resources/fonts/arial.ttf", 28, FC_MakeColor(255,255,255,255), TTF_STYLE_NORMAL);
+    FC_Draw(font, renderer, 200, 0, "Highscore: %d", getPlayer()->points);
+    FC_FreeFont(font);
+}
+
 
 Game::~Game() {
 
@@ -319,19 +336,14 @@ void Game::beginRound() {
 
 
 void Game::playSoundEffect(const char* filePath) {
-
-
     Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
     Mix_Chunk *chomp = Mix_LoadWAV(filePath);
     Mix_PlayChannel(-1, chomp, 0);
     while (Mix_Playing(-1)) {}
     Mix_FreeChunk(chomp);
-
 }
 
 void Game::newGame() {
-
     setGameObjects();
 }
-
 

@@ -7,6 +7,7 @@
 #include "GameObject.h"
 #include "Player.h"
 #include "StationaryObject.h"
+#include "../utils/SDL_FontCache.h"
 #include <memory>
 #include <iostream>
 #include <algorithm>
@@ -35,6 +36,8 @@ public:
 
     static SDL_Renderer *renderer;
 
+
+
     std::shared_ptr<Player> m_player;
     std::vector<std::shared_ptr<MovableObject>> movableGameObjects;
     std::vector<std::shared_ptr<StationaryObject>> stationaryGameObjects;
@@ -57,12 +60,12 @@ public:
     static void gameOver();
     static void beginRound();
     static void playSoundEffect(const char* filePath);
-
+    void renderHighScore();
 
 
 private:
     Game() = default;
-
+    FC_Font* font;
     bool isRunning;
     SDL_Window *window;
     int frameCount = 0;

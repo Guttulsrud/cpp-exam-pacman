@@ -115,7 +115,7 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
                     }
                 }
                 dynamic_cast<Pellet *>(stationary.get())->eaten = true;
-                points++;
+                points+=10;
 
             }
         }

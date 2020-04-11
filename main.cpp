@@ -1,9 +1,19 @@
 #include "include/Game.h"
 #include "include/InputManager.h"
 
-#include <SDL2/SDL_mixer.h>
-#include <thread>
+
+#include <SDL2/SDL_ttf.h>
+
+
 int main(int argc, char *argv[]) {
+
+
+
+
+
+
+
+
 
 
     const int FPS = 60;
@@ -11,16 +21,16 @@ int main(int argc, char *argv[]) {
 
     Uint32 frameStart;
     Uint32 frameTime;
-
     Game game = Game::getInstance();
-
     game.init("pacman", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 930, 1020, false);
+
 
     while (game.running()) {
 
         frameStart = SDL_GetTicks();
         InputManager::getInstance().update();
         game.update();
+
         game.render();
 
         frameTime = SDL_GetTicks() - frameStart;
@@ -29,6 +39,7 @@ int main(int argc, char *argv[]) {
             SDL_Delay(frameDelay - frameTime);
         }
     }
+    TTF_Quit();
 
     Mix_CloseAudio();
     game.clean();
