@@ -52,7 +52,12 @@ public:
     static void addStationaryGameObject(const std::shared_ptr<StationaryObject> &object);
     static void addMap(const std::shared_ptr<Map> &map);
     static void resetRound();
+    static void newGame();
+
     static void gameOver();
+    static void beginRound();
+    static void playSoundEffect(const char* filePath);
+
 
 
 private:

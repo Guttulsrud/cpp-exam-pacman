@@ -182,10 +182,9 @@ Map::~Map() {
 void Map::loadMapFromFile(const char *filePath) {
     std::ifstream file(filePath);
     if (!file.is_open()) {
-        exit(1);
+        std::cout << "Can't open map!" << std::endl;
     }
 
-    int array[32][29]{};
     for (int column = 0; column != 32; column++) {
         for (int row = 0; row != 29; row++) {
             file >> currentMap[column][row];
