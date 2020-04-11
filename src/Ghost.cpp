@@ -93,7 +93,7 @@ void Ghost::update() {
 
     //todo: Fix animation on below:::
     if (dead) {
-        m_texture = TextureManager::loadTexture("../resources/img/ghosts/ghost_eyes_E.png");
+        m_texture = TextureManager::loadTexture("../resources/img/ghosts/eyes_E.png");
     } else if (powerPelletState) {
         m_texture = TextureManager::loadTexture("../resources/img/ghosts/ghost_badTripState_1.png");
     } else {

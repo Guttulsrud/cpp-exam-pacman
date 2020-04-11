@@ -4,7 +4,6 @@
 #include "../include/Pellet.h"
 #include "../include/Ghost.h"
 #include <SDL_mixer.h>
-#include <thread>
 #include <future>
 
 using namespace std::chrono_literals;
@@ -79,16 +78,14 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
             if (ghost->powerPelletState) {
                 if (!ghost->dead) {
 
-                    playSound("../resources/sounds/pacman_eatghost.wav");
-
-
+                    playSound("../resources/sounds/pacman/pacman_eatghost.wav");
                     //todo:Must stop when ghost arrives at home
-                    playSound("../resources/sounds/ghost_return_to_home.mp3");
+                    playSound("../resources/sounds/ghosts/ghost_return_to_home.mp3");
 
                 }
                 ghost->dead = true;
             } else {
-                playSound("../resources/sounds/pacman_death.wav");
+                playSound("../resources/sounds/pacman/pacman_death.wav");
                 lives < 1 ? Game::gameOver() : Game::resetRound();
                 return false;
             }
@@ -107,7 +104,7 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
                 collectedPellet = true;
 
                 if (dynamic_cast<Pellet *>(stationary.get())->m_isPowerPellet) {
-                    playSound("../resources/sounds/eat_powerpellet.mp3");
+                    playSound("../resources/sounds/pacman/eat_powerpellet.mp3");
 
                     //TODO: Trenger bare loope igjennom ghost
 
@@ -127,7 +124,7 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
     }
     if(collectedPellet) {
         if (!Mix_Playing(-1)) {
-            playSound("../resources/sounds/pacman_chomp.wav");
+            playSound("../resources/sounds/pacman/pacman_chomp.wav");
         }
     }
     return didNotCollideWithWall;
