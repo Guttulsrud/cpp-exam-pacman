@@ -15,7 +15,6 @@ public:
     int difficulty = 4;
     Direction direction = RIGHT;
     std::vector<Direction> prevDirections;
-    bool wasAtIntersection = false;
     bool powerPelletState = false;
     bool dead = false;
     bool switchedToPowerPelletState = false;
