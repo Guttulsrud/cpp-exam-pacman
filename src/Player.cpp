@@ -49,6 +49,7 @@ void Player::update() {
         }
     }
     movementChange = possibleMovementChange;
+    updateHitbox();
 }
 
 void Player::determineDirection(const SDL_Rect &possiblePosition) {
@@ -72,7 +73,7 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
 
     // Check for collision with moving game objects
     for (auto &movable : Game::getMovableGameObjects()) {
-        if (SDL_HasIntersection(&possiblePosition, &movable->m_positionRectangle) && movable->getType() == GHOST) {
+        if (SDL_HasIntersection(&hitbox, &movable->hitbox) && movable->getType() == GHOST) {
             auto ghost = dynamic_cast<Ghost *>(movable.get());
             if (ghost->powerPelletState) {
                 if (!ghost->dead) {

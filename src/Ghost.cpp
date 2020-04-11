@@ -23,8 +23,6 @@ Direction getOppositeDirection(Direction direction) {
 }
 
 void Ghost::update() {
-
-
     std::map<Direction, SDL_Rect> directions;
 
     SDL_Rect temp = m_positionRectangle;
@@ -42,7 +40,6 @@ void Ghost::update() {
 
     std::map<Direction, SDL_Rect> possibleDirections;
     std::vector<Direction> possibleDirectionsVector;
-
 
     //Finds valid move direction
     for (auto &directionPosition : directions) {
@@ -104,6 +101,8 @@ void Ghost::update() {
 
 
     prevDirections = possibleDirectionsVector;
+    updateHitbox();
+
 }
 
 Direction Ghost::getDirectionToPlayer(const std::map<Direction, SDL_Rect> &possibleDirections) const {
