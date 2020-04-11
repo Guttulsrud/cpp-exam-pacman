@@ -21,6 +21,101 @@ public:
     bool switchedToPowerPelletState = false;
     EntityAnimator m_animator;
 
+    EntityAnimator powerPelletStateAnimator = EntityAnimator({{UP,
+                                                                      {
+                                                                              "../resources/img/ghosts/ghost_badTripState_1.png",
+                                                                              "../resources/img/ghosts/ghost_badTripState_2.png"
+                                                                      }
+                                                              },
+                                                              {DOWN,
+                                                                      {
+
+                                                                              "../resources/img/ghosts/ghost_badTripState_1.png",
+                                                                              "../resources/img/ghosts/ghost_badTripState_2.png"
+                                                                      }
+                                                              },
+                                                              {LEFT,
+                                                                      {
+                                                                              "../resources/img/ghosts/ghost_badTripState_1.png",
+                                                                              "../resources/img/ghosts/ghost_badTripState_2.png"
+                                                                      }
+                                                              },
+                                                              {RIGHT,
+                                                                      {
+                                                                              "../resources/img/ghosts/ghost_badTripState_1.png",
+                                                                              "../resources/img/ghosts/ghost_badTripState_2.png"
+                                                                      }
+                                                              }});
+
+    EntityAnimator powerPelletStateEndAnimator = EntityAnimator({{UP,
+                                                                      {
+                                                                              "../resources/img/ghosts/ghost_badTripState_1.png",
+                                                                              "../resources/img/ghosts/ghost_badTripState_2.png",
+                                                                              "../resources/img/ghosts/ghost_badTripState_1.png",
+                                                                              "../resources/img/ghosts/ghost_badTripState_2.png",
+                                                                              "../resources/img/ghosts/ghost_badTripState_flash_1.png",
+                                                                              "../resources/img/ghosts/ghost_badTripState_flash_2.png",
+                                                                              "../resources/img/ghosts/ghost_badTripState_flash_1.png",
+                                                                              "../resources/img/ghosts/ghost_badTripState_flash_2.png"
+                                                                      }
+                                                              },
+                                                              {DOWN,
+                                                                      {
+                                                                              "../resources/img/ghosts/ghost_badTripState_1.png",
+                                                                              "../resources/img/ghosts/ghost_badTripState_2.png",
+                                                                              "../resources/img/ghosts/ghost_badTripState_1.png",
+                                                                              "../resources/img/ghosts/ghost_badTripState_2.png",
+                                                                              "../resources/img/ghosts/ghost_badTripState_flash_1.png",
+                                                                              "../resources/img/ghosts/ghost_badTripState_flash_2.png",
+                                                                              "../resources/img/ghosts/ghost_badTripState_flash_1.png",
+                                                                              "../resources/img/ghosts/ghost_badTripState_flash_2.png"
+                                                                      }
+                                                              },
+                                                              {LEFT,
+                                                                      {
+                                                                              "../resources/img/ghosts/ghost_badTripState_1.png",
+                                                                              "../resources/img/ghosts/ghost_badTripState_2.png",
+                                                                              "../resources/img/ghosts/ghost_badTripState_1.png",
+                                                                              "../resources/img/ghosts/ghost_badTripState_2.png",
+                                                                              "../resources/img/ghosts/ghost_badTripState_flash_1.png",
+                                                                              "../resources/img/ghosts/ghost_badTripState_flash_2.png",
+                                                                              "../resources/img/ghosts/ghost_badTripState_flash_1.png",
+                                                                              "../resources/img/ghosts/ghost_badTripState_flash_2.png"
+                                                                      }
+                                                              },
+                                                              {RIGHT,
+                                                                      {
+                                                                              "../resources/img/ghosts/ghost_badTripState_1.png",
+                                                                              "../resources/img/ghosts/ghost_badTripState_2.png",
+                                                                              "../resources/img/ghosts/ghost_badTripState_1.png",
+                                                                              "../resources/img/ghosts/ghost_badTripState_2.png",
+                                                                              "../resources/img/ghosts/ghost_badTripState_flash_1.png",
+                                                                              "../resources/img/ghosts/ghost_badTripState_flash_2.png",
+                                                                              "../resources/img/ghosts/ghost_badTripState_flash_1.png",
+                                                                              "../resources/img/ghosts/ghost_badTripState_flash_2.png"
+                                                                      }
+                                                              }});
+    EntityAnimator deadAnimator = EntityAnimator({{UP,
+                                                          {
+                                                                  "../resources/img/ghosts/eyes_N.png"
+                                                          }
+                                                  },
+                                                  {DOWN,
+                                                          {
+                                                                  "../resources/img/ghosts/eyes_S.png"
+                                                          }
+                                                  },
+                                                  {LEFT,
+                                                          {
+                                                                  "../resources/img/ghosts/eyes_W.png"
+                                                          }
+                                                  },
+                                                  {RIGHT,
+                                                          {
+                                                                  "../resources/img/ghosts/eyes_E.png"
+                                                          }
+                                                  }});
+
     void update() override;
     void reset() override;
 

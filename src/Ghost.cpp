@@ -41,7 +41,6 @@ void Ghost::update() {
     std::map<Direction, SDL_Rect> possibleDirections;
     std::vector<Direction> possibleDirectionsVector;
 
-
     //Finds valid move direction
     for (auto &directionPosition : directions) {
         bool didNotCollideWithWall = true;
@@ -93,15 +92,17 @@ void Ghost::update() {
 
     //todo: Fix animation on below:::
     if (dead) {
-        m_texture = TextureManager::loadTexture("../resources/img/ghosts/eyes_E.png");
+        deadAnimator.animate(&m_texture, direction);
     } else if (powerPelletState) {
-        m_texture = TextureManager::loadTexture("../resources/img/ghosts/ghost_badTripState_1.png");
+        powerPelletStateAnimator.animate(&m_texture, direction);
     } else {
         m_animator.animate(&m_texture, direction);
     }
 
 
     prevDirections = possibleDirectionsVector;
+    updateHitbox();
+
 }
 
 Direction Ghost::getDirectionToPlayer(const std::map<Direction, SDL_Rect> &possibleDirections) const {
@@ -128,6 +129,7 @@ Direction Ghost::getDirectionToPlayer(const std::map<Direction, SDL_Rect> &possi
                 closestToPlayer = directionPosition.first;
             }
         }
+//        std::cout << closestToPlayer << std::endl;
     }
 
 

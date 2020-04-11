@@ -292,13 +292,15 @@ void Game::setGameObjects() {
                                     }
                             }})));
 
+
+
     addStationaryGameObject(
-            std::make_shared<VoidWarp>(TextureManager::loadTexture("../resources/img/red.jpg"), 60, 60, -80, 450, 2,
+            std::make_shared<VoidWarp>(TextureManager::loadTexture("../resources/img/red.jpg"), 2, 60, 30, 30*15, 2,
                                        0));
     addStationaryGameObject(
             (
-                    std::make_shared<VoidWarp>(TextureManager::loadTexture("../resources/img/red.jpg"), 60, 60, 950,
-                                               450, 2,
+                    std::make_shared<VoidWarp>(TextureManager::loadTexture("../resources/img/red.jpg"), 2, 60, 30*30,
+                                               30*15, 2,
                                                1)));
 
     addMap(std::make_shared<Map>());

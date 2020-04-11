@@ -6,3 +6,7 @@
 #include "../include/Game.h"
 
 
+void MovableObject::updateHitbox() {
+    hitbox.x = m_positionRectangle.x;
+    hitbox.y = m_positionRectangle.y;
+}
