@@ -59,7 +59,6 @@ public:
 
     static void gameOver();
     static void beginRound();
-    static void playSoundEffect(const char* filePath);
     void renderHighScore();
 
 

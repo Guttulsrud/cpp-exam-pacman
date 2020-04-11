@@ -50,6 +50,7 @@ void Player::update() {
     }
     movementChange = possibleMovementChange;
     updateHitbox();
+
 }
 
 void Player::determineDirection(const SDL_Rect &possiblePosition) {
@@ -78,14 +79,16 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
             if (ghost->powerPelletState) {
                 if (!ghost->dead) {
 
-                    playSound("../resources/sounds/pacman/pacman_eatghost.wav");
+
+                    playSound(EAT_GHOST, 3);
+
                     //todo:Must stop when ghost arrives at home
-                    playSound("../resources/sounds/ghosts/ghost_return_to_home.mp3");
+                    //playSound("../resources/sounds/ghosts/ghost_return_to_home.mp3");
 
                 }
                 ghost->dead = true;
             } else {
-                playSound("../resources/sounds/pacman/pacman_death.wav");
+                playSound(DEATH);
                 lives < 1 ? Game::gameOver() : Game::resetRound();
                 return false;
             }
@@ -103,12 +106,12 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
             if (stationary->getType() == PELLET) {
                 collectedPellet = true;
 
+
                 if (dynamic_cast<Pellet *>(stationary.get())->m_isPowerPellet) {
-                    playSound("../resources/sounds/pacman/eat_powerpellet.mp3");
 
-                    //TODO: Trenger bare loope igjennom ghost
+                    playSound(EAT_POWER_PELLET, 2);
 
-                    //TODO:  Denne bør være en egen funksjon, eventuelt bruke loopen over og sjekke power state et annet sted?
+
                     for (auto &o : Game::getMovableGameObjects()) {
                         if (o->getType() == GHOST) {
                             dynamic_cast<Ghost *>(o.get())->switchedToPowerPelletState = true;
@@ -116,16 +119,14 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
                     }
                 }
                 dynamic_cast<Pellet *>(stationary.get())->eaten = true;
-                points+=10;
+                points += 10;
 
             }
         }
 
     }
-    if(collectedPellet) {
-        if (!Mix_Playing(-1)) {
-            playSound("../resources/sounds/pacman/pacman_chomp.wav");
-        }
+    if (collectedPellet && !Mix_Playing(1)) {
+        playSound(EAT_PELLET, 1);
     }
     return didNotCollideWithWall;
 }
@@ -142,7 +143,6 @@ void Player::reset() {
     m_positionRectangle.y = 30 * 24;
 }
 
-void Player::playSound(const char *path) {
-    futures.emplace_back(std::async(std::launch::async, Game::playSoundEffect, path));
-
+void Player::playSound(Sound sound, int channel) {
+    Mix_PlayChannel(channel, sounds[sound], 0);
 }

@@ -9,7 +9,6 @@
 
 SDL_Renderer *Game::renderer = nullptr;
 
-
 int Game::init(const char *title, int xPos, int yPos, int width, int height, bool fullscreen) {
 
     Uint32 flags = SDL_WINDOW_SHOWN;
@@ -18,6 +17,14 @@ int Game::init(const char *title, int xPos, int yPos, int width, int height, boo
     }
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) == 0) {
         window = SDL_CreateWindow(title, xPos, yPos, width, height, flags);
+
+        if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024) < 0) {
+            // Error message if can't initialize
+        }
+
+        Mix_AllocateChannels(32);
+
+
 
         if (window) {
         }
@@ -31,7 +38,6 @@ int Game::init(const char *title, int xPos, int yPos, int width, int height, boo
         if(TTF_Init() == 0) {
             std::cout << "TTF init" << std::endl;
         }
-
 
         std::cout << "Game running" << std::endl;
         isRunning = true;
@@ -50,7 +56,6 @@ void removeEatenPellets(std::vector<std::shared_ptr<StationaryObject>> &objects)
             objects.end());
 }
 
-
 void Game::update() {
     std::vector<std::shared_ptr<MovableObject>> &movables = Game::getMovableGameObjects();
     std::shared_ptr<Player> &player = Game::getPlayer();
@@ -65,8 +70,6 @@ void Game::update() {
     removeEatenPellets(Game::getStationaryGameObjects());
 }
 
-
-
 void Game::render() {
     std::vector<std::shared_ptr<MovableObject>> &movables = Game::getMovableGameObjects();
     std::vector<std::shared_ptr<StationaryObject>> &stationary = Game::getStationaryGameObjects();
@@ -78,6 +81,10 @@ void Game::render() {
     for (auto const &s : stationary) {
         s->render();
     }
+
+
+
+
     player->render();
     renderHighScore();
     SDL_RenderPresent(renderer);
@@ -309,6 +316,7 @@ void Game::setGameObjects() {
 }
 
 void Game::resetRound() {
+    SDL_Delay(1500);
 
     std::cout << "Reset round" << std::endl;
     getPlayer()->reset();
@@ -316,7 +324,6 @@ void Game::resetRound() {
     for (auto const &ghost : getMovableGameObjects()) {
         ghost->reset();
     }
-    SDL_Delay(1500);
 }
 
 void Game::gameOver() {
@@ -334,15 +341,6 @@ std::vector<std::shared_ptr<Map>> &Game::getMaps() {
 
 void Game::beginRound() {
 
-}
-
-
-void Game::playSoundEffect(const char* filePath) {
-    Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
-    Mix_Chunk *chomp = Mix_LoadWAV(filePath);
-    Mix_PlayChannel(-1, chomp, 0);
-    while (Mix_Playing(-1)) {}
-    Mix_FreeChunk(chomp);
 }
 
 void Game::newGame() {
