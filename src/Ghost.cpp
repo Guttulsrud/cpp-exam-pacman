@@ -64,7 +64,7 @@ void Ghost::update() {
     }
 
     //decides which way
-    if ((prevDirections != possibleDirectionsVector || possibleDirections.size() > 2) && !wasAtIntersection) {
+    if ((prevDirections != possibleDirectionsVector || possibleDirections.size() > 2)) {
         auto item = possibleDirections.begin();
         std::random_device rd;
         std::mt19937 mt(rd());
@@ -79,7 +79,6 @@ void Ghost::update() {
             direction = item->first;
             m_positionRectangle = item->second;
         }
-        wasAtIntersection = true;
     } else {
         if (switchedToPowerPelletState) {
             direction = getDirectionToPlayer(directions);
@@ -87,7 +86,6 @@ void Ghost::update() {
             switchedToPowerPelletState = false;
         }
         m_positionRectangle = directions[direction];
-        wasAtIntersection = false;
     }
 
     //todo: Fix animation on below:::
