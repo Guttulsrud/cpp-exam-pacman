@@ -16,7 +16,9 @@ public:
 
     static InputManager &getInstance();
 
-    // Keyboard.
+
+    bool AnyKeyDown();
+
     bool KeyDown(int iKeyIndex);
 
     bool KeyStillDown(int iKeyIndex);

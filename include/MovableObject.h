@@ -10,6 +10,8 @@ public:
         m_movementSpeed = movementSpeed;
         hitbox.h = 20;
         hitbox.w = 20;
+        hitbox.x = x;
+        hitbox.y = y;
     }
     SDL_Rect hitbox;
     void updateHitbox();
