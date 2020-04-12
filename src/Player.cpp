@@ -84,7 +84,9 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
                 ghost->dead = true;
             } else {
                 playSound(DEATH);
-                lives < 1 ? Game::getInstance().gameOver() : Game::getInstance().Game::resetRound();
+                while (Mix_Playing(-1)) {}
+                lives < 1 ? Game::getInstance().gameOver() : Game::getInstance().resetRound();
+
                 return false;
             }
         }

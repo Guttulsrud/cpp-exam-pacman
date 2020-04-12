@@ -22,9 +22,7 @@ int main(int argc, char *argv[]) {
 
     //Todo: place intro screen here: When user clicks Play, code below follows:
     game.startGame();
-    while (Mix_Playing(1)) {
-        IM.update();
-    }
+
 
     while (game.running()) {
         frameStart = SDL_GetTicks();

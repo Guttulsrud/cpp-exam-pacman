@@ -61,12 +61,11 @@ public:
     void startGame();
 
     void gameOver();
-    static void beginRound();
-    void renderHighScore();
-    void renderReadyText();
+    void drawText(const char * text, float x, float y, int parameter = 0);
     void initFont(int size);
 
-    void initFontsAndAudio();
+    void initFonts();
+
 
 private:
     Game() = default;

@@ -10,7 +10,7 @@
 
 
 enum Sound {
-    EAT_PELLET, EAT_POWER_PELLET, DEATH, EAT_FRUIT, EAT_GHOST
+    EAT_PELLET, EAT_POWER_PELLET, DEATH, EAT_FRUIT, EAT_GHOST, TEST
 };
 
 class Player : public MovableObject {
@@ -24,6 +24,7 @@ public:
                   {EAT_FRUIT, Mix_LoadWAV("../resources/sounds/pacman/pacman_eatfruit.wav")},
                   {EAT_GHOST, Mix_LoadWAV("../resources/sounds/pacman/pacman_eatghost.wav")},
                   {DEATH, Mix_LoadWAV("../resources/sounds/pacman/pacman_death.wav")},
+                  {TEST, Mix_LoadWAV("../resources/sounds/game/pacman_beginning.wav")},
         };
     }
 
@@ -39,7 +40,7 @@ public:
     Direction direction = UP;
     EntityAnimator m_animator;
     int points = 0;
-    int lives = 2;
+    int lives = 3;
 
     void playSound(Sound sound, int channel = -1);
 
