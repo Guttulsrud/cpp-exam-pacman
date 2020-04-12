@@ -57,13 +57,13 @@ public:
     static void addMovableGameObject(const std::shared_ptr<MovableObject> &object);
     static void addStationaryGameObject(const std::shared_ptr<StationaryObject> &object);
     static void addMap(const std::shared_ptr<Map> &map);
+
+    static int readHighScore();
     void resetRound();
     void startGame();
-
     void gameOver();
     void drawText(const char * text, float x, float y, int parameter = 0);
     void initFont(int size);
-
     void initFonts();
 
 
@@ -73,7 +73,7 @@ private:
     bool isRunning;
     SDL_Window *window;
     int frameCount = 0;
-
+    int highScore = 0;
 };
 
 #endif

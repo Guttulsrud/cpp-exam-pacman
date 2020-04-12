@@ -7,6 +7,7 @@
 
 #include <SDL2/SDL.h>
 #include <SDL_ttf.h>
+#include <fstream>
 
 SDL_Renderer *Game::renderer = nullptr;
 
@@ -82,7 +83,8 @@ void Game::render() {
         s->render();
     }
 
-    drawText("Highscore: %d", 35, 0, getPlayer()->points);
+    drawText("Highscore: %d", 35, 0, getPlayer()->highScore);
+    drawText("Points: %d", 400, 0, getPlayer()->points);
     drawText("Lives: %d", 775, 0, getPlayer()->lives + 1);
     player->render();
     SDL_RenderPresent(renderer);
@@ -309,6 +311,7 @@ void Game::setGameObjects() {
 
 void Game::resetRound() {
     getPlayer()->reset();
+
     for (auto const &ghost : getMovableGameObjects()) {
         ghost->reset();
     }
@@ -321,6 +324,12 @@ void Game::resetRound() {
 
 
 void Game::gameOver() {
+
+    if (getPlayer()->points > getPlayer()->highScore) {
+        getPlayer()->writeHighScore(getPlayer()->points);
+    }
+    getPlayer()->points = 0;
+
     initFont(40);
     drawText("Press space to play again", 150, 500);
     SDL_RenderPresent(renderer);
@@ -345,6 +354,8 @@ void Game::startGame() {
     setGameObjects();
     render();
     resetRound();
+
+
 }
 
 
@@ -364,3 +375,4 @@ void Game::initFont(int size) {
     font = FC_CreateFont();
     FC_LoadFont(font, renderer, "../resources/fonts/arial.ttf", size, FC_MakeColor(255, 255, 0, 255), TTF_STYLE_ITALIC);
 }
+
