@@ -7,6 +7,7 @@
 #include "GameObject.h"
 #include "Player.h"
 #include "StationaryObject.h"
+#include "../utils/SDL_FontCache.h"
 #include <memory>
 #include <iostream>
 #include <algorithm>
@@ -35,6 +36,11 @@ public:
 
     static SDL_Renderer *renderer;
 
+    std::map<Sound, Mix_Chunk *> sounds;
+
+
+    Mix_Chunk* introMusic;
+
     std::shared_ptr<Player> m_player;
     std::vector<std::shared_ptr<MovableObject>> movableGameObjects;
     std::vector<std::shared_ptr<StationaryObject>> stationaryGameObjects;
@@ -51,18 +57,20 @@ public:
     static void addMovableGameObject(const std::shared_ptr<MovableObject> &object);
     static void addStationaryGameObject(const std::shared_ptr<StationaryObject> &object);
     static void addMap(const std::shared_ptr<Map> &map);
-    static void resetRound();
-    static void newGame();
+    void resetRound();
+    void newGame();
 
-    static void gameOver();
+    void gameOver();
     static void beginRound();
-    static void playSoundEffect(const char* filePath);
+    void renderHighScore();
+    void renderReadyText();
+    void renderIntroText();
 
-
+    void playSound();
 
 private:
     Game() = default;
-
+    FC_Font* font;
     bool isRunning;
     SDL_Window *window;
     int frameCount = 0;

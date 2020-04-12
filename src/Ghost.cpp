@@ -23,8 +23,6 @@ Direction getOppositeDirection(Direction direction) {
 }
 
 void Ghost::update() {
-
-
     std::map<Direction, SDL_Rect> directions;
 
     SDL_Rect temp = m_positionRectangle;
@@ -42,7 +40,6 @@ void Ghost::update() {
 
     std::map<Direction, SDL_Rect> possibleDirections;
     std::vector<Direction> possibleDirectionsVector;
-
 
     //Finds valid move direction
     for (auto &directionPosition : directions) {
@@ -67,7 +64,7 @@ void Ghost::update() {
     }
 
     //decides which way
-    if ((prevDirections != possibleDirectionsVector || possibleDirections.size() > 2) && !wasAtIntersection) {
+    if ((prevDirections != possibleDirectionsVector || possibleDirections.size() > 2)) {
         auto item = possibleDirections.begin();
         std::random_device rd;
         std::mt19937 mt(rd());
@@ -82,7 +79,6 @@ void Ghost::update() {
             direction = item->first;
             m_positionRectangle = item->second;
         }
-        wasAtIntersection = true;
     } else {
         if (switchedToPowerPelletState) {
             direction = getDirectionToPlayer(directions);
@@ -90,7 +86,6 @@ void Ghost::update() {
             switchedToPowerPelletState = false;
         }
         m_positionRectangle = directions[direction];
-        wasAtIntersection = false;
     }
 
     //todo: Fix animation on below:::
@@ -104,6 +99,8 @@ void Ghost::update() {
 
 
     prevDirections = possibleDirectionsVector;
+    updateHitbox();
+
 }
 
 Direction Ghost::getDirectionToPlayer(const std::map<Direction, SDL_Rect> &possibleDirections) const {
@@ -140,6 +137,7 @@ Direction Ghost::getDirectionToPlayer(const std::map<Direction, SDL_Rect> &possi
 void Ghost::reset() {
     m_positionRectangle.x = 30 * 15;
     m_positionRectangle.y = 30 * 15;
+    updateHitbox();
     powerPelletState = false;
 }
 

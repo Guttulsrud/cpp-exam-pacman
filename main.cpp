@@ -1,8 +1,10 @@
 #include "include/Game.h"
 #include "include/InputManager.h"
 
-#include <SDL2/SDL_mixer.h>
-#include <thread>
+
+#include <SDL2/SDL_ttf.h>
+
+
 int main(int argc, char *argv[]) {
 
 
@@ -11,17 +13,22 @@ int main(int argc, char *argv[]) {
 
     Uint32 frameStart;
     Uint32 frameTime;
-
     Game game = Game::getInstance();
+    InputManager IM = InputManager::getInstance();
 
     game.init("pacman", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 930, 1020, false);
 
 
 
-    while (game.running()) {
+    //Todo: place intro screen here: When user clicks Play, code below follows:
+    game.newGame();
+    while (Mix_Playing(1)) {
+        IM.update();
+    }
 
+    while (game.running()) {
         frameStart = SDL_GetTicks();
-        InputManager::getInstance().update();
+        IM.update();
         game.update();
         game.render();
 
@@ -30,9 +37,10 @@ int main(int argc, char *argv[]) {
         if (frameDelay > frameTime) {
             SDL_Delay(frameDelay - frameTime);
         }
+
+
     }
 
-    Mix_CloseAudio();
     game.clean();
 
     //TODO: Make wrapper class "fascade" for SDL2?
