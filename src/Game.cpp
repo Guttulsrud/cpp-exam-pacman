@@ -34,7 +34,7 @@ int Game::init(const char *title, int xPos, int yPos, int width, int height, boo
             SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         }
 
-        if(TTF_Init() == 0) {
+        if (TTF_Init() == 0) {
             std::cout << "TTF init" << std::endl;
         }
 
@@ -82,7 +82,8 @@ void Game::render() {
         s->render();
     }
 
-    drawText("Highscore: %d", 200, 0, getPlayer()->points);
+    drawText("Highscore: %d", 35, 0, getPlayer()->points);
+    drawText("Lives: %d", 775, 0, getPlayer()->lives + 1);
     player->render();
     SDL_RenderPresent(renderer);
     SDL_RenderClear(renderer);
@@ -109,9 +110,8 @@ void Game::setPlayer(std::shared_ptr<Player> const &object) {
 
 
 std::shared_ptr<Map> &Game::getMap(int levelNumber) {
-    return getMaps()[levelNumber-1];
+    return getMaps()[levelNumber - 1];
 }
-
 
 
 Game::~Game() {
@@ -141,7 +141,7 @@ void Game::addStationaryGameObject(const std::shared_ptr<StationaryObject> &obje
 void Game::setGameObjects() {
 
     setPlayer(std::make_shared<Player>(TextureManager::loadTexture("../resources/img/pacman/base.png"),
-                                       30 * 14.5, 30 * 24, 0, 5,
+                                       30 * 14.5, 30 * 24, 0, 3,
                                        EntityAnimator({{UP,
                                                                {
                                                                        "../resources/img/pacman/base.png",
@@ -293,14 +293,13 @@ void Game::setGameObjects() {
                             }})));
 
 
-
     addStationaryGameObject(
-            std::make_shared<VoidWarp>(TextureManager::loadTexture("../resources/img/red.jpg"), 2, 60, 30, 30*15, 2,
+            std::make_shared<VoidWarp>(TextureManager::loadTexture("../resources/img/red.jpg"), 2, 60, 30, 30 * 15, 2,
                                        0));
     addStationaryGameObject(
             (
-                    std::make_shared<VoidWarp>(TextureManager::loadTexture("../resources/img/red.jpg"), 2, 60, 30*30,
-                                               30*15, 2,
+                    std::make_shared<VoidWarp>(TextureManager::loadTexture("../resources/img/red.jpg"), 2, 60, 30 * 30,
+                                               30 * 15, 2,
                                                1)));
 
     addMap(std::make_shared<Map>());
@@ -341,7 +340,6 @@ std::vector<std::shared_ptr<Map>> &Game::getMaps() {
 }
 
 
-
 void Game::startGame() {
     initFonts();
     setGameObjects();
@@ -353,16 +351,16 @@ void Game::startGame() {
 void Game::initFonts() {
     initFont(42);
     drawText("Ready!", 375, 545);
-    initFont(28);
+    initFont(24);
 }
 
 
-void Game::drawText(const char * text, float x, float y, int parameter) {
+void Game::drawText(const char *text, float x, float y, int parameter) {
     FC_Draw(font, renderer, x, y, text, parameter);
 }
 
 
 void Game::initFont(int size) {
     font = FC_CreateFont();
-    FC_LoadFont(font, renderer, "../resources/fonts/arial.ttf", size, FC_MakeColor(255,255,0,255), TTF_STYLE_ITALIC);
+    FC_LoadFont(font, renderer, "../resources/fonts/arial.ttf", size, FC_MakeColor(255, 255, 0, 255), TTF_STYLE_ITALIC);
 }
