@@ -11,7 +11,7 @@ SDL_Renderer *Game::renderer = nullptr;
 
 int Game::init(const char *title, int xPos, int yPos, int width, int height, bool fullscreen) {
 
-    Uint32 flags = SDL_WINDOW_SHOWN;
+    Uint32 flags = SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL;
     if (fullscreen) {
         flags = SDL_WINDOW_FULLSCREEN | SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL;
     }
@@ -22,7 +22,7 @@ int Game::init(const char *title, int xPos, int yPos, int width, int height, boo
             // Error message if can't initialize
         }
 
-        Mix_AllocateChannels(32);
+        Mix_AllocateChannels(8);
 
         if (window) {
         }
@@ -82,16 +82,15 @@ void Game::render() {
         s->render();
     }
 
-
-    player->render();
     renderHighScore();
-    renderReadyText();
+    player->render();
     SDL_RenderPresent(renderer);
     SDL_RenderClear(renderer);
 }
 
 void Game::clean() {
     TTF_Quit();
+    FC_FreeFont(font);
     Mix_CloseAudio();
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
@@ -113,19 +112,6 @@ std::shared_ptr<Map> &Game::getMap(int levelNumber) {
     return getMaps()[levelNumber-1];
 }
 
-
-void Game::renderHighScore() {
-    font = FC_CreateFont();
-    FC_LoadFont(font, renderer, "../resources/fonts/arial.ttf", 28, FC_MakeColor(255,255,255,255), TTF_STYLE_ITALIC);
-    FC_Draw(font, renderer, 200, 0, "Highscore: %d", getPlayer()->points);
-    FC_FreeFont(font);
-}
-void Game::renderReadyText() {
-    font = FC_CreateFont();
-    FC_LoadFont(font, renderer, "../resources/fonts/arial.ttf", 42, FC_MakeColor(255,255,0,255), TTF_STYLE_ITALIC);
-    FC_Draw(font, renderer, 375, 545, "Ready!");
-    FC_FreeFont(font);
-}
 
 
 Game::~Game() {
@@ -352,15 +338,31 @@ void Game::beginRound() {
 
 }
 
-void Game::newGame() {
-    playSound();
+void Game::startGame() {
+    initFontsAndAudio();
     setGameObjects();
-    renderReadyText();
     render();
 }
 
 
-
-void Game::playSound() {
+void Game::initFontsAndAudio() {
+    initFont(42);
+    renderReadyText();
     Mix_PlayChannel(1, introMusic, 0);
+    initFont(28);
+}
+
+
+void Game::renderHighScore() {
+    FC_Draw(font, renderer, 200, 0, "Highscore: %d", getPlayer()->points);
+}
+
+void Game::renderReadyText() {
+    FC_Draw(font, renderer, 375, 545, "Ready!");
+    FC_FreeFont(font);
+}
+
+void Game::initFont(int size) {
+    font = FC_CreateFont();
+    FC_LoadFont(font, renderer, "../resources/fonts/arial.ttf", size, FC_MakeColor(255,255,0,255), TTF_STYLE_ITALIC);
 }

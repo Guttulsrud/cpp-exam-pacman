@@ -58,15 +58,15 @@ public:
     static void addStationaryGameObject(const std::shared_ptr<StationaryObject> &object);
     static void addMap(const std::shared_ptr<Map> &map);
     void resetRound();
-    void newGame();
+    void startGame();
 
     void gameOver();
     static void beginRound();
     void renderHighScore();
     void renderReadyText();
-    void renderIntroText();
+    void initFont(int size);
 
-    void playSound();
+    void initFontsAndAudio();
 
 private:
     Game() = default;

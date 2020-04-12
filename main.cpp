@@ -21,7 +21,7 @@ int main(int argc, char *argv[]) {
 
 
     //Todo: place intro screen here: When user clicks Play, code below follows:
-    game.newGame();
+    game.startGame();
     while (Mix_Playing(1)) {
         IM.update();
     }
@@ -37,15 +37,9 @@ int main(int argc, char *argv[]) {
         if (frameDelay > frameTime) {
             SDL_Delay(frameDelay - frameTime);
         }
-
-
     }
 
     game.clean();
-
-    //TODO: Make wrapper class "fascade" for SDL2?
-    // Har egne metoder som forenkler kall til de wrappede undermetodene (gjerne flere om gangen).
-    // Hvis undermetodene tilhører klasser, blir disse klassene private medlemsvariabler i Facade klassen.
 
 
     return 0;
