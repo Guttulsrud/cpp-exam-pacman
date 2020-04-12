@@ -3,6 +3,7 @@
 #include "../include/Ghost.h"
 #include "../include/VoidWarp.h"
 #include "../include/Pellet.h"
+#include "../include/InputManager.h"
 
 #include <SDL2/SDL.h>
 #include <SDL_ttf.h>
@@ -41,7 +42,6 @@ int Game::init(const char *title, int xPos, int yPos, int width, int height, boo
         isRunning = true;
 
         introMusic = Mix_LoadWAV("../resources/sounds/game/pacman_beginning.wav");
-
     }
     return 0;
 }
@@ -82,7 +82,7 @@ void Game::render() {
         s->render();
     }
 
-    renderHighScore();
+    drawText("Highscore: %d", 200, 0, getPlayer()->points);
     player->render();
     SDL_RenderPresent(renderer);
     SDL_RenderClear(renderer);
@@ -141,7 +141,7 @@ void Game::addStationaryGameObject(const std::shared_ptr<StationaryObject> &obje
 void Game::setGameObjects() {
 
     setPlayer(std::make_shared<Player>(TextureManager::loadTexture("../resources/img/pacman/base.png"),
-                                       30 * 14.5, 30 * 24, 0, 3,
+                                       30 * 14.5, 30 * 24, 0, 5,
                                        EntityAnimator({{UP,
                                                                {
                                                                        "../resources/img/pacman/base.png",
@@ -309,58 +309,58 @@ void Game::setGameObjects() {
 }
 
 void Game::resetRound() {
-    renderReadyText();
-
-    SDL_Delay(1500);
-
-    std::cout << "Reset round" << std::endl;
     getPlayer()->reset();
-
     for (auto const &ghost : getMovableGameObjects()) {
         ghost->reset();
     }
+    initFonts();
+    render();
+    getPlayer()->playSound(TEST, 5);
+    while (Mix_Playing(5)) {}
+
 }
 
+
 void Game::gameOver() {
-    std::cout << "Game over" << std::endl;
+    initFont(40);
+    drawText("Press space to play again", 150, 500);
+    SDL_RenderPresent(renderer);
+    SDL_RenderClear(renderer);
+    InputManager IM = InputManager::getInstance();
+    while (!IM.KeyDown(SDL_SCANCODE_SPACE)) {
+        IM.update();
+    }
 
     getMap(1)->redrawPelletsOnMap();
+    getPlayer()->lives = 3;
     resetRound();
-    getPlayer()->lives = 2;
-
 }
 
 std::vector<std::shared_ptr<Map>> &Game::getMaps() {
     return getInstance().maps;
 }
 
-void Game::beginRound() {
 
-}
 
 void Game::startGame() {
-    initFontsAndAudio();
+    initFonts();
     setGameObjects();
     render();
+    resetRound();
 }
 
 
-void Game::initFontsAndAudio() {
+void Game::initFonts() {
     initFont(42);
-    renderReadyText();
-    Mix_PlayChannel(1, introMusic, 0);
+    drawText("Ready!", 375, 545);
     initFont(28);
 }
 
 
-void Game::renderHighScore() {
-    FC_Draw(font, renderer, 200, 0, "Highscore: %d", getPlayer()->points);
+void Game::drawText(const char * text, float x, float y, int parameter) {
+    FC_Draw(font, renderer, x, y, text, parameter);
 }
 
-void Game::renderReadyText() {
-    FC_Draw(font, renderer, 375, 545, "Ready!");
-    FC_FreeFont(font);
-}
 
 void Game::initFont(int size) {
     font = FC_CreateFont();
