@@ -8,29 +8,28 @@
 int main(int argc, char *argv[]) {
 
 
-
-
-
-
-
-
-
-
     const int FPS = 60;
     const int frameDelay = 1000 / FPS;
 
     Uint32 frameStart;
     Uint32 frameTime;
     Game game = Game::getInstance();
+    InputManager IM = InputManager::getInstance();
+
     game.init("pacman", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 930, 1020, false);
 
 
+
+    //Todo: place intro screen here: When user clicks Play, code below follows:
+    game.newGame();
+    while (Mix_Playing(1)) {
+        IM.update();
+    }
+
     while (game.running()) {
-
         frameStart = SDL_GetTicks();
-        InputManager::getInstance().update();
+        IM.update();
         game.update();
-
         game.render();
 
         frameTime = SDL_GetTicks() - frameStart;
@@ -38,10 +37,10 @@ int main(int argc, char *argv[]) {
         if (frameDelay > frameTime) {
             SDL_Delay(frameDelay - frameTime);
         }
-    }
-    TTF_Quit();
 
-    Mix_CloseAudio();
+
+    }
+
     game.clean();
 
     //TODO: Make wrapper class "fascade" for SDL2?
