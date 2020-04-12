@@ -3,6 +3,7 @@
 #include "../include/Ghost.h"
 #include "../include/VoidWarp.h"
 #include "../include/Pellet.h"
+#include "../include/InputManager.h"
 
 #include <SDL2/SDL.h>
 
@@ -28,6 +29,7 @@ int Game::init(const char *title, int xPos, int yPos, int width, int height, boo
         }
         std::cout << "Game running" << std::endl;
         isRunning = true;
+
         newGame();
     }
     return 0;
