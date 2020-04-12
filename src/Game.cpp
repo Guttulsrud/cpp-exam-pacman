@@ -24,8 +24,6 @@ int Game::init(const char *title, int xPos, int yPos, int width, int height, boo
 
         Mix_AllocateChannels(32);
 
-
-
         if (window) {
         }
 
@@ -41,7 +39,9 @@ int Game::init(const char *title, int xPos, int yPos, int width, int height, boo
 
         std::cout << "Game running" << std::endl;
         isRunning = true;
-        newGame();
+
+        introMusic = Mix_LoadWAV("../resources/sounds/game/pacman_beginning.wav");
+
     }
     return 0;
 }
@@ -83,15 +83,16 @@ void Game::render() {
     }
 
 
-
-
     player->render();
     renderHighScore();
+    renderReadyText();
     SDL_RenderPresent(renderer);
     SDL_RenderClear(renderer);
 }
 
 void Game::clean() {
+    TTF_Quit();
+    Mix_CloseAudio();
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
@@ -115,8 +116,14 @@ std::shared_ptr<Map> &Game::getMap(int levelNumber) {
 
 void Game::renderHighScore() {
     font = FC_CreateFont();
-    FC_LoadFont(font, renderer, "../resources/fonts/arial.ttf", 28, FC_MakeColor(255,255,255,255), TTF_STYLE_NORMAL);
+    FC_LoadFont(font, renderer, "../resources/fonts/arial.ttf", 28, FC_MakeColor(255,255,255,255), TTF_STYLE_ITALIC);
     FC_Draw(font, renderer, 200, 0, "Highscore: %d", getPlayer()->points);
+    FC_FreeFont(font);
+}
+void Game::renderReadyText() {
+    font = FC_CreateFont();
+    FC_LoadFont(font, renderer, "../resources/fonts/arial.ttf", 42, FC_MakeColor(255,255,0,255), TTF_STYLE_ITALIC);
+    FC_Draw(font, renderer, 375, 545, "Ready!");
     FC_FreeFont(font);
 }
 
@@ -316,6 +323,8 @@ void Game::setGameObjects() {
 }
 
 void Game::resetRound() {
+    renderReadyText();
+
     SDL_Delay(1500);
 
     std::cout << "Reset round" << std::endl;
@@ -344,6 +353,14 @@ void Game::beginRound() {
 }
 
 void Game::newGame() {
+    playSound();
     setGameObjects();
+    renderReadyText();
+    render();
 }
 
+
+
+void Game::playSound() {
+    Mix_PlayChannel(1, introMusic, 0);
+}

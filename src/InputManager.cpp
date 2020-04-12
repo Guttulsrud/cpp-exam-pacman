@@ -1,5 +1,3 @@
-#include <cstring>
-#include <iostream>
 #include "../include/InputManager.h"
 
 bool InputManager::KeyDown(int iKeyIndex) {
@@ -28,5 +26,5 @@ void InputManager::update() {
     memcpy(oldKeys, keys, keyCount * sizeof(Uint8));
     SDL_PumpEvents();
     m_mouseButtons = SDL_GetRelativeMouseState(&mouseX, &mouseY);
-
 }
+

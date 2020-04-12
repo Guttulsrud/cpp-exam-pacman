@@ -79,17 +79,12 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
             if (ghost->powerPelletState) {
                 if (!ghost->dead) {
 
-
                     playSound(EAT_GHOST, 3);
-
-                    //todo:Must stop when ghost arrives at home
-                    //playSound("../resources/sounds/ghosts/ghost_return_to_home.mp3");
-
                 }
                 ghost->dead = true;
             } else {
                 playSound(DEATH);
-                lives < 1 ? Game::gameOver() : Game::resetRound();
+                lives < 1 ? Game::getInstance().gameOver() : Game::getInstance().Game::resetRound();
                 return false;
             }
         }
@@ -141,6 +136,8 @@ void Player::reset() {
     lives--;
     m_positionRectangle.x = 30 * 14.5;
     m_positionRectangle.y = 30 * 24;
+    updateHitbox();
+
 }
 
 void Player::playSound(Sound sound, int channel) {

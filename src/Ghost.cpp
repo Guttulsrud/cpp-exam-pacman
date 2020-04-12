@@ -139,6 +139,7 @@ Direction Ghost::getDirectionToPlayer(const std::map<Direction, SDL_Rect> &possi
 void Ghost::reset() {
     m_positionRectangle.x = 30 * 15;
     m_positionRectangle.y = 30 * 15;
+    updateHitbox();
     powerPelletState = false;
 }
 

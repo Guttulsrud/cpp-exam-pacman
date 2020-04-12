@@ -8,10 +8,10 @@
 #include <thread>
 #include <future>
 
+
 enum Sound {
     EAT_PELLET, EAT_POWER_PELLET, DEATH, EAT_FRUIT, EAT_GHOST
 };
-
 
 class Player : public MovableObject {
 public:
