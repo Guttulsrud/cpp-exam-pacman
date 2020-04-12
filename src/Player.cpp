@@ -53,7 +53,7 @@ void Player::update() {
     updateHitbox();
 
     if(points > highScore) {
-        highScore = points;
+        newHighScore = points;
     }
 }
 

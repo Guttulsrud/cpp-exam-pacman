@@ -83,7 +83,11 @@ void Game::render() {
         s->render();
     }
 
-    drawText("Highscore: %d", 35, 0, getPlayer()->highScore);
+    if(getPlayer()->newHighScore > getPlayer()->highScore) {
+        drawText("Highscore: %d", 35, 0, getPlayer()->newHighScore);
+    } else {
+        drawText("Highscore: %d", 35, 0, getPlayer()->highScore);
+    }
     drawText("Points: %d", 400, 0, getPlayer()->points);
     drawText("Lives: %d", 775, 0, getPlayer()->lives + 1);
     player->render();
@@ -324,7 +328,6 @@ void Game::resetRound() {
 
 
 void Game::gameOver() {
-
     if (getPlayer()->points > getPlayer()->highScore) {
         getPlayer()->writeHighScore(getPlayer()->points);
     }

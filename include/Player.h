@@ -43,11 +43,10 @@ public:
     EntityAnimator m_animator;
     int points = 0;
     int highScore = 0;
+    int newHighScore = 0;
     int lives = 3;
 
     void playSound(Sound sound, int channel = -1);
-
-    std::vector<std::future<void>> futures;
 
     void writeHighScore(int score);
 
