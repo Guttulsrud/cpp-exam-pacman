@@ -1,7 +1,6 @@
 #include "../include/Game.h"
 #include "../include/Player.h"
 #include "../include/Ghost.h"
-#include "../include/VoidWarp.h"
 #include "../include/Pellet.h"
 
 #include <SDL2/SDL.h>
@@ -84,8 +83,8 @@ void Game::render() {
 
 
     player->render();
-    renderHighScore();
-    renderReadyText();
+    //renderHighScore();
+    //renderReadyText();
     SDL_RenderPresent(renderer);
     SDL_RenderClear(renderer);
 }
@@ -305,17 +304,6 @@ void Game::setGameObjects() {
                                             "../resources/img/ghosts/orange_E2.png"
                                     }
                             }})));
-
-
-
-    addStationaryGameObject(
-            std::make_shared<VoidWarp>(TextureManager::loadTexture("../resources/img/red.jpg"), 2, 60, 30, 30*15, 2,
-                                       0));
-    addStationaryGameObject(
-            (
-                    std::make_shared<VoidWarp>(TextureManager::loadTexture("../resources/img/red.jpg"), 2, 60, 30*30,
-                                               30*15, 2,
-                                               1)));
 
     addMap(std::make_shared<Map>());
 
