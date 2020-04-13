@@ -12,37 +12,98 @@ Map::Map(const char *filePath) {
 
     loadMapFromFile(filePath);
 
-    fill = TextureManager::loadTexture("../resources/img/walls/wall.png");
+
     round = TextureManager::loadTexture("../resources/img/walls/round.png");
     black = TextureManager::loadTexture("../resources/img/black.png");
     pellet = TextureManager::loadTexture("../resources/img/pickups/pellet.png");
     pelletLarge = TextureManager::loadTexture("../resources/img/pickups/power_pellet.png");
 
-    roundedWallN = TextureManager::loadTexture("../resources/img/walls/rounded_corner_N.png");
-    roundedWallN = TextureManager::loadTexture("../resources/img/walls/rounded_corner_N.png");
-    roundedWallS = TextureManager::loadTexture("../resources/img/walls/rounded_corner_S.png");
-    roundedWallW = TextureManager::loadTexture("../resources/img/walls/rounded_corner_W.png");
-    roundedWallE = TextureManager::loadTexture("../resources/img/walls/rounded_corner_E.png");
-
-    wallDoubleEdgeWE = TextureManager::loadTexture("../resources/img/walls/wall_double_edge_WE.png");
-    wallDoubleEdgeNS = TextureManager::loadTexture("../resources/img/walls/wall_double_edge_NS.png");
-
-    cornerSE = TextureManager::loadTexture("../resources/img/walls/single_corner_SE.png");
-    cornerSW = TextureManager::loadTexture("../resources/img/walls/single_corner_SW.png");
-    cornerNE = TextureManager::loadTexture("../resources/img/walls/single_corner_NE.png");
-    cornerNW = TextureManager::loadTexture("../resources/img/walls/single_corner_NW.png");
-
-    insideCornerNW = TextureManager::loadTexture("../resources/img/walls/inside_single_corner_NW.png");
-    insideCornerNE = TextureManager::loadTexture("../resources/img/walls/inside_single_corner_NE.png");
-    insideCornerSW = TextureManager::loadTexture("../resources/img/walls/inside_single_corner_SW.png");
-    insideCornerSE = TextureManager::loadTexture("../resources/img/walls/inside_single_corner_SE.png");
-
-    edgeN = TextureManager::loadTexture("../resources/img/walls/wall_single_edge_N.png");
-    edgeE = TextureManager::loadTexture("../resources/img/walls/wall_single_edge_E.png");
-    edgeW = TextureManager::loadTexture("../resources/img/walls/wall_single_edge_W.png");
-    edgeS = TextureManager::loadTexture("../resources/img/walls/wall_single_edge_S.png");
-
     fruit = TextureManager::loadTexture("../resources/img/pickups/cherry.png");
+
+
+    if(Game::getInstance().activeMap == 1){
+
+        fill = TextureManager::loadTexture("../resources/img/walls/wall.png");
+
+        roundedWallN = TextureManager::loadTexture("../resources/img/walls/rounded_corner_N.png");
+        roundedWallS = TextureManager::loadTexture("../resources/img/walls/rounded_corner_S.png");
+        roundedWallW = TextureManager::loadTexture("../resources/img/walls/rounded_corner_W.png");
+        roundedWallE = TextureManager::loadTexture("../resources/img/walls/rounded_corner_E.png");
+
+        wallDoubleEdgeWE = TextureManager::loadTexture("../resources/img/walls/wall_double_edge_WE.png");
+        wallDoubleEdgeNS = TextureManager::loadTexture("../resources/img/walls/wall_double_edge_NS.png");
+
+        cornerSE = TextureManager::loadTexture("../resources/img/walls/single_corner_SE.png");
+        cornerSW = TextureManager::loadTexture("../resources/img/walls/single_corner_SW.png");
+        cornerNE = TextureManager::loadTexture("../resources/img/walls/single_corner_NE.png");
+        cornerNW = TextureManager::loadTexture("../resources/img/walls/single_corner_NW.png");
+
+        insideCornerNW = TextureManager::loadTexture("../resources/img/walls/inside_single_corner_NW.png");
+        insideCornerNE = TextureManager::loadTexture("../resources/img/walls/inside_single_corner_NE.png");
+        insideCornerSW = TextureManager::loadTexture("../resources/img/walls/inside_single_corner_SW.png");
+        insideCornerSE = TextureManager::loadTexture("../resources/img/walls/inside_single_corner_SE.png");
+
+        edgeN = TextureManager::loadTexture("../resources/img/walls/wall_single_edge_N.png");
+        edgeE = TextureManager::loadTexture("../resources/img/walls/wall_single_edge_E.png");
+        edgeW = TextureManager::loadTexture("../resources/img/walls/wall_single_edge_W.png");
+        edgeS = TextureManager::loadTexture("../resources/img/walls/wall_single_edge_S.png");
+
+    } else if (Game::getInstance().activeMap == 2){
+
+        fill = TextureManager::loadTexture("../resources/img/walls_red/wall_red.png");
+
+        roundedWallN = TextureManager::loadTexture("../resources/img/walls_red/rounded_corner_red_N.png");
+        roundedWallS = TextureManager::loadTexture("../resources/img/walls_red/rounded_corner_red_S.png");
+        roundedWallW = TextureManager::loadTexture("../resources/img/walls_red/rounded_corner_red_W.png");
+        roundedWallE = TextureManager::loadTexture("../resources/img/walls_red/rounded_corner_red_E.png");
+
+        wallDoubleEdgeWE = TextureManager::loadTexture("../resources/img/walls_red/wall_double_edge_red_WE.png");
+        wallDoubleEdgeNS = TextureManager::loadTexture("../resources/img/walls_red/wall_double_edge_red_NS.png");
+
+        cornerSE = TextureManager::loadTexture("../resources/img/walls_red/single_corner_red_SE.png");
+        cornerSW = TextureManager::loadTexture("../resources/img/walls_red/single_corner_red_SW.png");
+        cornerNE = TextureManager::loadTexture("../resources/img/walls_red/single_corner_red_NE.png");
+        cornerNW = TextureManager::loadTexture("../resources/img/walls_red/single_corner_red_NW.png");
+
+        insideCornerNW = TextureManager::loadTexture("../resources/img/walls_red/inside_single_corner_red_NW.png");
+        insideCornerNE = TextureManager::loadTexture("../resources/img/walls_red/inside_single_corner_red_NE.png");
+        insideCornerSW = TextureManager::loadTexture("../resources/img/walls_red/inside_single_corner_red_SW.png");
+        insideCornerSE = TextureManager::loadTexture("../resources/img/walls_red/inside_single_corner_red_SE.png");
+
+        edgeN = TextureManager::loadTexture("../resources/img/walls_red/wall_single_edge_red_N.png");
+        edgeE = TextureManager::loadTexture("../resources/img/walls_red/wall_single_edge_red_E.png");
+        edgeW = TextureManager::loadTexture("../resources/img/walls_red/wall_single_edge_red_W.png");
+        edgeS = TextureManager::loadTexture("../resources/img/walls_red/wall_single_edge_red_S.png");
+
+
+    } else if (Game::getInstance().activeMap == 3){
+
+        fill = TextureManager::loadTexture("../resources/img/walls_green/wall_green.png");
+
+        roundedWallN = TextureManager::loadTexture("../resources/img/walls_green/rounded_corner_green_N.png");
+        roundedWallS = TextureManager::loadTexture("../resources/img/walls_green/rounded_corner_green_S.png");
+        roundedWallW = TextureManager::loadTexture("../resources/img/walls_green/rounded_corner_green_W.png");
+        roundedWallE = TextureManager::loadTexture("../resources/img/walls_green/rounded_corner_green_E.png");
+
+        wallDoubleEdgeWE = TextureManager::loadTexture("../resources/img/walls_green/wall_double_edge_green_WE.png");
+        wallDoubleEdgeNS = TextureManager::loadTexture("../resources/img/walls_green/wall_double_edge_green_NS.png");
+
+        cornerSE = TextureManager::loadTexture("../resources/img/walls_green/single_corner_green_SE.png");
+        cornerSW = TextureManager::loadTexture("../resources/img/walls_green/single_corner_green_SW.png");
+        cornerNE = TextureManager::loadTexture("../resources/img/walls_green/single_corner_green_NE.png");
+        cornerNW = TextureManager::loadTexture("../resources/img/walls_green/single_corner_green_NW.png");
+
+        insideCornerNW = TextureManager::loadTexture("../resources/img/walls_green/inside_single_corner_green_NW.png");
+        insideCornerNE = TextureManager::loadTexture("../resources/img/walls_green/inside_single_corner_green_NE.png");
+        insideCornerSW = TextureManager::loadTexture("../resources/img/walls_green/inside_single_corner_green_SW.png");
+        insideCornerSE = TextureManager::loadTexture("../resources/img/walls_green/inside_single_corner_green_SE.png");
+
+        edgeN = TextureManager::loadTexture("../resources/img/walls_green/wall_single_edge_green_N.png");
+        edgeE = TextureManager::loadTexture("../resources/img/walls_green/wall_single_edge_green_E.png");
+        edgeW = TextureManager::loadTexture("../resources/img/walls_green/wall_single_edge_green_W.png");
+        edgeS = TextureManager::loadTexture("../resources/img/walls_green/wall_single_edge_green_S.png");
+
+    }
 
     loadLevelMap(currentMap);
 }
