@@ -1,7 +1,3 @@
-//
-// Created by marti on 08/04/2020.
-//
-
 #ifndef EXAM_FRUIT_H
 #define EXAM_FRUIT_H
 
@@ -15,7 +11,6 @@ public:
 
     void update();
     TYPE getType() override;
-
     bool eaten = false;
     bool m_active = false;
 
@@ -23,4 +18,4 @@ public:
 };
 
 
-#endif //EXAM_FRUIT_H
+#endif

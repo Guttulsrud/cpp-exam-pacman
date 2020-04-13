@@ -17,8 +17,6 @@ public:
 
     void loadLevelMap(int map[32][29]);
 
-    void redrawPelletsOnMap();
-
 private:
     void createWallWithTexture(int map[32][29], int row, int column);
 

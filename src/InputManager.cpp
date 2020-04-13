@@ -22,9 +22,7 @@ InputManager &InputManager::getInstance() {
 }
 
 void InputManager::update() {
-    m_oldMouseButtons = m_mouseButtons;
     memcpy(oldKeys, keys, keyCount * sizeof(Uint8));
     SDL_PumpEvents();
-    m_mouseButtons = SDL_GetRelativeMouseState(&mouseX, &mouseY);
 }
 

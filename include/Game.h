@@ -12,10 +12,6 @@
 #include <iostream>
 #include <algorithm>
 
-enum Maps {
-    LEVEL_ONE, LEVEL_TWO, LEVEL_THREE
-};
-
 class Game {
 public:
 
@@ -66,7 +62,6 @@ private:
     FC_Font* font;
     bool isRunning;
     SDL_Window *window;
-
 };
 
 #endif

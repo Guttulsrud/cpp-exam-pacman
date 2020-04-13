@@ -1,10 +1,5 @@
-//
-// Created by mathi on 4/8/2020.
-//
-
 #ifndef EXAM_ENTITYANIMATOR_H
 #define EXAM_ENTITYANIMATOR_H
-
 
 #include <vector>
 #include <string>
@@ -38,4 +33,4 @@ public:
 };
 
 
-#endif //EXAM_ENTITYANIMATOR_H
+#endif

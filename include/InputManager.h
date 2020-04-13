@@ -16,9 +16,6 @@ public:
 
     static InputManager &getInstance();
 
-
-    bool AnyKeyDown();
-
     bool KeyDown(int iKeyIndex);
 
     bool KeyStillDown(int iKeyIndex);
@@ -28,43 +25,10 @@ public:
     bool KeyStillUp(int iKeyIndex);
 
 
-    // Mouse.
-    bool MouseDown(int iButton);
-
-    bool MouseStillDown(int iButton);
-
-    bool MouseUp(int iButton);
-
-    bool MouseStillUp(int iButton);
-
-    SDL_Event pollEvent() {
-        SDL_Event event;
-
-        if (SDL_PollEvent(&event)) {
-            return event;
-        }
-    }
-
 protected:
-
-    // A pointer to SDL's internal key state array.
-    // (Memory handled by SDL.)
     const Uint8 *keys;
-    // Our own copy of last update's array.
-    // NB! Memory handled dynamically by us!
-    Uint8 *oldKeys; // Number of keys in the arrays above, for this
-    // app. (Can vary depending on setup/hardware.)
+    Uint8 *oldKeys;
     int keyCount;
-
-    // Mouse pos x and y.
-    int mouseX;
-    int mouseY;
-    // Mouse buttons pressed.
-    Uint8 m_mouseButtons;
-    // Mouse buttons pressed last update.
-    Uint8 m_oldMouseButtons;
-
-
 };
 
 

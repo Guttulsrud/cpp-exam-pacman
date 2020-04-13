@@ -8,7 +8,6 @@
 
 int main(int argc, char *argv[]) {
 
-
     const int FPS = 60;
     const int frameDelay = 1000 / FPS;
 
@@ -17,7 +16,7 @@ int main(int argc, char *argv[]) {
     Game game = Game::getInstance();
     InputManager IM = InputManager::getInstance();
 
-    game.init("pacman", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 930, 1020, false);
+    game.init("PacMan", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 930, 1020, false);
 
 //    game.renderStartScreen();
 

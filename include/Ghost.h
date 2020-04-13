@@ -133,4 +133,4 @@ public:
                                                   }});
 };
 
-#endif //EXAM_GHOST_H
+#endif

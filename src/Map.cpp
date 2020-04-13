@@ -197,30 +197,5 @@ void Map::loadMapFromFile(const char *filePath) {
     }
 }
 
-void Map::redrawPelletsOnMap() {
-    int tileType = 0;
-    int idIncrementer = 0;
-
-    for (int column = 0; column < 32; column++) {
-        for (int row = 0; row < 29; row++) {
-
-            tileType = currentMap[column][row];
-            idIncrementer++;
-            switch (tileType) {
-                case 3:
-                    Game::addStationaryGameObject(std::make_shared<Pellet>(pelletLarge, row * tileLength + 25,
-                                                                           column * tileLength + 30, idIncrementer, 15,
-                                                                           15, true));
-                    break;
-                case 2:
-                    Game::addStationaryGameObject(
-                            std::make_shared<Pellet>(pellet, row * tileLength + 30, column * tileLength + 30,
-                                                     idIncrementer, 5, 5));
-
-            }
-        }
-    }
-}
-
 
 
