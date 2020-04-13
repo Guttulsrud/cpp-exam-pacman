@@ -15,15 +15,12 @@ Map::Map(const char *filePath) {
 
     round = TextureManager::loadTexture("../resources/img/walls/round.png");
     black = TextureManager::loadTexture("../resources/img/black.png");
-    pellet = TextureManager::loadTexture("../resources/img/pickups/pellet.png");
-    pelletLarge = TextureManager::loadTexture("../resources/img/pickups/power_pellet.png");
-
-    fruit = TextureManager::loadTexture("../resources/img/pickups/cherry.png");
-
 
     if(Game::getInstance().activeMap == 1){
 
         fill = TextureManager::loadTexture("../resources/img/walls/wall.png");
+        pellet = TextureManager::loadTexture("../resources/img/pickups/pellet.png");
+        pelletLarge = TextureManager::loadTexture("../resources/img/pickups/power_pellet.png");
 
         roundedWallN = TextureManager::loadTexture("../resources/img/walls/rounded_corner_N.png");
         roundedWallS = TextureManager::loadTexture("../resources/img/walls/rounded_corner_S.png");
@@ -48,9 +45,13 @@ Map::Map(const char *filePath) {
         edgeW = TextureManager::loadTexture("../resources/img/walls/wall_single_edge_W.png");
         edgeS = TextureManager::loadTexture("../resources/img/walls/wall_single_edge_S.png");
 
+        fruit = TextureManager::loadTexture("../resources/img/pickups/cherry.png");
+
     } else if (Game::getInstance().activeMap == 2){
 
         fill = TextureManager::loadTexture("../resources/img/walls_red/wall_red.png");
+        pellet = TextureManager::loadTexture("../resources/img/pickups/pellet_orange.png");
+        pelletLarge = TextureManager::loadTexture("../resources/img/pickups/power_pellet.png");
 
         roundedWallN = TextureManager::loadTexture("../resources/img/walls_red/rounded_corner_red_N.png");
         roundedWallS = TextureManager::loadTexture("../resources/img/walls_red/rounded_corner_red_S.png");
@@ -75,10 +76,14 @@ Map::Map(const char *filePath) {
         edgeW = TextureManager::loadTexture("../resources/img/walls_red/wall_single_edge_red_W.png");
         edgeS = TextureManager::loadTexture("../resources/img/walls_red/wall_single_edge_red_S.png");
 
+        fruit = TextureManager::loadTexture("../resources/img/pickups/melon.png");
+
 
     } else if (Game::getInstance().activeMap == 3){
 
         fill = TextureManager::loadTexture("../resources/img/walls_green/wall_green.png");
+        pellet = TextureManager::loadTexture("../resources/img/pickups/pellet_cyan.png");
+        pelletLarge = TextureManager::loadTexture("../resources/img/pickups/power_pellet_yellow.png");
 
         roundedWallN = TextureManager::loadTexture("../resources/img/walls_green/rounded_corner_green_N.png");
         roundedWallS = TextureManager::loadTexture("../resources/img/walls_green/rounded_corner_green_S.png");
@@ -102,6 +107,8 @@ Map::Map(const char *filePath) {
         edgeE = TextureManager::loadTexture("../resources/img/walls_green/wall_single_edge_green_E.png");
         edgeW = TextureManager::loadTexture("../resources/img/walls_green/wall_single_edge_green_W.png");
         edgeS = TextureManager::loadTexture("../resources/img/walls_green/wall_single_edge_green_S.png");
+
+        fruit = TextureManager::loadTexture("../resources/img/pickups/strawberry.png");
 
     }
 

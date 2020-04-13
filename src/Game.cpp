@@ -379,7 +379,7 @@ void Game::gameOver() {
 void Game::startGame() {
     initFonts();
     setGameObjects();
-    setMap(2);
+    setMap(3);
     render();
     resetRound();
 }
