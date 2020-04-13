@@ -80,94 +80,102 @@ void Ghost::update() {
         std::uniform_int_distribution<int> dist(0, possibleDirections.size() - 1);
         std::advance(item, dist(mt));
 
-        if (rand() % 10 < difficulty) {
-            Direction closestToPlayer = getDirectionToPlayer(possibleDirections);
-            direction = closestToPlayer;
-            m_positionRectangle = possibleDirections[closestToPlayer];
-        } else {
+        if (rand() % 10 > difficulty && !dead) {
             direction = item->first;
             m_positionRectangle = item->second;
+        } else {
+            Direction closestToDestination = getDirectionToPoint(possibleDirections);
+            direction = closestToDestination;
+            m_positionRectangle = possibleDirections[closestToDestination];
         }
     } else {
-        if (switchedToPowerPelletState) {
-            direction = getDirectionToPlayer(directions);
-            powerPelletState = true;
-            switchedToPowerPelletState = false;
+        if (switchedToEatable) {
+            direction = getDirectionToPoint(directions);
+            eatable = true;
+            switchedToEatable = false;
 
-            powerPelletStateEndTimer = SDL_AddTimer(5000, &Ghost::powerPelletStateEndCallback, this);
+            eatableStateEndTimer = SDL_AddTimer(5000, &Ghost::eatableStateEndCallback, this);
             ghostReviveTimer = SDL_AddTimer(7000, &Ghost::reviveGhostCallback, this);
         }
         m_positionRectangle = directions[direction];
     }
 
-    //todo: Fix animation on below:::
+    prevDirections = possibleDirectionsVector;
+    updateHitbox();
     if (dead) {
         deadAnimator.animate(&m_texture, direction);
-    } else if (powerPelletStateEnd) {
+    } else if (eatableStateEnd) {
         powerPelletStateEndAnimator.animate(&m_texture, direction);
-    } else if (powerPelletState) {
+    } else if (eatable) {
         powerPelletStateAnimator.animate(&m_texture, direction);
     } else {
         m_animator.animate(&m_texture, direction);
     }
 
-    prevDirections = possibleDirectionsVector;
-    updateHitbox();
-
+    if(m_positionRectangle.x == spawn.x && m_positionRectangle.y == spawn.y && dead){
+        reset();
+    }
 }
 
-Direction Ghost::getDirectionToPlayer(const std::map<Direction, SDL_Rect> &possibleDirections) const {
-    Direction closestToPlayer = UP;
+Direction Ghost::getDirectionToPoint(const std::map<Direction, SDL_Rect> &possibleDirections) const {
+
+    Direction destination = UP;
     float shortestLength = 1000.0f;
     float longestLength = 0.0f;
 
+    auto playerPos = Game::getPlayer()->m_positionRectangle;
 
-    auto playerPosition = Game::getPlayer()->m_positionRectangle;
     for (auto &directionPosition : possibleDirections) {
-        int xLen = abs(playerPosition.x - directionPosition.second.x);
-        int yLen = abs(playerPosition.y - directionPosition.second.y);
-        float lenToPlayer = sqrt((xLen * xLen) + (yLen * yLen));
+        int xLen;
+        int yLen;
+        if(dead){
+            xLen = abs(spawn.x - directionPosition.second.x);
+            yLen = abs(spawn.y - directionPosition.second.y);
+        } else {
+            xLen = abs(playerPos.x - directionPosition.second.x);
+            yLen = abs(playerPos.y - directionPosition.second.y);
+        }
+        float lenToDestination = sqrt((xLen * xLen) + (yLen * yLen));
 
-        if (powerPelletState || switchedToPowerPelletState) {
-            if (lenToPlayer > longestLength) {
-                longestLength = lenToPlayer;
-                closestToPlayer = directionPosition.first;
-
+        if (eatable || switchedToEatable) {
+            if (lenToDestination > longestLength) {
+                longestLength = lenToDestination;
+                destination = directionPosition.first;
             }
         } else {
-            if (lenToPlayer < shortestLength) {
-                shortestLength = lenToPlayer;
-                closestToPlayer = directionPosition.first;
+            if (lenToDestination < shortestLength) {
+                shortestLength = lenToDestination;
+                destination = directionPosition.first;
             }
         }
     }
-
-
-    return closestToPlayer;
+    return destination;
 }
 
 void Ghost::reset() {
-    m_positionRectangle.x = 30 * 15;
-    m_positionRectangle.y = 30 * 15;
+    m_positionRectangle.x = spawn.x;
+    m_positionRectangle.y = spawn.y;
+    dead = false;
+    eatableStateEnd = false;
+    eatable = false;
     updateHitbox();
-    powerPelletState = false;
+    eatable = false;
 }
 
-Uint32 Ghost::powerPelletStateEndCallback(Uint32 n, void *ghost) {
+Uint32 Ghost::eatableStateEndCallback(Uint32 n, void *ghost) {
     auto *g = reinterpret_cast<Ghost *>(ghost);
-    g->powerPelletStateEnd = true;
+    g->eatableStateEnd = true;
     return 0;
 }
 
 Uint32 Ghost::reviveGhostCallback(Uint32 n, void *ghost) {
     auto *g = reinterpret_cast<Ghost *>(ghost);
-    if(!g->dead){
-        g->powerPelletStateEnd = false;
-        g->powerPelletState = false;
+    if (!g->dead) {
+        g->eatableStateEnd = false;
+        g->eatable = false;
     }
     return 0;
 }
-
 
 
 

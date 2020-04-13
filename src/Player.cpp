@@ -90,12 +90,12 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
     for (auto &movable : Game::getMovableGameObjects()) {
         if (SDL_HasIntersection(&hitbox, &movable->hitbox) && movable->getType() == GHOST) {
             auto ghost = dynamic_cast<Ghost *>(movable.get());
-            if (ghost->powerPelletState) {
+            if (ghost->eatable || ghost->dead) {
                 if (!ghost->dead) {
-
                     playSound(EAT_GHOST, 3);
                 }
                 ghost->dead = true;
+                ghost->eatable = false;
             } else {
                 playSound(DEATH);
                 while (Mix_Playing(-1)) {}
@@ -125,7 +125,7 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
 
                     for (auto &o : Game::getMovableGameObjects()) {
                         if (o->getType() == GHOST) {
-                            dynamic_cast<Ghost *>(o.get())->switchedToPowerPelletState = true;
+                            dynamic_cast<Ghost *>(o.get())->switchedToEatable = true;
                         }
                     }
                 }
