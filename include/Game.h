@@ -60,6 +60,9 @@ public:
     void initFonts();
 
     Maps activeLevel = LEVEL_ONE;
+
+    void renderStartScreen();
+
 private:
     std::shared_ptr<Map> m_map;
 
@@ -67,6 +70,7 @@ private:
     FC_Font* font;
     bool isRunning;
     SDL_Window *window;
+
 };
 
 #endif
