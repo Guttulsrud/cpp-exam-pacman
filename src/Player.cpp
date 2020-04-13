@@ -111,7 +111,7 @@ void playDeathAnimation() {
             game.drawText("Highscore: %d", 35, 0, player->highScore);
         }
         game.drawText("Points: %d", 400, 0, player->points);
-        game.drawText("Lives: %d", 775, 0, player->lives + 1);
+        game.drawText("Lives: %d", 775, 0, player->lives);
 
         SDL_RenderPresent(Game::renderer);
         SDL_RenderClear(Game::renderer);
