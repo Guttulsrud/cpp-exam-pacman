@@ -3,6 +3,7 @@
 #include "../include/Ghost.h"
 #include "../include/VoidWarp.h"
 #include "../include/Pellet.h"
+#include "../include/InputManager.h"
 
 #include <SDL2/SDL.h>
 #include <SDL_ttf.h>
@@ -46,6 +47,28 @@ int Game::init(const char *title, int xPos, int yPos, int width, int height, boo
     return 0;
 }
 
+void Game::renderStartScreen() {
+    InputManager IM = InputManager::getInstance();
+
+    TextureManager::loadTexture("../resources/startscreenassets/start_screen.png");
+
+
+    font = FC_CreateFont();
+    FC_LoadFont(font, renderer, "../resources/fonts/arial.ttf", 42, FC_MakeColor(255,255,0,255), TTF_STYLE_ITALIC);
+    FC_Draw(font, renderer, 375, 545, "Heil Hitler!");
+
+    FC_FreeFont(font);
+
+    while(true){
+        if(!IM.KeyStillUp(SDL_SCANCODE_SPACE)){
+            break;
+        } else if(!IM.KeyStillUp(SDL_SCANCODE_Q)) {
+            abort();
+        }
+        IM.update();
+    }
+}
+
 void removeEatenPellets(std::vector<std::shared_ptr<StationaryObject>> &objects) {
 
     objects.erase(
@@ -84,8 +107,8 @@ void Game::render() {
 
 
     player->render();
-    renderHighScore();
-    renderReadyText();
+    //renderHighScore();
+    //renderReadyText();
     SDL_RenderPresent(renderer);
     SDL_RenderClear(renderer);
 }

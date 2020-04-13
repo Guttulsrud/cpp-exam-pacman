@@ -64,7 +64,7 @@ public:
     static void beginRound();
     void renderHighScore();
     void renderReadyText();
-    void renderIntroText();
+    void renderStartScreen();
 
     void playSound();
 
