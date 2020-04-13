@@ -346,7 +346,6 @@ void Game::gameOver() {
     if (getPlayer()->points > getPlayer()->highScore) {
         getPlayer()->writeHighScore(getPlayer()->points);
     }
-    getPlayer()->points = 0;
 
     initFont(40);
     drawText("Press space to play again", 150, 500);
@@ -358,8 +357,9 @@ void Game::gameOver() {
         IM.update();
     }
 
-    maps[activeMap]->redrawPelletsOnMap();
+    setMap(1);
     getPlayer()->lives = 3;
+    getPlayer()->points = 0;
     resetRound();
 }
 
@@ -391,15 +391,21 @@ void Game::initFont(int size) {
 }
 
 void Game::mapCompleted() {
-    getStationaryGameObjects().clear();
-    getMovableGameObjects().clear();
+
     SDL_RenderPresent(renderer);
     SDL_RenderClear(renderer);
+    getStationaryGameObjects().clear();
 
-    if(activeMap == 3) {
-        activeMap = 0;
+    if (activeMap > 2) {
+        activeMap = 1;
+        setMap(activeMap);
+        resetRound();
+    } else {
+        getMovableGameObjects().clear();
+        activeMap++;
+        setMap(activeMap);
+        resetRound();
     }
-    setMap(activeMap+1);
 }
 
 bool Game::pelletsAreRemaining() {
