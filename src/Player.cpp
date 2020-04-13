@@ -47,7 +47,6 @@ void Player::update() {
     if (positionIsValid(possiblePosition)) {
         determineDirection(possiblePosition);
         m_positionRectangle = possiblePosition;
-        m_animator.animate(&m_texture, direction);
     } else {
         possiblePosition = m_positionRectangle;
         possibleMovementChange = movementChange;
@@ -57,7 +56,6 @@ void Player::update() {
         if (positionIsValid(possiblePosition)) {
             determineDirection(possiblePosition);
             m_positionRectangle = possiblePosition;
-            m_animator.animate(&m_texture, direction);
         }
     }
     movementChange = possibleMovementChange;
@@ -66,6 +64,7 @@ void Player::update() {
     if (points > highScore) {
         newHighScore = points;
     }
+    m_animator.animate(&m_texture, direction);
 }
 
 void Player::determineDirection(const SDL_Rect &possiblePosition) {
@@ -82,6 +81,35 @@ void Player::determineDirection(const SDL_Rect &possiblePosition) {
     }
 }
 
+
+void playDeathAnimation() {
+
+    std::shared_ptr<Player> &player = Game::getPlayer();
+    std::vector<std::shared_ptr<StationaryObject>> &stationary = Game::getStationaryGameObjects();
+    auto game = Game::getInstance();
+
+    for (int i = 0; i < 45; i++) {
+
+
+        for (auto const &s : stationary) {
+            s->render();
+        }
+        player->deathAnimator.animate(&player->m_texture, player->direction);
+        player->render();
+
+        if (player->newHighScore > player->highScore) {
+            game.drawText("Highscore: %d", 35, 0, player->newHighScore);
+        } else {
+            game.drawText("Highscore: %d", 35, 0, player->highScore);
+        }
+        game.drawText("Points: %d", 400, 0, player->points);
+        game.drawText("Lives: %d", 775, 0, player->lives + 1);
+
+        SDL_RenderPresent(Game::renderer);
+        SDL_RenderClear(Game::renderer);
+        SDL_Delay(25);
+    }
+}
 
 bool Player::positionIsValid(SDL_Rect &possiblePosition) {
     bool didNotCollideWithWall = true;
@@ -102,8 +130,10 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
                 ghost->eatable = false;
                 ghost->switchedToEatable = false;
             } else {
-                playSound(DEATH);
-                while (Mix_Playing(-1)) {}
+                playSound(DEATH, 5);
+                auto tread = std::async(playDeathAnimation);
+
+                while (Mix_Playing(5)) {}
                 lives < 1 ? Game::getInstance().gameOver() : Game::getInstance().resetRound();
 
                 return false;
@@ -123,7 +153,6 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
             if (stationary->getType() == PELLET) {
                 collectedPellet = true;
 
-
                 if (dynamic_cast<Pellet *>(stationary.get())->m_isPowerPellet) {
 
                     playSound(EAT_POWER_PELLET, 2);
@@ -140,7 +169,7 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
                 points += 10;
 
             }
-            if (stationary->getType() == FRUIT){
+            if (stationary->getType() == FRUIT) {
                 collectedFruit = true;
                 dynamic_cast<Fruit *>(stationary.get())->eaten = true;
                 points += 300;
@@ -152,7 +181,7 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
     if (collectedPellet && !Mix_Playing(1)) {
         playSound(EAT_PELLET, 1);
     }
-    if (collectedFruit){
+    if (collectedFruit) {
         playSound(EAT_FRUIT, 1);
     }
     return didNotCollideWithWall;
@@ -176,8 +205,8 @@ void Player::reset() {
     lives--;
     m_positionRectangle.x = 30 * 14.5;
     m_positionRectangle.y = 30 * 24;
+    m_animator.animate(&m_texture, direction);
     updateHitbox();
-
 }
 
 void Player::playSound(Sound sound, int channel) {

@@ -21,12 +21,12 @@ public:
         movementChange.y = 0;
         highScore = readHighScore();
 
-        sounds = {{EAT_PELLET, Mix_LoadWAV("../resources/sounds/pacman/pacman_chomp.wav")},
+        sounds = {{EAT_PELLET,       Mix_LoadWAV("../resources/sounds/pacman/pacman_chomp.wav")},
                   {EAT_POWER_PELLET, Mix_LoadWAV("../resources/sounds/pacman/eat_powerpellet.mp3")},
-                  {EAT_FRUIT, Mix_LoadWAV("../resources/sounds/pacman/pacman_eatfruit.wav")},
-                  {EAT_GHOST, Mix_LoadWAV("../resources/sounds/pacman/pacman_eatghost.wav")},
-                  {DEATH, Mix_LoadWAV("../resources/sounds/pacman/pacman_death.wav")},
-                  {TEST, Mix_LoadWAV("../resources/sounds/game/pacman_beginning.wav")},
+                  {EAT_FRUIT,        Mix_LoadWAV("../resources/sounds/pacman/pacman_eatfruit.wav")},
+                  {EAT_GHOST,        Mix_LoadWAV("../resources/sounds/pacman/pacman_eatghost.wav")},
+                  {DEATH,            Mix_LoadWAV("../resources/sounds/pacman/pacman_death.wav")},
+                  {TEST,             Mix_LoadWAV("../resources/sounds/game/pacman_beginning.wav")},
         };
     }
 
@@ -50,8 +50,64 @@ public:
 
     void writeHighScore(int score);
 
+    EntityAnimator deathAnimator = EntityAnimator({{UP,
+                                                           {
+                                                                   "../resources/img/pacman/pacman_death_1.png",
+                                                                   "../resources/img/pacman/pacman_death_2.png",
+                                                                   "../resources/img/pacman/pacman_death_3.png",
+                                                                   "../resources/img/pacman/pacman_death_4.png",
+                                                                   "../resources/img/pacman/pacman_death_5.png",
+                                                                   "../resources/img/pacman/pacman_death_6.png",
+                                                                   "../resources/img/pacman/pacman_death_7.png",
+                                                                   "../resources/img/pacman/pacman_death_8.png",
+                                                                   "../resources/img/pacman/pacman_death_9.png"
+                                                           }
+                                                   },
+                                                   {DOWN,
+                                                           {
+                                                                   "../resources/img/pacman/pacman_death_1.png",
+                                                                   "../resources/img/pacman/pacman_death_2.png",
+                                                                   "../resources/img/pacman/pacman_death_3.png",
+                                                                   "../resources/img/pacman/pacman_death_4.png",
+                                                                   "../resources/img/pacman/pacman_death_5.png",
+                                                                   "../resources/img/pacman/pacman_death_6.png",
+                                                                   "../resources/img/pacman/pacman_death_7.png",
+                                                                   "../resources/img/pacman/pacman_death_8.png",
+                                                                   "../resources/img/pacman/pacman_death_9.png"
+                                                           }
+                                                   },
+                                                   {LEFT,
+                                                           {
+                                                                   "../resources/img/pacman/pacman_death_1.png",
+                                                                   "../resources/img/pacman/pacman_death_2.png",
+                                                                   "../resources/img/pacman/pacman_death_3.png",
+                                                                   "../resources/img/pacman/pacman_death_4.png",
+                                                                   "../resources/img/pacman/pacman_death_5.png",
+                                                                   "../resources/img/pacman/pacman_death_6.png",
+                                                                   "../resources/img/pacman/pacman_death_7.png",
+                                                                   "../resources/img/pacman/pacman_death_8.png",
+                                                                   "../resources/img/pacman/pacman_death_9.png"
+                                                           }
+                                                   },
+                                                   {RIGHT,
+                                                           {
+                                                                   "../resources/img/pacman/pacman_death_1.png",
+                                                                   "../resources/img/pacman/pacman_death_2.png",
+                                                                   "../resources/img/pacman/pacman_death_3.png",
+                                                                   "../resources/img/pacman/pacman_death_4.png",
+                                                                   "../resources/img/pacman/pacman_death_5.png",
+                                                                   "../resources/img/pacman/pacman_death_6.png",
+                                                                   "../resources/img/pacman/pacman_death_7.png",
+                                                                   "../resources/img/pacman/pacman_death_8.png",
+                                                                   "../resources/img/pacman/pacman_death_9.png"
+                                                           }
+                                                   },
+
+
+                                                  });
 private:
     SDL_Point movementChange;
+
     int readHighScore();
 
     bool positionIsValid(SDL_Rect &possiblePosition);

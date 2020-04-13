@@ -120,13 +120,13 @@ void Game::render() {
         s->render();
     }
 
-    if (getPlayer()->newHighScore > getPlayer()->highScore) {
-        drawText("Highscore: %d", 35, 0, getPlayer()->newHighScore);
+    if (player->newHighScore > player->highScore) {
+        drawText("Highscore: %d", 35, 0, player->newHighScore);
     } else {
-        drawText("Highscore: %d", 35, 0, getPlayer()->highScore);
+        drawText("Highscore: %d", 35, 0, player->highScore);
     }
-    drawText("Points: %d", 400, 0, getPlayer()->points);
-    drawText("Lives: %d", 775, 0, getPlayer()->lives + 1);
+    drawText("Points: %d", 400, 0, player->points);
+    drawText("Lives: %d", 775, 0, player->lives + 1);
     player->render();
     SDL_RenderPresent(renderer);
     SDL_RenderClear(renderer);
@@ -414,7 +414,6 @@ void Game::mapCompleted() {
         resetRound();
 
     } else {
-        getMovableGameObjects().clear();
         activeMap++;
         setMap(activeMap);
         resetRound();
