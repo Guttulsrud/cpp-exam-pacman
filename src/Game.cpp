@@ -49,7 +49,7 @@ int Game::init(const char *title, int xPos, int yPos, int width, int height, boo
 void Game::renderStartScreen() {
     InputManager IM = InputManager::getInstance();
 
-    SDL_Texture *startScreenTexture = TextureManager::loadTexture("../resources/startscreenassets/start_screen.png");
+    SDL_Texture *startScreenTexture = TextureManager::loadTexture("../resources/startscreenassets/start_screen_alt.png");
 
     SDL_Rect startScreenRect = SDL_Rect{0, 0, 930, 1020};
 
