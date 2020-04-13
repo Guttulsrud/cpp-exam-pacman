@@ -18,7 +18,6 @@ enum Maps {
 
 class Game {
 public:
-    ~Game();
 
     int init(const char *title, int xpos, int ypos, int width, int height, bool fullscreen);
 
@@ -49,23 +48,20 @@ public:
     static void setGameObjects();
     static void addMovableGameObject(const std::shared_ptr<MovableObject> &object);
     static void addStationaryGameObject(const std::shared_ptr<StationaryObject> &object);
-    void setMap(Maps map);
-
-    std::map<Maps, std::shared_ptr<Map>> maps;
+    void setMap(int map);
+    int activeMap = 1;
+    std::map<int, std::shared_ptr<Map>> maps;
     void resetRound();
     void startGame();
     void gameOver();
     void drawText(const char * text, float x, float y, int parameter = 0);
     void initFont(int size);
     void initFonts();
-
-    Maps activeLevel = LEVEL_ONE;
-
+    void mapCompleted();
     void renderStartScreen();
 
+    bool pelletsAreRemaining();
 private:
-    std::shared_ptr<Map> m_map;
-
     Game() = default;
     FC_Font* font;
     bool isRunning;

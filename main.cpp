@@ -19,7 +19,7 @@ int main(int argc, char *argv[]) {
 
     game.init("pacman", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 930, 1020, false);
 
-    game.renderStartScreen();
+//    game.renderStartScreen();
 
 
     //Todo: place intro screen here: When user clicks Play, code below follows:

@@ -49,14 +49,14 @@ int Game::init(const char *title, int xPos, int yPos, int width, int height, boo
 void Game::renderStartScreen() {
     InputManager IM = InputManager::getInstance();
 
-    SDL_Texture* startScreenTexture = TextureManager::loadTexture("../resources/startscreenassets/start_screen.png");
+    SDL_Texture *startScreenTexture = TextureManager::loadTexture("../resources/startscreenassets/start_screen.png");
 
     SDL_Rect startScreenRect = SDL_Rect{0, 0, 600, 900};
 
     SDL_RenderCopy(Game::renderer, startScreenTexture, &startScreenRect, &startScreenRect);
 
     font = FC_CreateFont();
-    FC_LoadFont(font, renderer, "../resources/fonts/arial.ttf", 30, FC_MakeColor(255,255,255,255), TTF_STYLE_BOLD);
+    FC_LoadFont(font, renderer, "../resources/fonts/arial.ttf", 30, FC_MakeColor(255, 255, 255, 255), TTF_STYLE_BOLD);
     FC_Draw(font, renderer, 130, 340, "Press Space to start!");
     FC_Draw(font, renderer, 160, 490, "Press 'Q' to quit!");
 
@@ -65,10 +65,10 @@ void Game::renderStartScreen() {
     SDL_RenderPresent(renderer);
     SDL_RenderClear(renderer);
 
-    while(true){
-        if(!IM.KeyStillUp(SDL_SCANCODE_SPACE)){
+    while (true) {
+        if (!IM.KeyStillUp(SDL_SCANCODE_SPACE)) {
             break;
-        } else if(!IM.KeyStillUp(SDL_SCANCODE_Q)) {
+        } else if (!IM.KeyStillUp(SDL_SCANCODE_Q)) {
             abort();
         }
         IM.update();
@@ -97,8 +97,6 @@ void removeEatenPellets(std::vector<std::shared_ptr<StationaryObject>> &objects)
 
 void Game::update() {
     std::vector<std::shared_ptr<MovableObject>> &movables = Game::getMovableGameObjects();
-    std::vector<std::shared_ptr<StationaryObject>> &stationary = Game::getStationaryGameObjects();
-
     std::shared_ptr<Player> &player = Game::getPlayer();
 
     player->update();
@@ -106,18 +104,8 @@ void Game::update() {
     for (auto const &m : movables) {
         m->update();
     }
-
-    for (auto const &s : stationary) {
-        if (s->getType() == PELLET) {
-
-        }
-    }
-
-
-
-    //count pellets. if none, load next map
-    removeFruit(Game::getStationaryGameObjects());
-    removeEatenPellets(Game::getStationaryGameObjects());
+ removeFruit(Game::getStationaryGameObjects());
+    pelletsAreRemaining() ? removeEatenPellets(Game::getStationaryGameObjects()) : mapCompleted();
 }
 
 void Game::render() {
@@ -155,8 +143,21 @@ void Game::clean() {
 }
 
 
-void Game::setMap(Maps map) {
-    getInstance().m_map = maps[map];
+void Game::setMap(int map) {
+    switch (map) {
+        case 1:
+            maps[1] = std::make_shared<Map>("../resources/maps/level_one.txt");
+            break;
+        case 2:
+            maps[2] = std::make_shared<Map>("../resources/maps/level_two.txt");
+            break;
+        case 3:
+            maps[3] = std::make_shared<Map>("../resources/maps/level_three.txt");
+            break;
+        default:
+            maps[1] = std::make_shared<Map>("../resources/maps/level_one.txt");
+    }
+    activeMap = map;
 }
 
 void Game::setPlayer(std::shared_ptr<Player> const &object) {
@@ -342,11 +343,6 @@ void Game::setGameObjects() {
                                             "../resources/img/ghosts/orange_E2.png"
                                     }
                             }})));
-
-
-
-    Game::getInstance().maps[LEVEL_ONE] = std::make_shared<Map>("../resources/maps/level_one.txt");
-//    Game::getInstance().maps[LEVEL_TWO] = std::make_shared<Map>("../resources/maps/level_two.txt");
 }
 
 void Game::resetRound() {
@@ -359,15 +355,12 @@ void Game::resetRound() {
     render();
     getPlayer()->playSound(TEST, 5);
     while (Mix_Playing(5)) {}
-
 }
 
 void Game::gameOver() {
-
     if (getPlayer()->points > getPlayer()->highScore) {
         getPlayer()->writeHighScore(getPlayer()->points);
     }
-    getPlayer()->points = 0;
 
     initFont(40);
     drawText("Press space to play again", 150, 500);
@@ -379,8 +372,9 @@ void Game::gameOver() {
         IM.update();
     }
 
-    //getMap(1)->redrawPelletsOnMap();
+    setMap(1);
     getPlayer()->lives = 3;
+    getPlayer()->points = 0;
     resetRound();
 }
 
@@ -388,7 +382,7 @@ void Game::gameOver() {
 void Game::startGame() {
     initFonts();
     setGameObjects();
-    setMap(LEVEL_ONE);
+    setMap(1);
     render();
     resetRound();
 }
@@ -410,4 +404,38 @@ void Game::initFont(int size) {
     font = FC_CreateFont();
     FC_LoadFont(font, renderer, "../resources/fonts/arial.ttf", size, FC_MakeColor(255, 255, 0, 255), TTF_STYLE_ITALIC);
 }
+
+void Game::mapCompleted() {
+    getStationaryGameObjects().clear();
+
+    if (activeMap > 2) {
+        initFont(100);
+        drawText("You win!", 200, 400);
+        SDL_RenderPresent(renderer);
+        SDL_Delay(3000);
+        SDL_RenderClear(renderer);
+        activeMap = 1;
+        setMap(activeMap);
+        resetRound();
+
+    } else {
+        getMovableGameObjects().clear();
+        activeMap++;
+        setMap(activeMap);
+        resetRound();
+    }
+}
+
+bool Game::pelletsAreRemaining() {
+    int pelletsRemaining = 0;
+
+    for (auto &p : Game::getStationaryGameObjects()) {
+        if (p->getType() == PELLET) {
+            pelletsRemaining++;
+        }
+    }
+
+    return pelletsRemaining != 0;
+}
+
 
