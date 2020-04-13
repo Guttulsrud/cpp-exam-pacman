@@ -1,7 +1,6 @@
 #include "../include/Game.h"
 #include "../include/Player.h"
 #include "../include/Ghost.h"
-#include "../include/VoidWarp.h"
 #include "../include/Pellet.h"
 #include "../include/InputManager.h"
 
@@ -305,14 +304,7 @@ void Game::setGameObjects() {
                             }})));
 
 
-    addStationaryGameObject(
-            std::make_shared<VoidWarp>(TextureManager::loadTexture("../resources/img/red.jpg"), 2, 60, 30, 30 * 15, 2,
-                                       0));
-    addStationaryGameObject(
-            (
-                    std::make_shared<VoidWarp>(TextureManager::loadTexture("../resources/img/red.jpg"), 2, 60, 30 * 30,
-                                               30 * 15, 2,
-                                               1)));
+
     Game::getInstance().maps[LEVEL_ONE] = std::make_shared<Map>("../resources/maps/level_one.txt");
 //    Game::getInstance().maps[LEVEL_TWO] = std::make_shared<Map>("../resources/maps/level_two.txt");
 }
