@@ -132,6 +132,7 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
                     for (auto &o : Game::getMovableGameObjects()) {
                         if (o->getType() == GHOST) {
                             dynamic_cast<Ghost *>(o.get())->switchedToEatable = true;
+                            dynamic_cast<Ghost *>(o.get())->eatableStateEnd = false;
                         }
                     }
                 }
