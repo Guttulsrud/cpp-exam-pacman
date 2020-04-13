@@ -79,9 +79,9 @@ void Game::renderStartScreen() {
 void removeFruit(std::vector<std::shared_ptr<StationaryObject>> &objects) {
     objects.erase(
             std::remove_if(objects.begin(), objects.end(),
-                    [](const std::shared_ptr<StationaryObject> &fruit) {
-                return fruit->getType() == FRUIT && dynamic_cast<Fruit *>(fruit.get())->eaten;
-            }),
+                           [](const std::shared_ptr<StationaryObject> &fruit) {
+                               return fruit->getType() == FRUIT && dynamic_cast<Fruit *>(fruit.get())->eaten;
+                           }),
             objects.end());
 }
 
@@ -104,7 +104,7 @@ void Game::update() {
     for (auto const &m : movables) {
         m->update();
     }
- removeFruit(Game::getStationaryGameObjects());
+    removeFruit(Game::getStationaryGameObjects());
     pelletsAreRemaining() ? removeEatenPellets(Game::getStationaryGameObjects()) : mapCompleted();
 }
 
@@ -126,7 +126,7 @@ void Game::render() {
         drawText("Highscore: %d", 35, 0, getPlayer()->highScore);
     }
     drawText("Points: %d", 400, 0, getPlayer()->points);
-    drawText("Lives: %d", 775, 0, getPlayer()->lives + 1);
+    drawText("Lives: %d", 775, 0, getPlayer()->lives);
     player->render();
     SDL_RenderPresent(renderer);
     SDL_RenderClear(renderer);
@@ -348,6 +348,7 @@ void Game::resetRound() {
     }
     initFonts();
     render();
+
     getPlayer()->playSound(TEST, 5);
     while (Mix_Playing(5)) {}
 }
@@ -356,6 +357,7 @@ void Game::gameOver() {
     if (getPlayer()->points > getPlayer()->highScore) {
         getPlayer()->writeHighScore(getPlayer()->points);
     }
+    getStationaryGameObjects().clear();
 
     initFont(40);
     drawText("Press space to play again", 150, 500);
@@ -403,6 +405,8 @@ void Game::initFont(int size) {
 
 void Game::mapCompleted() {
     getStationaryGameObjects().clear();
+    SDL_RenderPresent(renderer);
+    SDL_RenderClear(renderer);
 
     if (activeMap > 2) {
         initFont(100);
@@ -430,7 +434,7 @@ bool Game::pelletsAreRemaining() {
         }
     }
 
-    return pelletsRemaining != 0;
+    return pelletsRemaining > 0;
 }
 
 

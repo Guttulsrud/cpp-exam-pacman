@@ -110,6 +110,7 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
                 ghost->switchedToEatable = false;
             } else {
                 playSound(DEATH);
+                lives--;
                 while (Mix_Playing(-1)) {}
                 lives < 1 ? Game::getInstance().gameOver() : Game::getInstance().resetRound();
 
@@ -178,13 +179,9 @@ TYPE Player::getType() {
 }
 
 void Player::reset() {
-
-    //todo: play death animation here
-    lives--;
     m_positionRectangle.x = 30 * 14.5;
     m_positionRectangle.y = 30 * 24;
     updateHitbox();
-
 }
 
 void Player::playSound(Sound sound, int channel) {
