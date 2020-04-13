@@ -45,7 +45,7 @@ public:
     static void addMovableGameObject(const std::shared_ptr<MovableObject> &object);
     static void addStationaryGameObject(const std::shared_ptr<StationaryObject> &object);
     void setMap(int map);
-    int activeMap = 3;
+    int activeMap = 2;
     std::map<int, std::shared_ptr<Map>> maps;
     void resetRound();
     void startGame();
