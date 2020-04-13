@@ -84,6 +84,9 @@ void Ghost::update() {
             direction = getDirectionToPlayer(directions);
             powerPelletState = true;
             switchedToPowerPelletState = false;
+
+            powerPelletStateEndTimer = SDL_AddTimer(5000, &Ghost::powerPelletStateEndCallback, this);
+            ghostReviveTimer = SDL_AddTimer(7000, &Ghost::reviveGhostCallback, this);
         }
         m_positionRectangle = directions[direction];
     }
@@ -91,12 +94,13 @@ void Ghost::update() {
     //todo: Fix animation on below:::
     if (dead) {
         deadAnimator.animate(&m_texture, direction);
+    } else if (powerPelletStateEnd) {
+        powerPelletStateEndAnimator.animate(&m_texture, direction);
     } else if (powerPelletState) {
         powerPelletStateAnimator.animate(&m_texture, direction);
     } else {
         m_animator.animate(&m_texture, direction);
     }
-
 
     prevDirections = possibleDirectionsVector;
     updateHitbox();
@@ -127,7 +131,6 @@ Direction Ghost::getDirectionToPlayer(const std::map<Direction, SDL_Rect> &possi
                 closestToPlayer = directionPosition.first;
             }
         }
-//        std::cout << closestToPlayer << std::endl;
     }
 
 
@@ -139,6 +142,21 @@ void Ghost::reset() {
     m_positionRectangle.y = 30 * 15;
     updateHitbox();
     powerPelletState = false;
+}
+
+Uint32 Ghost::powerPelletStateEndCallback(Uint32 n, void *ghost) {
+    auto *g = reinterpret_cast<Ghost *>(ghost);
+    g->powerPelletStateEnd = true;
+    return 0;
+}
+
+Uint32 Ghost::reviveGhostCallback(Uint32 n, void *ghost) {
+    auto *g = reinterpret_cast<Ghost *>(ghost);
+    if(!g->dead){
+        g->powerPelletStateEnd = false;
+        g->powerPelletState = false;
+    }
+    return 0;
 }
 
 
