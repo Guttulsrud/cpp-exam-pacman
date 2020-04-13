@@ -10,7 +10,7 @@
 
 
 enum Sound {
-    EAT_PELLET, EAT_POWER_PELLET, DEATH, EAT_FRUIT, EAT_GHOST
+    EAT_PELLET, EAT_POWER_PELLET, DEATH, EAT_FRUIT, EAT_GHOST, TEST
 };
 
 class Player : public MovableObject {
@@ -19,11 +19,14 @@ public:
             MovableObject(texturePtr, x, y, id, movementSpeed), m_animator(animator) {
         movementChange.x = 0;
         movementChange.y = 0;
+        highScore = readHighScore();
+
         sounds = {{EAT_PELLET, Mix_LoadWAV("../resources/sounds/pacman/pacman_chomp.wav")},
                   {EAT_POWER_PELLET, Mix_LoadWAV("../resources/sounds/pacman/eat_powerpellet.mp3")},
                   {EAT_FRUIT, Mix_LoadWAV("../resources/sounds/pacman/pacman_eatfruit.wav")},
                   {EAT_GHOST, Mix_LoadWAV("../resources/sounds/pacman/pacman_eatghost.wav")},
                   {DEATH, Mix_LoadWAV("../resources/sounds/pacman/pacman_death.wav")},
+                  {TEST, Mix_LoadWAV("../resources/sounds/game/pacman_beginning.wav")},
         };
     }
 
@@ -39,13 +42,17 @@ public:
     Direction direction = UP;
     EntityAnimator m_animator;
     int points = 0;
-    int lives = 2;
+    int highScore = 0;
+    int newHighScore = 0;
+    int lives = 3;
 
     void playSound(Sound sound, int channel = -1);
 
-    std::vector<std::future<void>> futures;
+    void writeHighScore(int score);
+
 private:
     SDL_Point movementChange;
+    int readHighScore();
 
     bool positionIsValid(SDL_Rect &possiblePosition);
 
