@@ -3,6 +3,7 @@
 #include "../include/Game.h"
 #include "../include/Pellet.h"
 #include "../include/Ghost.h"
+#include "../include/Fruit.h"
 #include <SDL_mixer.h>
 #include <future>
 #include <fstream>
@@ -108,6 +109,7 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
 
 
     // Check for collision with stationary game objects
+    bool collectedFruit = false;
     bool collectedPellet = false;
     for (auto &stationary : Game::getStationaryGameObjects()) {
         if (SDL_HasIntersection(&possiblePosition, &stationary->m_positionRectangle)) {
@@ -133,11 +135,20 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
                 points += 10;
 
             }
+            if (stationary->getType() == FRUIT){
+                collectedFruit = true;
+                dynamic_cast<Fruit *>(stationary.get())->eaten = true;
+                points += 300;
+                //TODO: Fix indivudual points for different types of fruits
+            }
         }
 
     }
     if (collectedPellet && !Mix_Playing(1)) {
         playSound(EAT_PELLET, 1);
+    }
+    if (collectedFruit){
+        playSound(EAT_FRUIT, 1);
     }
     return didNotCollideWithWall;
 }

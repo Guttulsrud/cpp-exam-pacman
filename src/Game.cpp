@@ -3,6 +3,7 @@
 #include "../include/Ghost.h"
 #include "../include/Pellet.h"
 #include "../include/InputManager.h"
+#include "../include/Fruit.h"
 
 #include <SDL2/SDL.h>
 #include <SDL_ttf.h>
@@ -73,6 +74,15 @@ void Game::renderStartScreen() {
         IM.update();
     }
 
+}
+
+void removeFruit(std::vector<std::shared_ptr<StationaryObject>> &objects) {
+    objects.erase(
+            std::remove_if(objects.begin(), objects.end(),
+                    [](const std::shared_ptr<StationaryObject> &fruit) {
+                return fruit->getType() == FRUIT && dynamic_cast<Fruit *>(fruit.get())->eaten;
+            }),
+            objects.end());
 }
 
 void removeEatenPellets(std::vector<std::shared_ptr<StationaryObject>> &objects) {
