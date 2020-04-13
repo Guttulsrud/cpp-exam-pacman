@@ -14,7 +14,7 @@ public:
         spawn.y = y;
     }
 
-    int difficulty = 0;
+    int difficulty = 4;
     Direction direction = RIGHT;
     std::vector<Direction> prevDirections;
     bool eatable = false;

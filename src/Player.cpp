@@ -15,10 +15,10 @@ void Player::update() {
 
     //NEW VOIDWARP
     //TODO: put voidwarp in method
-    if(m_positionRectangle.x > 892){
+    if (m_positionRectangle.x > 892) {
         m_positionRectangle.x = -21;
 
-    } else if(m_positionRectangle.x < -22){
+    } else if (m_positionRectangle.x < -22) {
         m_positionRectangle.x = 891;
     }
 
@@ -63,7 +63,7 @@ void Player::update() {
     movementChange = possibleMovementChange;
     updateHitbox();
 
-    if(points > highScore) {
+    if (points > highScore) {
         newHighScore = points;
     }
 }
@@ -91,12 +91,16 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
     for (auto &movable : Game::getMovableGameObjects()) {
         if (SDL_HasIntersection(&hitbox, &movable->hitbox) && movable->getType() == GHOST) {
             auto ghost = dynamic_cast<Ghost *>(movable.get());
-            if (ghost->eatable || ghost->dead) {
+            if (ghost->eatable) {
                 if (!ghost->dead) {
                     playSound(EAT_GHOST, 3);
                 }
                 ghost->dead = true;
                 ghost->eatable = false;
+                ghost->switchedToEatable = false;
+            } else if (ghost->dead) {
+                ghost->eatable = false;
+                ghost->switchedToEatable = false;
             } else {
                 playSound(DEATH);
                 while (Mix_Playing(-1)) {}

@@ -74,13 +74,20 @@ void Ghost::update() {
 
     //decides which way
     if ((prevDirections != possibleDirectionsVector || possibleDirections.size() > 2)) {
-        auto item = possibleDirections.begin();
+
         std::random_device rd;
         std::mt19937 mt(rd());
-        std::uniform_int_distribution<int> dist(0, possibleDirections.size() - 1);
-        std::advance(item, dist(mt));
+        std::uniform_int_distribution<int> dist(0, 10);
 
-        if (rand() % 10 > difficulty && !dead) {
+        if (dist(mt) > difficulty && !dead) {
+
+            std::random_device rd;
+            std::mt19937 mt(rd());
+            std::uniform_int_distribution<int> dist(0, possibleDirections.size() - 1);
+
+            auto item = possibleDirections.begin();
+            std::advance(item, dist(mt));
+
             direction = item->first;
             m_positionRectangle = item->second;
         } else {
@@ -94,8 +101,12 @@ void Ghost::update() {
             eatable = true;
             switchedToEatable = false;
 
-            eatableStateEndTimer = SDL_AddTimer(5000, &Ghost::eatableStateEndCallback, this);
-            ghostReviveTimer = SDL_AddTimer(7000, &Ghost::reviveGhostCallback, this);
+            SDL_RemoveTimer(eatableStateEndTimer);
+            SDL_RemoveTimer(ghostReviveTimer);
+            int eatableTime = 10000;
+
+            eatableStateEndTimer = SDL_AddTimer(eatableTime, &Ghost::eatableStateEndCallback, this);
+            ghostReviveTimer = SDL_AddTimer(eatableTime+3000, &Ghost::reviveGhostCallback, this);
         }
         m_positionRectangle = directions[direction];
     }
@@ -137,7 +148,7 @@ Direction Ghost::getDirectionToPoint(const std::map<Direction, SDL_Rect> &possib
         }
         float lenToDestination = sqrt((xLen * xLen) + (yLen * yLen));
 
-        if (eatable || switchedToEatable) {
+        if ((eatable || switchedToEatable) && !dead) {
             if (lenToDestination > longestLength) {
                 longestLength = lenToDestination;
                 destination = directionPosition.first;
@@ -160,17 +171,19 @@ void Ghost::reset() {
     eatable = false;
     updateHitbox();
     eatable = false;
+    m_animator.animate(&m_texture, direction);
 }
 
 Uint32 Ghost::eatableStateEndCallback(Uint32 n, void *ghost) {
     auto *g = reinterpret_cast<Ghost *>(ghost);
-    g->eatableStateEnd = true;
+    if(!g->dead && g->eatable)
+        g->eatableStateEnd = true;
     return 0;
 }
 
 Uint32 Ghost::reviveGhostCallback(Uint32 n, void *ghost) {
     auto *g = reinterpret_cast<Ghost *>(ghost);
-    if (!g->dead) {
+    if (!g->dead && g->eatable && g->eatableStateEnd) {
         g->eatableStateEnd = false;
         g->eatable = false;
     }
