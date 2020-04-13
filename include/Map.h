@@ -3,27 +3,31 @@
 
 #include <SDL2/SDL.h>
 #include <vector>
+#include <map>
 
 class Map {
 
+
 public:
-    Map();
-    ~Map();
+    Map(const char *filePath);
 
     int currentMap[32][29];
 
-    void loadMapFromFile(const char* filePath);
+    void loadMapFromFile(const char *filePath);
+
     void loadLevelMap(int map[32][29]);
+
     void redrawPelletsOnMap();
 
 private:
     void createWallWithTexture(int map[32][29], int row, int column);
+
     int tileLength = 30;
 
 
     SDL_Texture *fill;
     SDL_Texture *round;
-    SDL_Texture * black;
+    SDL_Texture *black;
     SDL_Texture *roundedWallN;
     SDL_Texture *roundedWallW;
     SDL_Texture *roundedWallS;

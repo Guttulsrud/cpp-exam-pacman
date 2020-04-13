@@ -42,7 +42,6 @@ int Game::init(const char *title, int xPos, int yPos, int width, int height, boo
         std::cout << "Game running" << std::endl;
         isRunning = true;
 
-        introMusic = Mix_LoadWAV("../resources/sounds/game/pacman_beginning.wav");
     }
     return 0;
 }
@@ -59,6 +58,8 @@ void removeEatenPellets(std::vector<std::shared_ptr<StationaryObject>> &objects)
 
 void Game::update() {
     std::vector<std::shared_ptr<MovableObject>> &movables = Game::getMovableGameObjects();
+    std::vector<std::shared_ptr<StationaryObject>> &stationary = Game::getStationaryGameObjects();
+
     std::shared_ptr<Player> &player = Game::getPlayer();
 
     player->update();
@@ -67,6 +68,15 @@ void Game::update() {
         m->update();
     }
 
+    for (auto const &s : stationary) {
+        if (s->getType() == PELLET) {
+
+        }
+    }
+
+
+
+    //count pellets. if none, load next map
 
     removeEatenPellets(Game::getStationaryGameObjects());
 }
@@ -83,7 +93,7 @@ void Game::render() {
         s->render();
     }
 
-    if(getPlayer()->newHighScore > getPlayer()->highScore) {
+    if (getPlayer()->newHighScore > getPlayer()->highScore) {
         drawText("Highscore: %d", 35, 0, getPlayer()->newHighScore);
     } else {
         drawText("Highscore: %d", 35, 0, getPlayer()->highScore);
@@ -106,18 +116,14 @@ void Game::clean() {
 }
 
 
-void Game::addMap(const std::shared_ptr<Map> &m) {
-    getMaps().emplace_back(m);
+void Game::setMap(Maps map) {
+    getInstance().m_map = maps[map];
 }
 
 void Game::setPlayer(std::shared_ptr<Player> const &object) {
     getInstance().m_player = object;
 }
 
-
-std::shared_ptr<Map> &Game::getMap(int levelNumber) {
-    return getMaps()[levelNumber - 1];
-}
 
 
 Game::~Game() {
@@ -307,10 +313,8 @@ void Game::setGameObjects() {
                     std::make_shared<VoidWarp>(TextureManager::loadTexture("../resources/img/red.jpg"), 2, 60, 30 * 30,
                                                30 * 15, 2,
                                                1)));
-
-    addMap(std::make_shared<Map>());
-
-
+    Game::getInstance().maps[LEVEL_ONE] = std::make_shared<Map>("../resources/maps/level_one.txt");
+//    Game::getInstance().maps[LEVEL_TWO] = std::make_shared<Map>("../resources/maps/level_two.txt");
 }
 
 void Game::resetRound() {
@@ -326,8 +330,8 @@ void Game::resetRound() {
 
 }
 
-
 void Game::gameOver() {
+
     if (getPlayer()->points > getPlayer()->highScore) {
         getPlayer()->writeHighScore(getPlayer()->points);
     }
@@ -338,27 +342,23 @@ void Game::gameOver() {
     SDL_RenderPresent(renderer);
     SDL_RenderClear(renderer);
     InputManager IM = InputManager::getInstance();
+
     while (!IM.KeyDown(SDL_SCANCODE_SPACE)) {
         IM.update();
     }
 
-    getMap(1)->redrawPelletsOnMap();
+    //getMap(1)->redrawPelletsOnMap();
     getPlayer()->lives = 3;
     resetRound();
-}
-
-std::vector<std::shared_ptr<Map>> &Game::getMaps() {
-    return getInstance().maps;
 }
 
 
 void Game::startGame() {
     initFonts();
     setGameObjects();
+    setMap(LEVEL_ONE);
     render();
     resetRound();
-
-
 }
 
 
