@@ -391,15 +391,18 @@ void Game::initFont(int size) {
 }
 
 void Game::mapCompleted() {
-
-    SDL_RenderPresent(renderer);
-    SDL_RenderClear(renderer);
     getStationaryGameObjects().clear();
 
     if (activeMap > 2) {
+        initFont(100);
+        drawText("You win!", 200, 400);
+        SDL_RenderPresent(renderer);
+        SDL_Delay(3000);
+        SDL_RenderClear(renderer);
         activeMap = 1;
         setMap(activeMap);
         resetRound();
+
     } else {
         getMovableGameObjects().clear();
         activeMap++;
