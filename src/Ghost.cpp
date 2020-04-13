@@ -34,6 +34,14 @@ void Ghost::update() {
         m_positionRectangle.x = 891;
     }
 
+    if (m_positionRectangle.y > 960) {
+        m_positionRectangle.y = -21;
+
+    } else if (m_positionRectangle.y < -22) {
+        m_positionRectangle.y = 960;
+    }
+
+
     SDL_Rect temp = m_positionRectangle;
     temp.y -= m_movementSpeed;
     directions.insert({UP, temp});

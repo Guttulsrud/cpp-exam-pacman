@@ -22,6 +22,13 @@ void Player::update() {
         m_positionRectangle.x = 891;
     }
 
+    if (m_positionRectangle.y > 960) {
+        m_positionRectangle.y = -21;
+
+    } else if (m_positionRectangle.y < -22) {
+        m_positionRectangle.y = 960;
+    }
+
     SDL_Rect possiblePosition = m_positionRectangle;
     SDL_Point possibleMovementChange = movementChange;
 

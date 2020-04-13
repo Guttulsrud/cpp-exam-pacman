@@ -370,6 +370,7 @@ void Game::gameOver() {
     setMap(1);
     getPlayer()->lives = 3;
     getPlayer()->points = 0;
+
     resetRound();
 }
 
@@ -414,7 +415,6 @@ void Game::mapCompleted() {
         resetRound();
 
     } else {
-        getMovableGameObjects().clear();
         activeMap++;
         setMap(activeMap);
         resetRound();
