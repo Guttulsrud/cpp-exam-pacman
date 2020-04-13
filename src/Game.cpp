@@ -45,6 +45,36 @@ int Game::init(const char *title, int xPos, int yPos, int width, int height, boo
     return 0;
 }
 
+void Game::renderStartScreen() {
+    InputManager IM = InputManager::getInstance();
+
+    SDL_Texture* startScreenTexture = TextureManager::loadTexture("../resources/startscreenassets/start_screen.png");
+
+    SDL_Rect startScreenRect = SDL_Rect{0, 0, 600, 900};
+
+    SDL_RenderCopy(Game::renderer, startScreenTexture, &startScreenRect, &startScreenRect);
+
+    font = FC_CreateFont();
+    FC_LoadFont(font, renderer, "../resources/fonts/arial.ttf", 30, FC_MakeColor(255,255,255,255), TTF_STYLE_BOLD);
+    FC_Draw(font, renderer, 130, 340, "Press Space to start!");
+    FC_Draw(font, renderer, 160, 490, "Press 'Q' to quit!");
+
+    FC_FreeFont(font);
+
+    SDL_RenderPresent(renderer);
+    SDL_RenderClear(renderer);
+
+    while(true){
+        if(!IM.KeyStillUp(SDL_SCANCODE_SPACE)){
+            break;
+        } else if(!IM.KeyStillUp(SDL_SCANCODE_Q)) {
+            abort();
+        }
+        IM.update();
+    }
+
+}
+
 void removeEatenPellets(std::vector<std::shared_ptr<StationaryObject>> &objects) {
 
     objects.erase(

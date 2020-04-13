@@ -5,6 +5,7 @@
 #include <SDL2/SDL_ttf.h>
 
 
+
 int main(int argc, char *argv[]) {
 
 
@@ -17,6 +18,8 @@ int main(int argc, char *argv[]) {
     InputManager IM = InputManager::getInstance();
 
     game.init("pacman", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 930, 1020, false);
+
+    game.renderStartScreen();
 
 
     //Todo: place intro screen here: When user clicks Play, code below follows:
