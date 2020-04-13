@@ -5,6 +5,7 @@
 #include "../include/Ghost.h"
 #include <SDL_mixer.h>
 #include <future>
+#include <fstream>
 
 using namespace std::chrono_literals;
 
@@ -61,6 +62,9 @@ void Player::update() {
     movementChange = possibleMovementChange;
     updateHitbox();
 
+    if(points > highScore) {
+        newHighScore = points;
+    }
 }
 
 void Player::determineDirection(const SDL_Rect &possiblePosition) {
@@ -94,7 +98,9 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
                 ghost->dead = true;
             } else {
                 playSound(DEATH);
-                lives < 1 ? Game::getInstance().gameOver() : Game::getInstance().Game::resetRound();
+                while (Mix_Playing(-1)) {}
+                lives < 1 ? Game::getInstance().gameOver() : Game::getInstance().resetRound();
+
                 return false;
             }
         }
@@ -136,6 +142,14 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
     return didNotCollideWithWall;
 }
 
+void Player::writeHighScore(int score) {
+    std::ofstream file;
+    file.open("../resources/highscore.txt");
+    if (file) {
+        file << score;
+    }
+}
+
 TYPE Player::getType() {
     return PLAYER;
 }
@@ -153,3 +167,13 @@ void Player::reset() {
 void Player::playSound(Sound sound, int channel) {
     Mix_PlayChannel(channel, sounds[sound], 0);
 }
+
+int Player::readHighScore() {
+    int score = 0;
+    std::ifstream file("../resources/highscore.txt");
+    if (file) {
+        file >> score;
+    }
+    return score;
+}
+
