@@ -19,7 +19,6 @@ Map::Map(const char *filePath) {
     black = TextureManager::loadTexture("../resources/img/black.png");
     pellet = TextureManager::loadTexture("../resources/img/pickups/pellet.png");
     pelletLarge = TextureManager::loadTexture("../resources/img/pickups/power_pellet.png");
-    fruit = TextureManager::loadTexture("../resources/img/pickups/cherry.png");
 
     roundedWallN = TextureManager::loadTexture("../resources/img/walls/rounded_corner_N.png");
     roundedWallN = TextureManager::loadTexture("../resources/img/walls/rounded_corner_N.png");
@@ -44,6 +43,8 @@ Map::Map(const char *filePath) {
     edgeE = TextureManager::loadTexture("../resources/img/walls/wall_single_edge_E.png");
     edgeW = TextureManager::loadTexture("../resources/img/walls/wall_single_edge_W.png");
     edgeS = TextureManager::loadTexture("../resources/img/walls/wall_single_edge_S.png");
+
+    fruit = TextureManager::loadTexture("../resources/img/pickups/cherry.png");
 
     loadLevelMap(currentMap);
 }
