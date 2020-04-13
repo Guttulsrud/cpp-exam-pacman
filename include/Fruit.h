@@ -18,6 +18,8 @@ public:
 
     bool eaten = false;
     bool m_active = false;
+
+    Uint32 fruitSpawnCallback(Uint32 n, void *fruit);
 };
 
 

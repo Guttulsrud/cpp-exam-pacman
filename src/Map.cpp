@@ -5,6 +5,7 @@
 #include "../include/TextureManager.h"
 #include "../include/Pellet.h"
 #include "../include/StationaryObject.h"
+#include "../include/Fruit.h"
 
 
 Map::Map(const char *filePath) {
@@ -16,8 +17,9 @@ Map::Map(const char *filePath) {
     fill = TextureManager::loadTexture("../resources/img/walls/wall.png");
     round = TextureManager::loadTexture("../resources/img/walls/round.png");
     black = TextureManager::loadTexture("../resources/img/black.png");
-    pellet = TextureManager::loadTexture("../resources/img/pellet.png");
-    pelletLarge = TextureManager::loadTexture("../resources/img/pellet_large.png");
+    pellet = TextureManager::loadTexture("../resources/img/pickups/pellet.png");
+    pelletLarge = TextureManager::loadTexture("../resources/img/pickups/power_pellet.png");
+    fruit = TextureManager::loadTexture("../resources/img/pickups/cherry.png");
 
     roundedWallN = TextureManager::loadTexture("../resources/img/walls/rounded_corner_N.png");
     roundedWallN = TextureManager::loadTexture("../resources/img/walls/rounded_corner_N.png");
@@ -160,6 +162,11 @@ void Map::loadLevelMap(int map[32][29]) {
             tileType = map[column][row];
             idIncrementer++;
             switch (tileType) {
+                case 4:
+                    Game::addStationaryGameObject(std::make_shared<Fruit>(fruit, row * tileLength,
+                                                                          column * tileLength, idIncrementer, 60,
+                                                                          60, false));
+                    break;
                 case 3:
                     Game::addStationaryGameObject(std::make_shared<Pellet>(pelletLarge, row * tileLength + 25,
                                                                            column * tileLength + 30, idIncrementer, 15,
