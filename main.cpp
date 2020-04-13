@@ -23,6 +23,7 @@ int main(int argc, char *argv[]) {
 
     //Todo: place intro screen here: When user clicks Play, code below follows:
     game.newGame();
+
     while (Mix_Playing(1)) {
         IM.update();
     }
