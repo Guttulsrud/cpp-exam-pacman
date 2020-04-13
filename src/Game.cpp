@@ -165,11 +165,6 @@ void Game::setPlayer(std::shared_ptr<Player> const &object) {
 }
 
 
-
-Game::~Game() {
-
-}
-
 std::shared_ptr<Player> &Game::getPlayer() {
     return getInstance().m_player;
 }
