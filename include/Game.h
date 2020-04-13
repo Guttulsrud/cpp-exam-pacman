@@ -7,16 +7,20 @@
 #include "GameObject.h"
 #include "Player.h"
 #include "StationaryObject.h"
+#include "../utils/SDL_FontCache.h"
 #include <memory>
 #include <iostream>
 #include <algorithm>
 
+enum Maps {
+    LEVEL_ONE, LEVEL_TWO, LEVEL_THREE
+};
 
 class Game {
 public:
     ~Game();
 
-    void init(const char *title, int xpos, int ypos, int width, int height, bool fullscreen);
+    int init(const char *title, int xpos, int ypos, int width, int height, bool fullscreen);
 
     static Game &getInstance() {
         static Game instance;
@@ -32,38 +36,40 @@ public:
     bool running() {
         return isRunning;
     }
-
-    static SDL_Renderer *renderer;
-
     std::shared_ptr<Player> m_player;
-    std::vector<std::shared_ptr<GameObject>> gameObjects;
     std::vector<std::shared_ptr<MovableObject>> movableGameObjects;
     std::vector<std::shared_ptr<StationaryObject>> stationaryGameObjects;
-    std::vector<std::shared_ptr<Map>> maps;
 
-    static std::vector<std::shared_ptr<GameObject>> &getGameObjects();
+    static SDL_Renderer *renderer;
     static std::vector<std::shared_ptr<MovableObject>> &getMovableGameObjects();
     static std::vector<std::shared_ptr<StationaryObject>> &getStationaryGameObjects();
-
-    static std::vector<std::shared_ptr<Map>> &getMaps();
-
     static std::shared_ptr<Player> &getPlayer();
-    static void setPlayer(const std::shared_ptr<Player> &object);
 
-    static void setUpGameObjects();
-    static void addGameObject(const std::shared_ptr<GameObject> &object);
+    static void setPlayer(const std::shared_ptr<Player> &object);
+    static void setGameObjects();
     static void addMovableGameObject(const std::shared_ptr<MovableObject> &object);
     static void addStationaryGameObject(const std::shared_ptr<StationaryObject> &object);
+    void setMap(Maps map);
 
-    static void addMap(const std::shared_ptr<Map> &map);
+    std::map<Maps, std::shared_ptr<Map>> maps;
+    void resetRound();
+    void startGame();
+    void gameOver();
+    void drawText(const char * text, float x, float y, int parameter = 0);
+    void initFont(int size);
+    void initFonts();
 
+    Maps activeLevel = LEVEL_ONE;
+
+    void renderStartScreen();
 
 private:
-    Game() = default;
+    std::shared_ptr<Map> m_map;
 
+    Game() = default;
+    FC_Font* font;
     bool isRunning;
     SDL_Window *window;
-    int frameCount = 0;
 
 };
 

@@ -1,42 +1,79 @@
 #include "../include/Game.h"
 #include "../include/Player.h"
 #include "../include/Ghost.h"
-#include "../include/VoidWarp.h"
 #include "../include/Pellet.h"
-#include "../include/Fruit.h"
+#include "../include/InputManager.h"
 
 #include <SDL2/SDL.h>
+#include <SDL_ttf.h>
+#include <fstream>
 
 SDL_Renderer *Game::renderer = nullptr;
 
-
-void Game::init(const char *title, int xPos, int yPos, int width, int height, bool fullscreen) {
+int Game::init(const char *title, int xPos, int yPos, int width, int height, bool fullscreen) {
 
     Uint32 flags = SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL;
     if (fullscreen) {
         flags = SDL_WINDOW_FULLSCREEN | SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL;
     }
-    if (SDL_Init(SDL_INIT_VIDEO) == 0) {
-
-
-        std::cout << "Initializing.." << std::endl;
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) == 0) {
         window = SDL_CreateWindow(title, xPos, yPos, width, height, flags);
 
+        if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024) < 0) {
+            // Error message if can't initialize
+        }
+
+        Mix_AllocateChannels(8);
+
         if (window) {
-            std::cout << "Window created!" << std::endl;
         }
 
         renderer = SDL_CreateRenderer(window, -1, flags);
 
         if (renderer) {
             SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-            std::cout << "Renderer created!" << std::endl;
         }
+
+        if (TTF_Init() == 0) {
+            std::cout << "TTF init" << std::endl;
+        }
+
+        std::cout << "Game running" << std::endl;
         isRunning = true;
-        setUpGameObjects();
+
     }
+    return 0;
 }
 
+void Game::renderStartScreen() {
+    InputManager IM = InputManager::getInstance();
+
+    SDL_Texture* startScreenTexture = TextureManager::loadTexture("../resources/startscreenassets/start_screen.png");
+
+    SDL_Rect startScreenRect = SDL_Rect{0, 0, 600, 900};
+
+    SDL_RenderCopy(Game::renderer, startScreenTexture, &startScreenRect, &startScreenRect);
+
+    font = FC_CreateFont();
+    FC_LoadFont(font, renderer, "../resources/fonts/arial.ttf", 30, FC_MakeColor(255,255,255,255), TTF_STYLE_BOLD);
+    FC_Draw(font, renderer, 130, 340, "Press Space to start!");
+    FC_Draw(font, renderer, 160, 490, "Press 'Q' to quit!");
+
+    FC_FreeFont(font);
+
+    SDL_RenderPresent(renderer);
+    SDL_RenderClear(renderer);
+
+    while(true){
+        if(!IM.KeyStillUp(SDL_SCANCODE_SPACE)){
+            break;
+        } else if(!IM.KeyStillUp(SDL_SCANCODE_Q)) {
+            abort();
+        }
+        IM.update();
+    }
+
+}
 
 void removeEatenPellets(std::vector<std::shared_ptr<StationaryObject>> &objects) {
 
@@ -48,67 +85,75 @@ void removeEatenPellets(std::vector<std::shared_ptr<StationaryObject>> &objects)
             objects.end());
 }
 
-
 void Game::update() {
     std::vector<std::shared_ptr<MovableObject>> &movables = Game::getMovableGameObjects();
+    std::vector<std::shared_ptr<StationaryObject>> &stationary = Game::getStationaryGameObjects();
+
     std::shared_ptr<Player> &player = Game::getPlayer();
 
     player->update();
 
-    for (auto &m : movables) {
+    for (auto const &m : movables) {
         m->update();
     }
 
+    for (auto const &s : stationary) {
+        if (s->getType() == PELLET) {
+
+        }
+    }
+
+
+
+    //count pellets. if none, load next map
 
     removeEatenPellets(Game::getStationaryGameObjects());
 }
 
-
 void Game::render() {
-    SDL_RenderClear(renderer);
     std::vector<std::shared_ptr<MovableObject>> &movables = Game::getMovableGameObjects();
     std::vector<std::shared_ptr<StationaryObject>> &stationary = Game::getStationaryGameObjects();
     std::shared_ptr<Player> &player = Game::getPlayer();
 
-
-    for (auto &m :movables) {
+    for (auto const &m :movables) {
         m->render();
     }
-    for (auto &s : stationary) {
+    for (auto const &s : stationary) {
         s->render();
     }
-    player->render();
 
+    if (getPlayer()->newHighScore > getPlayer()->highScore) {
+        drawText("Highscore: %d", 35, 0, getPlayer()->newHighScore);
+    } else {
+        drawText("Highscore: %d", 35, 0, getPlayer()->highScore);
+    }
+    drawText("Points: %d", 400, 0, getPlayer()->points);
+    drawText("Lives: %d", 775, 0, getPlayer()->lives + 1);
+    player->render();
     SDL_RenderPresent(renderer);
+    SDL_RenderClear(renderer);
 }
 
 void Game::clean() {
-
-    SDL_DestroyWindow(window);
+    TTF_Quit();
+    FC_FreeFont(font);
+    Mix_CloseAudio();
     SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
     SDL_Quit();
     std::cout << "Cleaned.." << std::endl;
 }
 
-void Game::addMap(const std::shared_ptr<Map> &m) {
-    getMaps().emplace_back(m);
-}
 
-void Game::addGameObject(std::shared_ptr<GameObject> const &object) {
-    getGameObjects().emplace_back(object);
+void Game::setMap(Maps map) {
+    getInstance().m_map = maps[map];
 }
 
 void Game::setPlayer(std::shared_ptr<Player> const &object) {
     getInstance().m_player = object;
 }
 
-std::vector<std::shared_ptr<Map>> &Game::getMaps() {
-    return getInstance().maps;
-}
 
-std::vector<std::shared_ptr<GameObject>> &Game::getGameObjects() {
-    return getInstance().gameObjects;
-}
 
 Game::~Game() {
 
@@ -134,40 +179,225 @@ void Game::addStationaryGameObject(const std::shared_ptr<StationaryObject> &obje
     getStationaryGameObjects().emplace_back(object);
 }
 
-void Game::setUpGameObjects() {
+void Game::setGameObjects() {
+
     setPlayer(std::make_shared<Player>(TextureManager::loadTexture("../resources/img/pacman/base.png"),
-                                       440, 540, 0, 2));
+                                       30 * 14.5, 30 * 24, 0, 3,
+                                       EntityAnimator({{UP,
+                                                               {
+                                                                       "../resources/img/pacman/base.png",
+                                                                       "../resources/img/pacman/medium-open-up.png",
+                                                                       "../resources/img/pacman/large-open-up.png",
+                                                                       "../resources/img/pacman/medium-open-up.png"
+                                                               }
+                                                       },
+                                                       {DOWN,
+                                                               {
+                                                                       "../resources/img/pacman/base.png",
+                                                                       "../resources/img/pacman/medium-open-down.png",
+                                                                       "../resources/img/pacman/large-open-down.png",
+                                                                       "../resources/img/pacman/medium-open-down.png"
+                                                               }
+                                                       },
+                                                       {LEFT,
+                                                               {
+                                                                       "../resources/img/pacman/base.png",
+                                                                       "../resources/img/pacman/medium-open-left.png",
+                                                                       "../resources/img/pacman/large-open-left.png",
+                                                                       "../resources/img/pacman/medium-open-left.png"
+                                                               }
+                                                       },
+                                                       {RIGHT,
+                                                               {
+                                                                       "../resources/img/pacman/base.png",
+                                                                       "../resources/img/pacman/medium-open-right.png",
+                                                                       "../resources/img/pacman/large-open-right.png",
+                                                                       "../resources/img/pacman/medium-open-right.png"
+                                                               }
+                                                       }})
+
+    ));
+
+
+
     //TODO: Draw with map class
+    addMovableGameObject(std::make_shared<Ghost>(
+            TextureManager::loadTexture("../resources/img/ghosts/green_E1.png"),
+            30 * 15, 30 * 15, 0, 3,
+            EntityAnimator({{UP,
+                                    {
+                                            "../resources/img/ghosts/green_N1.png",
+                                            "../resources/img/ghosts/green_N2.png"
+                                    }
+                            },
+                            {DOWN,
+                                    {
+                                            "../resources/img/ghosts/green_S1.png",
+                                            "../resources/img/ghosts/green_S2.png"
+                                    }
+                            },
+                            {LEFT,
+                                    {
+                                            "../resources/img/ghosts/green_W1.png",
+                                            "../resources/img/ghosts/green_W2.png"
+                                    }
+                            },
+                            {RIGHT,
+                                    {
+                                            "../resources/img/ghosts/green_E1.png",
+                                            "../resources/img/ghosts/green_E2.png"
+                                    }
+                            }})));
 
     addMovableGameObject(std::make_shared<Ghost>(
-            TextureManager::loadTexture("../resources/img/ghosts/green_ghost_E1.png"),
-            440, 450, 0, 2));
+            TextureManager::loadTexture("../resources/img/ghosts/orange_E1.png"),
+            30 * 15, 30 * 15, 0, 3,
+            EntityAnimator({{UP,
+                                    {
+                                            "../resources/img/ghosts/purpleN1.png",
+                                            "../resources/img/ghosts/purple_N2.png"
+                                    }
+                            },
+                            {DOWN,
+                                    {
+                                            "../resources/img/ghosts/purple_S1.png",
+                                            "../resources/img/ghosts/purple_S2.png"
+                                    }
+                            },
+                            {LEFT,
+                                    {
+                                            "../resources/img/ghosts/purple_W1.png",
+                                            "../resources/img/ghosts/purple_W2.png"
+                                    }
+                            },
+                            {RIGHT,
+                                    {
+                                            "../resources/img/ghosts/purple_E1.png",
+                                            "../resources/img/ghosts/purple_E2.png"
+                                    }
+                            }})));
 
     addMovableGameObject(std::make_shared<Ghost>(
-            TextureManager::loadTexture("../resources/img/ghosts/orange_ghost_E1.png"),
-            440, 450, 0, 2));
+            TextureManager::loadTexture("../resources/img/ghosts/red_E1.png"),
+            30 * 15, 30 * 15, 0, 3,
+            EntityAnimator({{UP,
+                                    {
+                                            "../resources/img/ghosts/red_N1.png",
+                                            "../resources/img/ghosts/red_N2.png"
+                                    }
+                            },
+                            {DOWN,
+                                    {
+                                            "../resources/img/ghosts/red_S1.png",
+                                            "../resources/img/ghosts/red_S2.png"
+                                    }
+                            },
+                            {LEFT,
+                                    {
+                                            "../resources/img/ghosts/red_W1.png",
+                                            "../resources/img/ghosts/red_W2.png"
+                                    }
+                            },
+                            {RIGHT,
+                                    {
+                                            "../resources/img/ghosts/red_E1.png",
+                                            "../resources/img/ghosts/red_E2.png"
+                                    }
+                            }})));
 
-    //TODO: Skift tilbake til ghost istedenfor player, ghosts be ghosts
-    addMovableGameObject(std::make_shared<Player>(
-            TextureManager::loadTexture("../resources/img/ghosts/red_ghost_E1.png"),
-            440, 450, 0, 2));
+    addMovableGameObject(std::make_shared<Ghost>(
+            TextureManager::loadTexture("../resources/img/ghosts/purple_E1.png"),
+            30 * 15, 30 * 15, 0, 3,
+            EntityAnimator({{UP,
+                                    {
+                                            "../resources/img/ghosts/orange_N1.png",
+                                            "../resources/img/ghosts/orange_N2.png"
+                                    }
+                            },
+                            {DOWN,
+                                    {
+                                            "../resources/img/ghosts/orange_S1.png",
+                                            "../resources/img/ghosts/orange_S2.png"
+                                    }
+                            },
+                            {LEFT,
+                                    {
+                                            "../resources/img/ghosts/orange_W1.png",
+                                            "../resources/img/ghosts/orange_W2.png"
+                                    }
+                            },
+                            {RIGHT,
+                                    {
+                                            "../resources/img/ghosts/orange_E1.png",
+                                            "../resources/img/ghosts/orange_E2.png"
+                                    }
+                            }})));
 
-    addMovableGameObject(std::make_shared<Player>(
-            TextureManager::loadTexture("../resources/img/ghosts/purple_ghost_E1.png"),
-            440, 450, 0, 2));
 
-    addStationaryGameObject(
-            std::make_shared<VoidWarp>(TextureManager::loadTexture("../resources/img/red.jpg"), 60, 60, -80, 450, 2,
-                                       0));
-    addStationaryGameObject(
-            (
-                    std::make_shared<VoidWarp>(TextureManager::loadTexture("../resources/img/red.jpg"), 60, 60, 950,
-                                               450, 2,
-                                               1)));
 
-    addMap(std::make_shared<Map>());
+    Game::getInstance().maps[LEVEL_ONE] = std::make_shared<Map>("../resources/maps/level_one.txt");
+//    Game::getInstance().maps[LEVEL_TWO] = std::make_shared<Map>("../resources/maps/level_two.txt");
+}
 
+void Game::resetRound() {
+    getPlayer()->reset();
+
+    for (auto const &ghost : getMovableGameObjects()) {
+        ghost->reset();
+    }
+    initFonts();
+    render();
+    getPlayer()->playSound(TEST, 5);
+    while (Mix_Playing(5)) {}
 
 }
 
+void Game::gameOver() {
+
+    if (getPlayer()->points > getPlayer()->highScore) {
+        getPlayer()->writeHighScore(getPlayer()->points);
+    }
+    getPlayer()->points = 0;
+
+    initFont(40);
+    drawText("Press space to play again", 150, 500);
+    SDL_RenderPresent(renderer);
+    SDL_RenderClear(renderer);
+    InputManager IM = InputManager::getInstance();
+
+    while (!IM.KeyDown(SDL_SCANCODE_SPACE)) {
+        IM.update();
+    }
+
+    //getMap(1)->redrawPelletsOnMap();
+    getPlayer()->lives = 3;
+    resetRound();
+}
+
+
+void Game::startGame() {
+    initFonts();
+    setGameObjects();
+    setMap(LEVEL_ONE);
+    render();
+    resetRound();
+}
+
+
+void Game::initFonts() {
+    initFont(42);
+    drawText("Ready!", 375, 545);
+    initFont(24);
+}
+
+
+void Game::drawText(const char *text, float x, float y, int parameter) {
+    FC_Draw(font, renderer, x, y, text, parameter);
+}
+
+
+void Game::initFont(int size) {
+    font = FC_CreateFont();
+    FC_LoadFont(font, renderer, "../resources/fonts/arial.ttf", size, FC_MakeColor(255, 255, 0, 255), TTF_STYLE_ITALIC);
+}
 

@@ -1,89 +1,53 @@
-//
-// Created by Håkon on 25.03.2020.
-//
-
-
 #include <iostream>
+#include <fstream>
 #include "../include/Map.h"
 #include "../include/Game.h"
 #include "../include/TextureManager.h"
 #include "../include/Pellet.h"
 #include "../include/StationaryObject.h"
-#include "../include/Fruit.h"
 
 
-int levelOne[32][29] = {
-        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-        {1, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1},
-        {1, 0, 2, 1, 1, 1, 0, 2, 1, 1, 1, 1, 0, 2, 1, 0, 2, 1, 1, 1, 1, 0, 2, 1, 1, 1, 0, 2, 1},
-        {1, 0, 3, 1, 1, 1, 0, 2, 1, 1, 1, 1, 0, 2, 1, 0, 2, 1, 1, 1, 1, 0, 2, 1, 1, 1, 0, 3, 1},
-        {1, 0, 2, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 2, 1},
-        {1, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1},
-        {1, 0, 2, 1, 1, 1, 0, 2, 1, 0, 2, 1, 1, 1, 1, 1, 1, 1, 0, 2, 1, 0, 2, 1, 1, 1, 0, 2, 1},
-        {1, 0, 2, 0, 0, 0, 0, 2, 1, 0, 2, 0, 0, 0, 1, 0, 0, 0, 0, 2, 1, 0, 2, 0, 0, 0, 0, 2, 1},
-        {1, 0, 2, 2, 2, 2, 2, 2, 1, 0, 2, 2, 2, 2, 1, 0, 2, 2, 2, 2, 1, 0, 4, 2, 2, 2, 2, 2, 1},
-        {1, 1, 1, 1, 1, 1, 0, 2, 1, 1, 1, 1, 0, 4, 1, 0, 2, 1, 1, 1, 1, 0, 2, 1, 1, 1, 1, 1, 1},
-        {0, 0, 0, 0, 0, 1, 0, 2, 1, 0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 0, 1, 0, 2, 1, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 1, 0, 2, 1, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0, 2, 1, 0, 0, 0, 0, 0},
-        {1, 1, 1, 1, 1, 1, 0, 2, 1, 0, 2, 1, 1, 0, 0, 0, 1, 1, 0, 2, 1, 0, 2, 1, 1, 1, 1, 1, 1},
-        {0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 2, 1, 0, 0, 0, 0, 0, 1, 0, 2, 0, 0, 2, 0, 0, 0, 0, 0, 0},
-        {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0, 0, 0, 0, 0, 1, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
-        {1, 1, 1, 1, 1, 1, 0, 2, 1, 0, 2, 1, 1, 1, 1, 1, 1, 1, 0, 2, 1, 0, 2, 1, 1, 1, 1, 1, 1},
-        {0, 0, 0, 0, 0, 1, 0, 2, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 0, 2, 1, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 1, 0, 2, 1, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0, 2, 1, 0, 0, 0, 0, 0},
-        {1, 1, 1, 1, 1, 1, 0, 2, 1, 0, 2, 1, 1, 1, 1, 1, 1, 1, 0, 2, 1, 0, 2, 1, 1, 1, 1, 1, 1},
-        {1, 0, 0, 0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 0, 1, 0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 0, 0, 0, 1},
-        {1, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1},
-        {1, 0, 2, 1, 1, 1, 0, 2, 1, 1, 1, 1, 0, 2, 1, 0, 2, 1, 1, 1, 1, 0, 2, 1, 1, 1, 0, 2, 1},
-        {1, 0, 3, 0, 0, 1, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 0, 0, 0, 2, 1, 0, 0, 0, 3, 1},
-        {1, 0, 2, 2, 2, 1, 0, 2, 2, 2, 4, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0, 2, 2, 2, 1},
-        {1, 1, 1, 0, 2, 1, 0, 2, 1, 0, 2, 1, 1, 1, 1, 1, 1, 1, 0, 2, 1, 0, 2, 1, 0, 2, 1, 1, 1},
-        {1, 0, 0, 0, 2, 0, 0, 2, 1, 0, 2, 0, 0, 0, 1, 0, 0, 0, 0, 2, 1, 0, 2, 0, 0, 2, 0, 0, 1},
-        {1, 0, 2, 2, 2, 2, 2, 2, 1, 0, 2, 2, 2, 2, 1, 0, 2, 2, 2, 2, 1, 0, 2, 2, 4, 2, 2, 2, 1},
-        {1, 0, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 2, 1, 0, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 2, 1},
-        {1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1},
-        {1, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1},
-        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
-};
+Map::Map(const char *filePath) {
 
 
-Map::Map() {
+    loadMapFromFile(filePath);
+
+
     fill = TextureManager::loadTexture("../resources/img/walls/wall.png");
     round = TextureManager::loadTexture("../resources/img/walls/round.png");
     black = TextureManager::loadTexture("../resources/img/black.png");
     pellet = TextureManager::loadTexture("../resources/img/pellet.png");
     pelletLarge = TextureManager::loadTexture("../resources/img/pellet_large.png");
 
-    fruit = TextureManager::loadTexture("../resources/img/pickups/cherry.png");
+    roundedWallN = TextureManager::loadTexture("../resources/img/walls/rounded_corner_N.png");
+    roundedWallN = TextureManager::loadTexture("../resources/img/walls/rounded_corner_N.png");
+    roundedWallS = TextureManager::loadTexture("../resources/img/walls/rounded_corner_S.png");
+    roundedWallW = TextureManager::loadTexture("../resources/img/walls/rounded_corner_W.png");
+    roundedWallE = TextureManager::loadTexture("../resources/img/walls/rounded_corner_E.png");
 
-    roundedWallN = TextureManager::loadTexture("../resources/img/walls/rounded_corner_N.png");       //
-    roundedWallS = TextureManager::loadTexture("../resources/img/walls/rounded_corner_S.png");     //
-    roundedWallW = TextureManager::loadTexture("../resources/img/walls/rounded_corner_W.png");     //
-    roundedWallE = TextureManager::loadTexture("../resources/img/walls/rounded_corner_E.png");    //
+    wallDoubleEdgeWE = TextureManager::loadTexture("../resources/img/walls/wall_double_edge_WE.png");
+    wallDoubleEdgeNS = TextureManager::loadTexture("../resources/img/walls/wall_double_edge_NS.png");
 
-    wallDoubleEdgeWE = TextureManager::loadTexture("../resources/img/walls/wall_double_edge_WE.png"); //
-    wallDoubleEdgeNS = TextureManager::loadTexture("../resources/img/walls/wall_double_edge_NS.png"); //
+    cornerSE = TextureManager::loadTexture("../resources/img/walls/single_corner_SE.png");
+    cornerSW = TextureManager::loadTexture("../resources/img/walls/single_corner_SW.png");
+    cornerNE = TextureManager::loadTexture("../resources/img/walls/single_corner_NE.png");
+    cornerNW = TextureManager::loadTexture("../resources/img/walls/single_corner_NW.png");
 
-    cornerSE = TextureManager::loadTexture("../resources/img/walls/single_corner_SE.png");            //
-    cornerSW = TextureManager::loadTexture("../resources/img/walls/single_corner_SW.png");            //
-    cornerNE = TextureManager::loadTexture("../resources/img/walls/single_corner_NE.png");            //
-    cornerNW = TextureManager::loadTexture("../resources/img/walls/single_corner_NW.png");            //
+    insideCornerNW = TextureManager::loadTexture("../resources/img/walls/inside_single_corner_NW.png");
+    insideCornerNE = TextureManager::loadTexture("../resources/img/walls/inside_single_corner_NE.png");
+    insideCornerSW = TextureManager::loadTexture("../resources/img/walls/inside_single_corner_SW.png");
+    insideCornerSE = TextureManager::loadTexture("../resources/img/walls/inside_single_corner_SE.png");
 
-    insideCornerNW = TextureManager::loadTexture("../resources/img/walls/inside_single_corner_NW.png");//
-    insideCornerNE = TextureManager::loadTexture("../resources/img/walls/inside_single_corner_NE.png");//
-    insideCornerSW = TextureManager::loadTexture("../resources/img/walls/inside_single_corner_SW.png");//
-    insideCornerSE = TextureManager::loadTexture("../resources/img/walls/inside_single_corner_SE.png");//
+    edgeN = TextureManager::loadTexture("../resources/img/walls/wall_single_edge_N.png");
+    edgeE = TextureManager::loadTexture("../resources/img/walls/wall_single_edge_E.png");
+    edgeW = TextureManager::loadTexture("../resources/img/walls/wall_single_edge_W.png");
+    edgeS = TextureManager::loadTexture("../resources/img/walls/wall_single_edge_S.png");
 
-    edgeN = TextureManager::loadTexture("../resources/img/walls/wall_single_edge_N.png");//
-    edgeE = TextureManager::loadTexture("../resources/img/walls/wall_single_edge_E.png"); //
-    edgeW = TextureManager::loadTexture("../resources/img/walls/wall_single_edge_W.png");//
-    edgeS = TextureManager::loadTexture("../resources/img/walls/wall_single_edge_S.png");//
-    loadLevelMap(levelOne);
+    loadLevelMap(currentMap);
 }
 
 void Map::createWallWithTexture(int map[32][29], int row, int column) {
-///TODO: Player needs to be rendered last so that its in front
+    ///TODO: Player needs to be rendered last so that its in front
     int wall = 1;
 
     int westTile = map[row][column - 1] == wall ? wall : 0;
@@ -180,49 +144,77 @@ void Map::createWallWithTexture(int map[32][29], int row, int column) {
         }
         Game::addStationaryGameObject(
                 std::make_shared<StationaryObject>(HALLWAY, 0, column * tileLength + tileLength,
-                                          row * tileLength + tileLength, tileTexture));
+                                                   row * tileLength + tileLength, tileTexture));
     }
 }
 
+void Map::loadLevelMap(int map[32][29]) {
 
-void Map::loadLevelMap(int array[32][29]) {
     int tileType = 0;
     int idIncrementer = 0;
 
     for (int column = 0; column < 32; column++) {
         for (int row = 0; row < 29; row++) {
+            currentMap[column][row] = map[column][row];
 
-
-            tileType = array[column][row];
+            tileType = map[column][row];
             idIncrementer++;
             switch (tileType) {
-                case 4:
-                    Game::addStationaryGameObject(std::make_shared<Fruit>(fruit, row * tileLength,
-                                                                           column * tileLength , idIncrementer,  60, 60, true ));
-                    break;
-
                 case 3:
                     Game::addStationaryGameObject(std::make_shared<Pellet>(pelletLarge, row * tileLength + 25,
-                                                                 column * tileLength + 30 , idIncrementer,  15 ,15, true ));
+                                                                           column * tileLength + 30, idIncrementer, 15,
+                                                                           15, true));
                     break;
-
                 case 2:
                     Game::addStationaryGameObject(
                             std::make_shared<Pellet>(pellet, row * tileLength + 30, column * tileLength + 30,
-                                                     idIncrementer, 5, 5 ));
+                                                     idIncrementer, 5, 5));
                 default:
-                    createWallWithTexture(array, column, row);
+                    createWallWithTexture(map, column, row);
                     //todo: Consider different approach to large pellet positions. Will be different on other maps
             }
         }
     }
 }
 
+void Map::loadMapFromFile(const char *filePath) {
 
-Map::~Map() {
+    std::ifstream file(filePath);
+    if (!file.is_open()) {
+        std::cout << "Can't open map!" << std::endl;
+    }
 
+    for (int column = 0; column != 32; column++) {
+        for (int row = 0; row != 29; row++) {
+            file >> currentMap[column][row];
+        }
+    }
 }
 
-int Map::getTileLength() const {
-    return tileLength;
+void Map::redrawPelletsOnMap() {
+    int tileType = 0;
+    int idIncrementer = 0;
+
+    for (int column = 0; column < 32; column++) {
+        for (int row = 0; row < 29; row++) {
+
+            tileType = currentMap[column][row];
+            idIncrementer++;
+            switch (tileType) {
+                case 3:
+                    Game::addStationaryGameObject(std::make_shared<Pellet>(pelletLarge, row * tileLength + 25,
+                                                                           column * tileLength + 30, idIncrementer, 15,
+                                                                           15, true));
+                    break;
+                case 2:
+                    Game::addStationaryGameObject(
+                            std::make_shared<Pellet>(pellet, row * tileLength + 30, column * tileLength + 30,
+                                                     idIncrementer, 5, 5));
+
+            }
+        }
+    }
 }
+
+
+

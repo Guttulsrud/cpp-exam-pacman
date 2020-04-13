@@ -1,44 +1,62 @@
 #ifndef EXAM_PLAYER_H
 #define EXAM_PLAYER_H
 
+#include <SDL_mixer.h>
 #include "GameObject.h"
 #include "MovableObject.h"
+#include "EntityAnimator.h"
+#include <thread>
+#include <future>
+
+
+enum Sound {
+    EAT_PELLET, EAT_POWER_PELLET, DEATH, EAT_FRUIT, EAT_GHOST, TEST
+};
 
 class Player : public MovableObject {
 public:
-    Player(SDL_Texture * texturePtr, int x, int y, int id, int movementSpeed) : MovableObject(texturePtr, x, y, id, movementSpeed){
-        base = TextureManager::loadTexture("../resources/img/pacman/base.png");
-        mediumOpenRight = TextureManager::loadTexture("../resources/img/pacman/medium-open-right.png");
-        mediumOpenLeft = TextureManager::loadTexture("../resources/img/pacman/medium-open-left.png");
-        mediumOpenUp = TextureManager::loadTexture("../resources/img/pacman/medium-open-up.png");
-        mediumOpenDown = TextureManager::loadTexture("../resources/img/pacman/medium-open-down.png");
-        largeOpenRight = TextureManager::loadTexture("../resources/img/pacman/large-open-right.png");
-        largeOpenLeft = TextureManager::loadTexture("../resources/img/pacman/large-open-left.png");
-        largeOpenUp = TextureManager::loadTexture("../resources/img/pacman/large-open-up.png");
-        largeOpenDown = TextureManager::loadTexture("../resources/img/pacman/large-open-down.png");
+    Player(SDL_Texture *texturePtr, int x, int y, int id, int movementSpeed, EntityAnimator animator) :
+            MovableObject(texturePtr, x, y, id, movementSpeed), m_animator(animator) {
+        movementChange.x = 0;
+        movementChange.y = 0;
+        highScore = readHighScore();
+
+        sounds = {{EAT_PELLET, Mix_LoadWAV("../resources/sounds/pacman/pacman_chomp.wav")},
+                  {EAT_POWER_PELLET, Mix_LoadWAV("../resources/sounds/pacman/eat_powerpellet.mp3")},
+                  {EAT_FRUIT, Mix_LoadWAV("../resources/sounds/pacman/pacman_eatfruit.wav")},
+                  {EAT_GHOST, Mix_LoadWAV("../resources/sounds/pacman/pacman_eatghost.wav")},
+                  {DEATH, Mix_LoadWAV("../resources/sounds/pacman/pacman_death.wav")},
+                  {TEST, Mix_LoadWAV("../resources/sounds/game/pacman_beginning.wav")},
+        };
     }
 
-    void update() override ;
+    std::map<Sound, Mix_Chunk *> sounds;
+
+
+    void reset() override;
+
+    void update() override;
+
     TYPE getType() override;
-    Direction direction;
 
-    SDL_Texture * base;
-    SDL_Texture * mediumOpenRight;
-    SDL_Texture * mediumOpenLeft;
-    SDL_Texture * mediumOpenUp;
-    SDL_Texture * mediumOpenDown;
-    SDL_Texture * largeOpenRight;
-    SDL_Texture * largeOpenLeft;
-    SDL_Texture * largeOpenUp;
-    SDL_Texture * largeOpenDown;
-    int points;
+    Direction direction = UP;
+    EntityAnimator m_animator;
+    int points = 0;
+    int highScore = 0;
+    int newHighScore = 0;
+    int lives = 3;
 
-    void handleAnimations();
+    void playSound(Sound sound, int channel = -1);
+
+    void writeHighScore(int score);
 
 private:
     SDL_Point movementChange;
+    int readHighScore();
 
     bool positionIsValid(SDL_Rect &possiblePosition);
+
+    void determineDirection(const SDL_Rect &possiblePosition);
 
 };
 

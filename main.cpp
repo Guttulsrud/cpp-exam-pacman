@@ -1,6 +1,10 @@
-#include <iostream>
 #include "include/Game.h"
 #include "include/InputManager.h"
+
+
+#include <SDL2/SDL_ttf.h>
+
+
 
 int main(int argc, char *argv[]) {
 
@@ -10,16 +14,21 @@ int main(int argc, char *argv[]) {
 
     Uint32 frameStart;
     Uint32 frameTime;
-
     Game game = Game::getInstance();
+    InputManager IM = InputManager::getInstance();
 
     game.init("pacman", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 930, 1020, false);
 
+    game.renderStartScreen();
+
+
+    //Todo: place intro screen here: When user clicks Play, code below follows:
+    game.startGame();
+
 
     while (game.running()) {
-
         frameStart = SDL_GetTicks();
-        InputManager::getInstance().update();
+        IM.update();
         game.update();
         game.render();
 
@@ -32,12 +41,8 @@ int main(int argc, char *argv[]) {
 
     game.clean();
 
-    //TODO: Make wrapper class "fascade" for SDL2?
-    // Har egne metoder som forenkler kall til de wrappede undermetodene (gjerne flere om gangen).
-    // Hvis undermetodene tilhører klasser, blir disse klassene private medlemsvariabler i Facade klassen.
 
-
-return 0;
+    return 0;
 }
 
 
