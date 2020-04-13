@@ -17,5 +17,5 @@ pkg_check_modules(SDL2_TTF REQUIRED SDL2_ttf)
 
 include_directories(${SDL2_INCLUDE_DIR} ${SDL2_IMAGE_INCLUDE_DIR} ${SDL2_MIXER_INCLUDE_DIR} ${SDL2_TTF_INCLUDE_DIR})
 
-add_executable(Exam main.cpp src/InputManager.cpp utils/SDL_FontCache.c utils/SDL_FontCache.h src/TextureManager.cpp include/VoidWarp.h src/VoidWarp.cpp include/TextureManager.h include/InputManager.h src/Game.cpp include/Game.h src/GameObject.cpp include/GameObject.h src/Player.cpp include/Player.h include/Map.h src/Map.cpp src/Pellet.cpp include/Pellet.h src/Ghost.cpp include/Ghost.h src/MovableObject.cpp include/MovableObject.h src/StationaryObject.cpp include/StationaryObject.h src/EntityAnimator.cpp include/EntityAnimator.h)
+add_executable(Exam main.cpp src/InputManager.cpp utils/SDL_FontCache.c utils/SDL_FontCache.h src/TextureManager.cpp include/TextureManager.h include/InputManager.h src/Game.cpp include/Game.h src/GameObject.cpp include/GameObject.h src/Player.cpp include/Player.h include/Map.h src/Map.cpp src/Pellet.cpp include/Pellet.h src/Ghost.cpp include/Ghost.h src/MovableObject.cpp include/MovableObject.h src/StationaryObject.cpp include/StationaryObject.h src/EntityAnimator.cpp include/EntityAnimator.h)
 target_link_libraries(Exam ${SDL2_LIBRARY} ${SDL2_IMAGE_LIBRARIES} ${SDL2_MIXER_LIBRARIES} ${SDL2_TTF_LIBRARIES})

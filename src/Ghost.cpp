@@ -25,6 +25,15 @@ Direction getOppositeDirection(Direction direction) {
 void Ghost::update() {
     std::map<Direction, SDL_Rect> directions;
 
+    //NEW VOIDWARP
+    //TODO: put voidwarp in method
+    if(m_positionRectangle.x > 892){
+        m_positionRectangle.x = -21;
+
+    } else if(m_positionRectangle.x < -22){
+        m_positionRectangle.x = 891;
+    }
+
     SDL_Rect temp = m_positionRectangle;
     temp.y -= m_movementSpeed;
     directions.insert({UP, temp});

@@ -11,6 +11,16 @@ using namespace std::chrono_literals;
 
 void Player::update() {
     framesSinceTextureChange++;
+
+    //NEW VOIDWARP
+    //TODO: put voidwarp in method
+    if(m_positionRectangle.x > 892){
+        m_positionRectangle.x = -21;
+
+    } else if(m_positionRectangle.x < -22){
+        m_positionRectangle.x = 891;
+    }
+
     SDL_Rect possiblePosition = m_positionRectangle;
     SDL_Point possibleMovementChange = movementChange;
 
