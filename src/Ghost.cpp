@@ -111,10 +111,10 @@ void Ghost::update() {
 
             SDL_RemoveTimer(eatableStateEndTimer);
             SDL_RemoveTimer(ghostReviveTimer);
-            int eatableTime = 10000;
+            int eatableTime = 7000;
 
             eatableStateEndTimer = SDL_AddTimer(eatableTime, &Ghost::eatableStateEndCallback, this);
-            ghostReviveTimer = SDL_AddTimer(eatableTime+3000, &Ghost::reviveGhostCallback, this);
+            ghostReviveTimer = SDL_AddTimer(eatableTime+2000, &Ghost::reviveGhostCallback, this);
         }
         m_positionRectangle = directions[direction];
     }
