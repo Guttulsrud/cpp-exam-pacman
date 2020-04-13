@@ -116,7 +116,7 @@ void Game::update() {
 
 
     //count pellets. if none, load next map
-
+    removeFruit(Game::getStationaryGameObjects());
     removeEatenPellets(Game::getStationaryGameObjects());
 }
 
