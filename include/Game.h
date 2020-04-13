@@ -12,6 +12,9 @@
 #include <iostream>
 #include <algorithm>
 
+enum Maps {
+    LEVEL_ONE, LEVEL_TWO, LEVEL_THREE
+};
 
 class Game {
 public:
@@ -33,32 +36,22 @@ public:
     bool running() {
         return isRunning;
     }
-
-    static SDL_Renderer *renderer;
-
-    std::map<Sound, Mix_Chunk *> sounds;
-
-
-    Mix_Chunk* introMusic;
-
     std::shared_ptr<Player> m_player;
     std::vector<std::shared_ptr<MovableObject>> movableGameObjects;
     std::vector<std::shared_ptr<StationaryObject>> stationaryGameObjects;
-    std::vector<std::shared_ptr<Map>> maps;
 
+    static SDL_Renderer *renderer;
     static std::vector<std::shared_ptr<MovableObject>> &getMovableGameObjects();
     static std::vector<std::shared_ptr<StationaryObject>> &getStationaryGameObjects();
-    static std::vector<std::shared_ptr<Map>> &getMaps();
-    static std::shared_ptr<Map> &getMap(int levelNumber);
     static std::shared_ptr<Player> &getPlayer();
 
     static void setPlayer(const std::shared_ptr<Player> &object);
     static void setGameObjects();
     static void addMovableGameObject(const std::shared_ptr<MovableObject> &object);
     static void addStationaryGameObject(const std::shared_ptr<StationaryObject> &object);
-    static void addMap(const std::shared_ptr<Map> &map);
+    void setMap(Maps map);
 
-    static int readHighScore();
+    std::map<Maps, std::shared_ptr<Map>> maps;
     void resetRound();
     void startGame();
     void gameOver();
@@ -66,14 +59,18 @@ public:
     void initFont(int size);
     void initFonts();
 
+    Maps activeLevel = LEVEL_ONE;
+
+    void renderStartScreen();
 
 private:
+    std::shared_ptr<Map> m_map;
+
     Game() = default;
     FC_Font* font;
     bool isRunning;
     SDL_Window *window;
-    int frameCount = 0;
-    int highScore = 0;
+
 };
 
 #endif

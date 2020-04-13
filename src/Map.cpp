@@ -7,38 +7,42 @@
 #include "../include/StationaryObject.h"
 
 
-Map::Map() {
+Map::Map(const char *filePath) {
+
+
+    loadMapFromFile(filePath);
+
+
     fill = TextureManager::loadTexture("../resources/img/walls/wall.png");
     round = TextureManager::loadTexture("../resources/img/walls/round.png");
     black = TextureManager::loadTexture("../resources/img/black.png");
     pellet = TextureManager::loadTexture("../resources/img/pellet.png");
     pelletLarge = TextureManager::loadTexture("../resources/img/pellet_large.png");
 
-    roundedWallN = TextureManager::loadTexture("../resources/img/walls/rounded_corner_N.png");       //
-    roundedWallN = TextureManager::loadTexture("../resources/img/walls/rounded_corner_N.png");       //
-    roundedWallS = TextureManager::loadTexture("../resources/img/walls/rounded_corner_S.png");     //
-    roundedWallW = TextureManager::loadTexture("../resources/img/walls/rounded_corner_W.png");     //
-    roundedWallE = TextureManager::loadTexture("../resources/img/walls/rounded_corner_E.png");    //
+    roundedWallN = TextureManager::loadTexture("../resources/img/walls/rounded_corner_N.png");
+    roundedWallN = TextureManager::loadTexture("../resources/img/walls/rounded_corner_N.png");
+    roundedWallS = TextureManager::loadTexture("../resources/img/walls/rounded_corner_S.png");
+    roundedWallW = TextureManager::loadTexture("../resources/img/walls/rounded_corner_W.png");
+    roundedWallE = TextureManager::loadTexture("../resources/img/walls/rounded_corner_E.png");
 
-    wallDoubleEdgeWE = TextureManager::loadTexture("../resources/img/walls/wall_double_edge_WE.png"); //
-    wallDoubleEdgeNS = TextureManager::loadTexture("../resources/img/walls/wall_double_edge_NS.png"); //
+    wallDoubleEdgeWE = TextureManager::loadTexture("../resources/img/walls/wall_double_edge_WE.png");
+    wallDoubleEdgeNS = TextureManager::loadTexture("../resources/img/walls/wall_double_edge_NS.png");
 
-    cornerSE = TextureManager::loadTexture("../resources/img/walls/single_corner_SE.png");            //
-    cornerSW = TextureManager::loadTexture("../resources/img/walls/single_corner_SW.png");            //
-    cornerNE = TextureManager::loadTexture("../resources/img/walls/single_corner_NE.png");            //
-    cornerNW = TextureManager::loadTexture("../resources/img/walls/single_corner_NW.png");            //
+    cornerSE = TextureManager::loadTexture("../resources/img/walls/single_corner_SE.png");
+    cornerSW = TextureManager::loadTexture("../resources/img/walls/single_corner_SW.png");
+    cornerNE = TextureManager::loadTexture("../resources/img/walls/single_corner_NE.png");
+    cornerNW = TextureManager::loadTexture("../resources/img/walls/single_corner_NW.png");
 
-    insideCornerNW = TextureManager::loadTexture("../resources/img/walls/inside_single_corner_NW.png");//
-    insideCornerNE = TextureManager::loadTexture("../resources/img/walls/inside_single_corner_NE.png");//
-    insideCornerSW = TextureManager::loadTexture("../resources/img/walls/inside_single_corner_SW.png");//
-    insideCornerSE = TextureManager::loadTexture("../resources/img/walls/inside_single_corner_SE.png");//
+    insideCornerNW = TextureManager::loadTexture("../resources/img/walls/inside_single_corner_NW.png");
+    insideCornerNE = TextureManager::loadTexture("../resources/img/walls/inside_single_corner_NE.png");
+    insideCornerSW = TextureManager::loadTexture("../resources/img/walls/inside_single_corner_SW.png");
+    insideCornerSE = TextureManager::loadTexture("../resources/img/walls/inside_single_corner_SE.png");
 
-    edgeN = TextureManager::loadTexture("../resources/img/walls/wall_single_edge_N.png");//
-    edgeE = TextureManager::loadTexture("../resources/img/walls/wall_single_edge_E.png"); //
-    edgeW = TextureManager::loadTexture("../resources/img/walls/wall_single_edge_W.png");//
-    edgeS = TextureManager::loadTexture("../resources/img/walls/wall_single_edge_S.png");//
+    edgeN = TextureManager::loadTexture("../resources/img/walls/wall_single_edge_N.png");
+    edgeE = TextureManager::loadTexture("../resources/img/walls/wall_single_edge_E.png");
+    edgeW = TextureManager::loadTexture("../resources/img/walls/wall_single_edge_W.png");
+    edgeS = TextureManager::loadTexture("../resources/img/walls/wall_single_edge_S.png");
 
-    loadMapFromFile( "../resources/maps/level_one.txt");
     loadLevelMap(currentMap);
 }
 
@@ -173,13 +177,8 @@ void Map::loadLevelMap(int map[32][29]) {
     }
 }
 
-
-
-Map::~Map() {
-
-}
-
 void Map::loadMapFromFile(const char *filePath) {
+
     std::ifstream file(filePath);
     if (!file.is_open()) {
         std::cout << "Can't open map!" << std::endl;
@@ -216,5 +215,6 @@ void Map::redrawPelletsOnMap() {
         }
     }
 }
+
 
 
