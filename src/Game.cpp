@@ -126,7 +126,7 @@ void Game::render() {
         drawText("Highscore: %d", 35, 0, player->highScore);
     }
     drawText("Points: %d", 400, 0, player->points);
-    drawText("Lives: %d", 775, 0, player->lives + 1);
+    drawText("Lives: %d", 775, 0, player->lives);
     player->render();
     SDL_RenderPresent(renderer);
     SDL_RenderClear(renderer);
@@ -379,7 +379,7 @@ void Game::gameOver() {
 void Game::startGame() {
     initFonts();
     setGameObjects();
-    setMap(1);
+    setMap(3);
     render();
     resetRound();
 }
