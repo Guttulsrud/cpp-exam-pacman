@@ -9,9 +9,7 @@
 
 Map::Map(const char *filePath) {
 
-
     loadMapFromFile(filePath);
-
 
     fill = TextureManager::loadTexture("../resources/img/walls/wall.png");
     round = TextureManager::loadTexture("../resources/img/walls/round.png");
