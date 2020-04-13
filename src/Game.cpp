@@ -51,14 +51,14 @@ void Game::renderStartScreen() {
 
     SDL_Texture *startScreenTexture = TextureManager::loadTexture("../resources/startscreenassets/start_screen.png");
 
-    SDL_Rect startScreenRect = SDL_Rect{0, 0, 600, 900};
+    SDL_Rect startScreenRect = SDL_Rect{0, 0, 930, 1020};
 
     SDL_RenderCopy(Game::renderer, startScreenTexture, &startScreenRect, &startScreenRect);
 
     font = FC_CreateFont();
-    FC_LoadFont(font, renderer, "../resources/fonts/arial.ttf", 30, FC_MakeColor(255, 255, 255, 255), TTF_STYLE_BOLD);
-    FC_Draw(font, renderer, 130, 340, "Press Space to start!");
-    FC_Draw(font, renderer, 160, 490, "Press 'Q' to quit!");
+    FC_LoadFont(font, renderer, "../resources/fonts/arial.ttf", 30, FC_MakeColor(240, 153, 63, 255), TTF_STYLE_BOLD);
+    FC_Draw(font, renderer, 295, 380, "Press Space to start!");
+    FC_Draw(font, renderer, 330, 550, "Press 'Q' to quit!");
 
     FC_FreeFont(font);
 
