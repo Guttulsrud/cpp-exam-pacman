@@ -1,6 +1,6 @@
 #include "../include/Player.h"
 #include "../include/InputManager.h"
-#include "../include/Game.h"
+#include "../include/GameManager.h"
 #include "../include/Pellet.h"
 #include "../include/Ghost.h"
 #include "../include/Fruit.h"
@@ -92,9 +92,9 @@ void Player::determineDirection(const SDL_Rect &possiblePosition) {
 
 void playDeathAnimation() {
 
-    std::shared_ptr<Player> &player = Game::getPlayer();
-    std::vector<std::shared_ptr<StationaryObject>> &stationary = Game::getStationaryGameObjects();
-    auto game = Game::getInstance();
+    std::shared_ptr<Player> &player = GameManager::getPlayer();
+    std::vector<std::shared_ptr<StationaryObject>> &stationary = GameManager::getStationaryGameObjects();
+    auto game = GameManager::getInstance();
 
     for (int i = 0; i < 45; i++) {
 
@@ -113,8 +113,8 @@ void playDeathAnimation() {
         game.drawText("Points: %d", 400, 0, player->points);
         game.drawText("Lives: %d", 775, 0, player->lives);
 
-        SDL_RenderPresent(Game::renderer);
-        SDL_RenderClear(Game::renderer);
+        SDL_RenderPresent(GameManager::renderer);
+        SDL_RenderClear(GameManager::renderer);
         SDL_Delay(25);
     }
 }
@@ -124,7 +124,7 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
 
 
     // Check for collision with moving game objects
-    for (auto &movable : Game::getMovableGameObjects()) {
+    for (auto &movable : GameManager::getMovableGameObjects()) {
         if (SDL_HasIntersection(&hitbox, &movable->hitbox) && movable->getType() == GHOST) {
             auto ghost = dynamic_cast<Ghost *>(movable.get());
             if (ghost->eatable) {
@@ -143,7 +143,7 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
                 auto tread = std::async(playDeathAnimation);
 
                 while (Mix_Playing(5)) {}
-                lives < 1 ? Game::getInstance().gameOver() : Game::getInstance().resetRound();
+                lives < 1 ? GameManager::getInstance().gameOver() : GameManager::getInstance().resetRound();
 
                 return false;
             }
@@ -154,7 +154,7 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
     // Check for collision with stationary game objects
     bool collectedFruit = false;
     bool collectedPellet = false;
-    for (auto &stationary : Game::getStationaryGameObjects()) {
+    for (auto &stationary : GameManager::getStationaryGameObjects()) {
         if (SDL_HasIntersection(&possiblePosition, &stationary->m_positionRectangle)) {
             if (stationary->getType() == WALL) {
                 didNotCollideWithWall = false;
@@ -168,7 +168,7 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
                     playSound(EAT_POWER_PELLET, 2);
 
 
-                    for (auto &o : Game::getMovableGameObjects()) {
+                    for (auto &o : GameManager::getMovableGameObjects()) {
                         if (o->getType() == GHOST) {
                             dynamic_cast<Ghost *>(o.get())->switchedToEatable = true;
                             dynamic_cast<Ghost *>(o.get())->eatableStateEnd = false;

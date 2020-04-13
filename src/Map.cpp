@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include "../include/Map.h"
-#include "../include/Game.h"
+#include "../include/GameManager.h"
 #include "../include/TextureManager.h"
 #include "../include/Pellet.h"
 #include "../include/StationaryObject.h"
@@ -16,7 +16,7 @@ Map::Map(const char *filePath) {
     round = TextureManager::loadTexture("../resources/img/walls/round.png");
     black = TextureManager::loadTexture("../resources/img/black.png");
 
-    if(Game::getInstance().activeMap == 1){
+    if(GameManager::getInstance().activeMap == 1){
 
         fill = TextureManager::loadTexture("../resources/img/walls/wall.png");
         pellet = TextureManager::loadTexture("../resources/img/pickups/pellet.png");
@@ -47,7 +47,7 @@ Map::Map(const char *filePath) {
 
         fruit = TextureManager::loadTexture("../resources/img/pickups/cherry.png");
 
-    } else if (Game::getInstance().activeMap == 2){
+    } else if (GameManager::getInstance().activeMap == 2){
 
         fill = TextureManager::loadTexture("../resources/img/walls_red/wall_red.png");
         pellet = TextureManager::loadTexture("../resources/img/pickups/pellet_orange.png");
@@ -79,7 +79,7 @@ Map::Map(const char *filePath) {
         fruit = TextureManager::loadTexture("../resources/img/pickups/melon.png");
 
 
-    } else if (Game::getInstance().activeMap == 3){
+    } else if (GameManager::getInstance().activeMap == 3){
 
         fill = TextureManager::loadTexture("../resources/img/walls_green/wall_green.png");
         pellet = TextureManager::loadTexture("../resources/img/pickups/pellet_cyan.png");
@@ -184,7 +184,7 @@ void Map::createWallWithTexture(int map[32][29], int row, int column) {
         } else {
             tileTexture = fill;
         }
-        Game::addStationaryGameObject(
+        GameManager::addStationaryGameObject(
                 std::make_shared<StationaryObject>(WALL, 0, column * tileLength + tileLength,
                                                    row * tileLength + tileLength, tileTexture));
 
@@ -211,7 +211,7 @@ void Map::createWallWithTexture(int map[32][29], int row, int column) {
                 tileTexture = insideCornerNE;
             }
         }
-        Game::addStationaryGameObject(
+        GameManager::addStationaryGameObject(
                 std::make_shared<StationaryObject>(HALLWAY, 0, column * tileLength + tileLength,
                                                    row * tileLength + tileLength, tileTexture));
     }
@@ -230,17 +230,17 @@ void Map::loadLevelMap(int map[32][29]) {
             idIncrementer++;
             switch (tileType) {
                 case 4:
-                    Game::addStationaryGameObject(std::make_shared<Fruit>(fruit, row * tileLength,
+                    GameManager::addStationaryGameObject(std::make_shared<Fruit>(fruit, row * tileLength,
                                                                           column * tileLength, idIncrementer, 60,
-                                                                          60, false));
+                                                                                 60, false));
                     break;
                 case 3:
-                    Game::addStationaryGameObject(std::make_shared<Pellet>(pelletLarge, row * tileLength + 25,
+                    GameManager::addStationaryGameObject(std::make_shared<Pellet>(pelletLarge, row * tileLength + 25,
                                                                            column * tileLength + 30, idIncrementer, 15,
-                                                                           15, true));
+                                                                                  15, true));
                     break;
                 case 2:
-                    Game::addStationaryGameObject(
+                    GameManager::addStationaryGameObject(
                             std::make_shared<Pellet>(pellet, row * tileLength + 30, column * tileLength + 30,
                                                      idIncrementer, 5, 5));
                 default:

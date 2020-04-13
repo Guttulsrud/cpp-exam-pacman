@@ -1,5 +1,5 @@
 #include "../include/GameObject.h"
-#include "../include/Game.h"
+#include "../include/GameManager.h"
 
 
 GameObject::~GameObject() {
@@ -7,5 +7,5 @@ GameObject::~GameObject() {
 }
 
 void GameObject::render() {
-    SDL_RenderCopy(Game::renderer, m_texture, &m_sourceRectangle, &m_positionRectangle);
+    SDL_RenderCopy(GameManager::renderer, m_texture, &m_sourceRectangle, &m_positionRectangle);
 }

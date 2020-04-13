@@ -1,4 +1,4 @@
-#include "include/Game.h"
+#include "include/GameManager.h"
 #include "include/InputManager.h"
 
 
@@ -13,15 +13,14 @@ int main(int argc, char *argv[]) {
 
     Uint32 frameStart;
     Uint32 frameTime;
-    Game game = Game::getInstance();
+    GameManager game = GameManager::getInstance();
     InputManager IM = InputManager::getInstance();
 
-    game.init("PacMan", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 930, 1020, false);
+    game.init("PacMan", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 930, 1020);
 
    game.renderStartScreen();
 
 
-    //Todo: place intro screen here: When user clicks Play, code below follows:
     game.startGame();
 
 

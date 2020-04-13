@@ -12,13 +12,13 @@
 #include <iostream>
 #include <algorithm>
 
-class Game {
+class GameManager {
 public:
 
-    int init(const char *title, int xpos, int ypos, int width, int height, bool fullscreen);
+    int init(const char *title, int xpos, int ypos, int width, int height);
 
-    static Game &getInstance() {
-        static Game instance;
+    static GameManager &getInstance() {
+        static GameManager instance;
         return instance;
     }
 
@@ -58,7 +58,7 @@ public:
 
     bool pelletsAreRemaining();
 private:
-    Game() = default;
+    GameManager() = default;
     FC_Font* font;
     bool isRunning;
     SDL_Window *window;

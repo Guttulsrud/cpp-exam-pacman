@@ -1,4 +1,4 @@
-#include "../include/Game.h"
+#include "../include/GameManager.h"
 #include "../include/Player.h"
 #include "../include/Ghost.h"
 #include "../include/Pellet.h"
@@ -9,14 +9,11 @@
 #include <SDL_ttf.h>
 #include <fstream>
 
-SDL_Renderer *Game::renderer = nullptr;
+SDL_Renderer *GameManager::renderer = nullptr;
 
-int Game::init(const char *title, int xPos, int yPos, int width, int height, bool fullscreen) {
+int GameManager::init(const char *title, int xPos, int yPos, int width, int height) {
 
     Uint32 flags = SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL;
-    if (fullscreen) {
-        flags = SDL_WINDOW_FULLSCREEN | SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL;
-    }
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) == 0) {
         window = SDL_CreateWindow(title, xPos, yPos, width, height, flags);
 
@@ -39,21 +36,21 @@ int Game::init(const char *title, int xPos, int yPos, int width, int height, boo
             std::cout << "TTF init" << std::endl;
         }
 
-        std::cout << "Game running" << std::endl;
+        std::cout << "GameManager running" << std::endl;
         isRunning = true;
 
     }
     return 0;
 }
 
-void Game::renderStartScreen() {
+void GameManager::renderStartScreen() {
     InputManager IM = InputManager::getInstance();
 
     SDL_Texture *startScreenTexture = TextureManager::loadTexture("../resources/startscreenassets/start_screen_alt.png");
 
     SDL_Rect startScreenRect = SDL_Rect{0, 0, 930, 1020};
 
-    SDL_RenderCopy(Game::renderer, startScreenTexture, &startScreenRect, &startScreenRect);
+    SDL_RenderCopy(GameManager::renderer, startScreenTexture, &startScreenRect, &startScreenRect);
 
     font = FC_CreateFont();
     FC_LoadFont(font, renderer, "../resources/fonts/arial.ttf", 30, FC_MakeColor(240, 153, 63, 255), TTF_STYLE_BOLD);
@@ -95,23 +92,23 @@ void removeEatenPellets(std::vector<std::shared_ptr<StationaryObject>> &objects)
             objects.end());
 }
 
-void Game::update() {
-    std::vector<std::shared_ptr<MovableObject>> &movables = Game::getMovableGameObjects();
-    std::shared_ptr<Player> &player = Game::getPlayer();
+void GameManager::update() {
+    std::vector<std::shared_ptr<MovableObject>> &movables = GameManager::getMovableGameObjects();
+    std::shared_ptr<Player> &player = GameManager::getPlayer();
 
     player->update();
 
     for (auto const &m : movables) {
         m->update();
     }
-    removeFruit(Game::getStationaryGameObjects());
-    pelletsAreRemaining() ? removeEatenPellets(Game::getStationaryGameObjects()) : mapCompleted();
+    removeFruit(GameManager::getStationaryGameObjects());
+    pelletsAreRemaining() ? removeEatenPellets(GameManager::getStationaryGameObjects()) : mapCompleted();
 }
 
-void Game::render() {
-    std::vector<std::shared_ptr<MovableObject>> &movables = Game::getMovableGameObjects();
-    std::vector<std::shared_ptr<StationaryObject>> &stationary = Game::getStationaryGameObjects();
-    std::shared_ptr<Player> &player = Game::getPlayer();
+void GameManager::render() {
+    std::vector<std::shared_ptr<MovableObject>> &movables = GameManager::getMovableGameObjects();
+    std::vector<std::shared_ptr<StationaryObject>> &stationary = GameManager::getStationaryGameObjects();
+    std::shared_ptr<Player> &player = GameManager::getPlayer();
 
     for (auto const &m :movables) {
         m->render();
@@ -132,7 +129,7 @@ void Game::render() {
     SDL_RenderClear(renderer);
 }
 
-void Game::clean() {
+void GameManager::clean() {
     TTF_Quit();
     FC_FreeFont(font);
     Mix_CloseAudio();
@@ -143,7 +140,7 @@ void Game::clean() {
 }
 
 
-void Game::setMap(int map) {
+void GameManager::setMap(int map) {
     switch (map) {
         case 1:
             maps[1] = std::make_shared<Map>("../resources/maps/level_one.txt");
@@ -160,32 +157,32 @@ void Game::setMap(int map) {
     activeMap = map;
 }
 
-void Game::setPlayer(std::shared_ptr<Player> const &object) {
+void GameManager::setPlayer(std::shared_ptr<Player> const &object) {
     getInstance().m_player = object;
 }
 
 
-std::shared_ptr<Player> &Game::getPlayer() {
+std::shared_ptr<Player> &GameManager::getPlayer() {
     return getInstance().m_player;
 }
 
-std::vector<std::shared_ptr<MovableObject>> &Game::getMovableGameObjects() {
+std::vector<std::shared_ptr<MovableObject>> &GameManager::getMovableGameObjects() {
     return getInstance().movableGameObjects;
 }
 
-void Game::addMovableGameObject(const std::shared_ptr<MovableObject> &object) {
+void GameManager::addMovableGameObject(const std::shared_ptr<MovableObject> &object) {
     getMovableGameObjects().emplace_back(object);
 }
 
-std::vector<std::shared_ptr<StationaryObject>> &Game::getStationaryGameObjects() {
+std::vector<std::shared_ptr<StationaryObject>> &GameManager::getStationaryGameObjects() {
     return getInstance().stationaryGameObjects;
 }
 
-void Game::addStationaryGameObject(const std::shared_ptr<StationaryObject> &object) {
+void GameManager::addStationaryGameObject(const std::shared_ptr<StationaryObject> &object) {
     getStationaryGameObjects().emplace_back(object);
 }
 
-void Game::setGameObjects() {
+void GameManager::setGameObjects() {
 
     setPlayer(std::make_shared<Player>(TextureManager::loadTexture("../resources/img/pacman/base.png"),
                                        30 * 14.5, 30 * 24, 0, 3,
@@ -340,7 +337,7 @@ void Game::setGameObjects() {
                             }})));
 }
 
-void Game::resetRound() {
+void GameManager::resetRound() {
     getPlayer()->reset();
 
     for (auto const &ghost : getMovableGameObjects()) {
@@ -352,7 +349,7 @@ void Game::resetRound() {
     while (Mix_Playing(5)) {}
 }
 
-void Game::gameOver() {
+void GameManager::gameOver() {
     if (getPlayer()->points > getPlayer()->highScore) {
         getPlayer()->writeHighScore(getPlayer()->points);
     }
@@ -376,33 +373,33 @@ void Game::gameOver() {
 }
 
 
-void Game::startGame() {
+void GameManager::startGame() {
     initFonts();
     setGameObjects();
-    setMap(2);
+    setMap(1);
     render();
     resetRound();
 }
 
 
-void Game::initFonts() {
+void GameManager::initFonts() {
     initFont(42);
     drawText("Ready!", 375, 545);
     initFont(24);
 }
 
 
-void Game::drawText(const char *text, float x, float y, int parameter) {
+void GameManager::drawText(const char *text, float x, float y, int parameter) {
     FC_Draw(font, renderer, x, y, text, parameter);
 }
 
 
-void Game::initFont(int size) {
+void GameManager::initFont(int size) {
     font = FC_CreateFont();
     FC_LoadFont(font, renderer, "../resources/fonts/arial.ttf", size, FC_MakeColor(255, 255, 0, 255), TTF_STYLE_ITALIC);
 }
 
-void Game::mapCompleted() {
+void GameManager::mapCompleted() {
     getStationaryGameObjects().clear();
     SDL_RenderPresent(renderer);
     SDL_RenderClear(renderer);
@@ -424,10 +421,10 @@ void Game::mapCompleted() {
     }
 }
 
-bool Game::pelletsAreRemaining() {
+bool GameManager::pelletsAreRemaining() {
     int pelletsRemaining = 0;
 
-    for (auto &p : Game::getStationaryGameObjects()) {
+    for (auto &p : GameManager::getStationaryGameObjects()) {
         if (p->getType() == PELLET) {
             pelletsRemaining++;
         }

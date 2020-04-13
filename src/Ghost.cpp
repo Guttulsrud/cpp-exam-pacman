@@ -1,7 +1,7 @@
 #include <map>
 #include <random>
 #include "../include/Ghost.h"
-#include "../include/Game.h"
+#include "../include/GameManager.h"
 
 TYPE Ghost::getType() {
     return GHOST;
@@ -61,7 +61,7 @@ void Ghost::update() {
     //Finds valid move direction
     for (auto &directionPosition : directions) {
         bool didNotCollideWithWall = true;
-        for (auto &object : Game::getStationaryGameObjects()) {
+        for (auto &object : GameManager::getStationaryGameObjects()) {
             if (object->getType() == WALL) {
                 if (SDL_HasIntersection(&directionPosition.second, &object->m_positionRectangle)) {
                     didNotCollideWithWall = false;
@@ -142,7 +142,7 @@ Direction Ghost::getDirectionToPoint(const std::map<Direction, SDL_Rect> &possib
     float shortestLength = 1000.0f;
     float longestLength = 0.0f;
 
-    auto playerPos = Game::getPlayer()->m_positionRectangle;
+    auto playerPos = GameManager::getPlayer()->m_positionRectangle;
 
     for (auto &directionPosition : possibleDirections) {
         int xLen;
