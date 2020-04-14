@@ -2,13 +2,13 @@
 #define EXAM_GHOST_H
 
 #include "GameObject.h"
-#include "MovableObject.h"
+#include "Movable.h"
 #include "EntityAnimator.h"
 #include <map>
-class Ghost : public MovableObject {
+class Ghost : public Movable {
 public:
     Ghost(SDL_Texture *texturePtr, int x, int y, int id, int movementSpeed, EntityAnimator animator) :
-            MovableObject(texturePtr, x, y, id, movementSpeed),
+            Movable(texturePtr, x, y, id, movementSpeed),
             m_animator(animator) {
         spawn.x = x;
         spawn.y = y;

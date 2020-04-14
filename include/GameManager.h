@@ -6,7 +6,7 @@
 #include "Map.h"
 #include "GameObject.h"
 #include "Player.h"
-#include "StationaryObject.h"
+#include "Stationary.h"
 #include "../utils/SDL_FontCache.h"
 #include <memory>
 #include <iostream>
@@ -32,18 +32,18 @@ public:
         return isRunning;
     }
     std::shared_ptr<Player> m_player;
-    std::vector<std::shared_ptr<MovableObject>> movableGameObjects;
-    std::vector<std::shared_ptr<StationaryObject>> stationaryGameObjects;
+    std::vector<std::shared_ptr<Movable>> movableGameObjects;
+    std::vector<std::shared_ptr<Stationary>> stationaryGameObjects;
 
     static SDL_Renderer *renderer;
-    static std::vector<std::shared_ptr<MovableObject>> &getMovableGameObjects();
-    static std::vector<std::shared_ptr<StationaryObject>> &getStationaryGameObjects();
+    static std::vector<std::shared_ptr<Movable>> &getMovableGameObjects();
+    static std::vector<std::shared_ptr<Stationary>> &getStationaryGameObjects();
     static std::shared_ptr<Player> &getPlayer();
 
     static void setPlayer(const std::shared_ptr<Player> &object);
     static void setGameObjects();
-    static void addMovableGameObject(const std::shared_ptr<MovableObject> &object);
-    static void addStationaryGameObject(const std::shared_ptr<StationaryObject> &object);
+    static void addMovableGameObject(const std::shared_ptr<Movable> &object);
+    static void addStationaryGameObject(const std::shared_ptr<Stationary> &object);
     void setMap(int map);
     int activeMap = 2;
     std::map<int, std::shared_ptr<Map>> maps;

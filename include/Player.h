@@ -3,20 +3,20 @@
 
 #include <SDL_mixer.h>
 #include "GameObject.h"
-#include "MovableObject.h"
+#include "Movable.h"
 #include "EntityAnimator.h"
 #include <thread>
 #include <future>
 
 
 enum Sound {
-    EAT_PELLET, EAT_POWER_PELLET, DEATH, EAT_FRUIT, EAT_GHOST, TEST
+    EAT_PELLET, EAT_POWER_PELLET, DEATH, EAT_FRUIT, EAT_GHOST, INTRO, MAP_COMPLETED, GHOST_RETURN
 };
 
-class Player : public MovableObject {
+class Player : public Movable {
 public:
     Player(SDL_Texture *texturePtr, int x, int y, int id, int movementSpeed, EntityAnimator animator) :
-            MovableObject(texturePtr, x, y, id, movementSpeed), m_animator(animator) {
+            Movable(texturePtr, x, y, id, movementSpeed), m_animator(animator) {
         movementChange.x = 0;
         movementChange.y = 0;
         highScore = readHighScore();
@@ -26,7 +26,9 @@ public:
                   {EAT_FRUIT,        Mix_LoadWAV("../resources/sounds/pacman/pacman_eatfruit.wav")},
                   {EAT_GHOST,        Mix_LoadWAV("../resources/sounds/pacman/pacman_eatghost.wav")},
                   {DEATH,            Mix_LoadWAV("../resources/sounds/pacman/pacman_death.wav")},
-                  {TEST,             Mix_LoadWAV("../resources/sounds/game/pacman_beginning.wav")},
+                  {INTRO,            Mix_LoadWAV("../resources/sounds/game/pacman_beginning.wav")},
+                  {MAP_COMPLETED,    Mix_LoadWAV("../resources/sounds/pacman/pacman_extrapac.wav")},
+                  {GHOST_RETURN,    Mix_LoadWAV("../resources/sounds/ghosts/ghost_return_to_home.mp3")},
         };
     }
 
