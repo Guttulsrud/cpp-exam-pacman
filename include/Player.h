@@ -19,7 +19,7 @@ public:
             Movable(texturePtr, x, y, id, movementSpeed), m_animator(animator) {
         movementChange.x = 0;
         movementChange.y = 0;
-        highScore = readHighScore();
+        highScore = readHighScoreFromFile();
 
         sounds = {{EAT_PELLET,       Mix_LoadWAV("../resources/sounds/pacman/pacman_chomp.wav")},
                   {EAT_POWER_PELLET, Mix_LoadWAV("../resources/sounds/pacman/eat_powerpellet.mp3")},
@@ -44,6 +44,7 @@ public:
     Direction direction = UP;
     EntityAnimator m_animator;
     int currentScore = 0;
+    int scoreLastRound = 0;
     int highScore = 0;
     int newHighScore = 0;
     int lives = 3;
@@ -110,7 +111,7 @@ public:
 private:
     SDL_Point movementChange;
 
-    int readHighScore();
+    int readHighScoreFromFile();
 
     bool positionIsValid(SDL_Rect &possiblePosition);
 

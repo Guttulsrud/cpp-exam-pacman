@@ -203,14 +203,14 @@ void Player::reset() {
     m_positionRectangle.y = 30 * 24;
     m_animator.animate(&m_texture, direction);
     updateHitbox();
-
+    scoreLastRound = currentScore;
 }
 
 void Player::playSound(Sound sound, int channel) {
     Mix_PlayChannel(channel, sounds[sound], 0);
 }
 
-int Player::readHighScore() {
+int Player::readHighScoreFromFile() {
     int score = 0;
     std::ifstream file("../resources/highscore.txt");
     if (file) {

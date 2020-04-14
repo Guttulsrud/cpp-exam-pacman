@@ -50,7 +50,7 @@ void GameManager::renderStartScreen() {
 
     auto startScreenRect = SDL_Rect{0, 0, 930, 1020};
 
-    SDL_RenderCopy(GameManager::renderer, startScreenTexture, &startScreenRect, &startScreenRect);
+    SDL_RenderCopy(renderer, startScreenTexture, &startScreenRect, &startScreenRect);
 
     font = FC_CreateFont();
     FC_LoadFont(font, renderer, "../resources/fonts/arial.ttf", 30, FC_MakeColor(240, 153, 63, 255), TTF_STYLE_BOLD);
@@ -76,20 +76,16 @@ void removeEatenPellets(std::vector<std::shared_ptr<Stationary>> &objects) {
 }
 
 void GameManager::update() {
-    std::vector<std::shared_ptr<Movable>> &movablesObjects = GameManager::getMovables();
-    std::shared_ptr<Player> &player = GameManager::getPlayer();
+    std::vector<std::shared_ptr<Movable>> &movablesObjects = getMovables();
+    std::shared_ptr<Player> &player = getPlayer();
 
 
     for (auto const &m : movablesObjects) {
         m->update();
     }
 
+    checkForRemainingPelletsAndRemove();
 
-    if (pelletsAreRemaining()) {
-        removeEatenPellets(GameManager::getStationery());
-    } else {
-        mapCompleted();
-    }
     player->update();
 
 }
@@ -377,7 +373,7 @@ void GameManager::mapCompleted() {
 bool GameManager::pelletsAreRemaining() {
     int pelletsRemaining = 0;
 
-    for (auto &p : GameManager::getStationery()) {
+    for (auto &p : getStationery()) {
         if (p->getType() == PELLET) {
             pelletsRemaining++;
         }
@@ -397,14 +393,14 @@ void GameManager::renderTopDisplay() {
     auto sourceRect = SDL_Rect{0, 0, 1600, 1600};
     for (int i = 0; i < getPlayer()->lives; i++) {
         auto destRect = SDL_Rect{780 + i * 40, 0, 30, 30};
-        SDL_RenderCopy(GameManager::renderer, numberOfLivesDisplayTexture, &sourceRect, &destRect);
+        SDL_RenderCopy(renderer, numberOfLivesDisplayTexture, &sourceRect, &destRect);
     }
 
 }
 
 void GameManager::renderGameObjects() {
-    std::vector<std::shared_ptr<Movable>> &movableObjects = GameManager::getMovables();
-    std::vector<std::shared_ptr<Stationary>> &stationary = GameManager::getStationery();
+    std::vector<std::shared_ptr<Movable>> &movableObjects = getMovables();
+    std::vector<std::shared_ptr<Stationary>> &stationary = getStationery();
 
     for (auto const &m :movableObjects) {
         m->render();
@@ -412,14 +408,22 @@ void GameManager::renderGameObjects() {
 
     for (auto const &s : stationary) {
         if(s.get()->getType() == PELLET && dynamic_cast<Pellet *>(s.get())->m_isFruit) {
-            if(getPlayer()->currentScore > 100) {
+            if(getPlayer()->currentScore > getPlayer()->scoreLastRound + 200) {
                 s->render();
             }
         } else {
             s->render();
         }
     }
-    GameManager::getPlayer()->render();
+    getPlayer()->render();
+}
+
+void GameManager::checkForRemainingPelletsAndRemove() {
+    if (pelletsAreRemaining()) {
+        removeEatenPellets(getStationery());
+    } else {
+        mapCompleted();
+    }
 }
 
 

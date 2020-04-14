@@ -46,8 +46,9 @@ public:
     void update();
 
     void render();
-    static void renderGameObjects();
+    void renderGameObjects();
 
+    void checkForRemainingPelletsAndRemove();
     void clean();
 
     static bool &isRunning() {
