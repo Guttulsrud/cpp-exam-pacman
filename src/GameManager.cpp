@@ -46,7 +46,8 @@ int GameManager::init(const char *title, int xPos, int yPos, int width, int heig
 void GameManager::renderStartScreen() {
     InputManager IM = InputManager::getInstance();
 
-    SDL_Texture *startScreenTexture = TextureManager::loadTexture("../resources/startscreenassets/start_screen_alt.png");
+    SDL_Texture *startScreenTexture = TextureManager::loadTexture(
+            "../resources/startscreenassets/start_screen_alt.png");
 
     SDL_Rect startScreenRect = SDL_Rect{0, 0, 930, 1020};
 
@@ -73,27 +74,27 @@ void GameManager::renderStartScreen() {
 
 }
 
-void removeFruit(std::vector<std::shared_ptr<StationaryObject>> &objects) {
+void removeFruit(std::vector<std::shared_ptr<Stationary>> &objects) {
     objects.erase(
             std::remove_if(objects.begin(), objects.end(),
-                           [](const std::shared_ptr<StationaryObject> &fruit) {
+                           [](const std::shared_ptr<Stationary> &fruit) {
                                return fruit->getType() == FRUIT && dynamic_cast<Fruit *>(fruit.get())->eaten;
                            }),
             objects.end());
 }
 
-void removeEatenPellets(std::vector<std::shared_ptr<StationaryObject>> &objects) {
+void removeEatenPellets(std::vector<std::shared_ptr<Stationary>> &objects) {
 
     objects.erase(
             std::remove_if(objects.begin(), objects.end(),
-                           [](const std::shared_ptr<StationaryObject> &pellet) {
+                           [](const std::shared_ptr<Stationary> &pellet) {
                                return pellet->getType() == PELLET && dynamic_cast<Pellet *>(pellet.get())->eaten;
                            }),
             objects.end());
 }
 
 void GameManager::update() {
-    std::vector<std::shared_ptr<MovableObject>> &movables = GameManager::getMovableGameObjects();
+    std::vector<std::shared_ptr<Movable>> &movables = GameManager::getMovableGameObjects();
     std::shared_ptr<Player> &player = GameManager::getPlayer();
 
     player->update();
@@ -102,12 +103,17 @@ void GameManager::update() {
         m->update();
     }
     removeFruit(GameManager::getStationaryGameObjects());
-    pelletsAreRemaining() ? removeEatenPellets(GameManager::getStationaryGameObjects()) : mapCompleted();
+    if (pelletsAreRemaining()) {
+        removeEatenPellets(GameManager::getStationaryGameObjects());
+    } else {
+
+        mapCompleted();
+    }
 }
 
 void GameManager::render() {
-    std::vector<std::shared_ptr<MovableObject>> &movables = GameManager::getMovableGameObjects();
-    std::vector<std::shared_ptr<StationaryObject>> &stationary = GameManager::getStationaryGameObjects();
+    std::vector<std::shared_ptr<Movable>> &movables = GameManager::getMovableGameObjects();
+    std::vector<std::shared_ptr<Stationary>> &stationary = GameManager::getStationaryGameObjects();
     std::shared_ptr<Player> &player = GameManager::getPlayer();
 
     for (auto const &m :movables) {
@@ -166,23 +172,23 @@ std::shared_ptr<Player> &GameManager::getPlayer() {
     return getInstance().m_player;
 }
 
-std::vector<std::shared_ptr<MovableObject>> &GameManager::getMovableGameObjects() {
+std::vector<std::shared_ptr<Movable>> &GameManager::getMovableGameObjects() {
     return getInstance().movableGameObjects;
 }
 
-void GameManager::addMovableGameObject(const std::shared_ptr<MovableObject> &object) {
+void GameManager::addMovableGameObject(const std::shared_ptr<Movable> &object) {
     getMovableGameObjects().emplace_back(object);
 }
 
-std::vector<std::shared_ptr<StationaryObject>> &GameManager::getStationaryGameObjects() {
+std::vector<std::shared_ptr<Stationary>> &GameManager::getStationaryGameObjects() {
     return getInstance().stationaryGameObjects;
 }
 
-void GameManager::addStationaryGameObject(const std::shared_ptr<StationaryObject> &object) {
+void GameManager::addStationaryGameObject(const std::shared_ptr<Stationary> &object) {
     getStationaryGameObjects().emplace_back(object);
 }
 
-void GameManager::setGameObjects() {
+void GameManager::addMovables() {
 
     setPlayer(std::make_shared<Player>(TextureManager::loadTexture("../resources/img/pacman/base.png"),
                                        30 * 14.5, 30 * 24, 0, 3,
@@ -338,6 +344,7 @@ void GameManager::setGameObjects() {
 }
 
 void GameManager::resetRound() {
+    Mix_HaltChannel(-1);
     getPlayer()->reset();
 
     for (auto const &ghost : getMovableGameObjects()) {
@@ -345,7 +352,7 @@ void GameManager::resetRound() {
     }
     initFonts();
     render();
-    getPlayer()->playSound(TEST, 5);
+    getPlayer()->playSound(INTRO, 5);
     while (Mix_Playing(5)) {}
 }
 
@@ -375,9 +382,8 @@ void GameManager::gameOver() {
 
 void GameManager::startGame() {
     initFonts();
+    addMovables();
     setMap(1);
-    setGameObjects();
-    render();
     resetRound();
 }
 
@@ -400,6 +406,10 @@ void GameManager::initFont(int size) {
 }
 
 void GameManager::mapCompleted() {
+    Mix_HaltChannel(-1);
+    getPlayer()->playSound(MAP_COMPLETED);
+    while(Mix_Playing(-1)){}
+
     getStationaryGameObjects().clear();
     SDL_RenderPresent(renderer);
     SDL_RenderClear(renderer);

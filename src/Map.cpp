@@ -4,7 +4,7 @@
 #include "../include/GameManager.h"
 #include "../include/TextureManager.h"
 #include "../include/Pellet.h"
-#include "../include/StationaryObject.h"
+#include "../include/Stationary.h"
 #include "../include/Fruit.h"
 
 
@@ -185,7 +185,7 @@ void Map::createWallWithTexture(int map[32][29], int row, int column) {
             tileTexture = fill;
         }
         GameManager::addStationaryGameObject(
-                std::make_shared<StationaryObject>(WALL, 0, column * tileLength + tileLength,
+                std::make_shared<Stationary>(WALL, 0, column * tileLength + tileLength,
                                                    row * tileLength + tileLength, tileTexture));
 
 
@@ -212,7 +212,7 @@ void Map::createWallWithTexture(int map[32][29], int row, int column) {
             }
         }
         GameManager::addStationaryGameObject(
-                std::make_shared<StationaryObject>(HALLWAY, 0, column * tileLength + tileLength,
+                std::make_shared<Stationary>(HALLWAY, 0, column * tileLength + tileLength,
                                                    row * tileLength + tileLength, tileTexture));
     }
 }
