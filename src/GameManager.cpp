@@ -40,6 +40,7 @@ int GameManager::init(const char *title, int xPos, int yPos, int width, int heig
         isRunning = true;
 
     }
+    liveCountTexture = TextureManager::loadTexture("../resources/img/pacman/medium-open-right.png");
     return 0;
 }
 
@@ -94,12 +95,12 @@ void removeEatenPellets(std::vector<std::shared_ptr<Stationary>> &objects) {
 }
 
 void GameManager::update() {
-    std::vector<std::shared_ptr<Movable>> &movables = GameManager::getMovables();
+    std::vector<std::shared_ptr<Movable>> &movablesObjects = GameManager::getMovables();
     std::shared_ptr<Player> &player = GameManager::getPlayer();
 
     player->update();
 
-    for (auto const &m : movables) {
+    for (auto const &m : movablesObjects) {
         m->update();
     }
     removeFruit(GameManager::getStationery());
@@ -113,6 +114,8 @@ void GameManager::update() {
 }
 
 void GameManager::render() {
+    renderTopDisplay();
+
     std::vector<std::shared_ptr<Movable>> &movableObjects = GameManager::getMovables();
     std::vector<std::shared_ptr<Stationary>> &stationary = GameManager::getStationery();
     std::shared_ptr<Player> &player = GameManager::getPlayer();
@@ -124,14 +127,6 @@ void GameManager::render() {
     for (auto const &s : stationary) {
         s->render();
     }
-
-    if (player->newHighScore > player->highScore) {
-        drawText("Highscore: %d", 35, 0, player->newHighScore);
-    } else {
-        drawText("Highscore: %d", 35, 0, player->highScore);
-    }
-    drawText("Points: %d", 400, 0, player->points);
-    drawText("Lives: %d", 775, 0, player->lives);
     player->render();
     SDL_RenderPresent(renderer);
     SDL_RenderClear(renderer);
@@ -449,6 +444,22 @@ int &GameManager::getCurrentLevel() {
 
 void GameManager::setCurrentLevel(const int &currentLevel) {
     getInstance().currentLevel = currentLevel;
+}
+
+void GameManager::renderTopDisplay() {
+    if (getPlayer()->newHighScore > getPlayer()->highScore) {
+        drawText("Highscore: %d", 35, 0, getPlayer()->newHighScore);
+    } else {
+        drawText("Highscore: %d", 35, 0, getPlayer()->highScore);
+    }
+    drawText("Points: %d", 400, 0, getPlayer()->points);
+
+    auto sourceRect = SDL_Rect{0, 0, 1600, 1600};
+    for(int i = 0; i < getPlayer()->lives; i++) {
+        auto destRect = SDL_Rect{780+i*40, 0, 30, 30};
+        SDL_RenderCopy(GameManager::renderer, liveCountTexture, &sourceRect, &destRect);
+    }
+
 }
 
 

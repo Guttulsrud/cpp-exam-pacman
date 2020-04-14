@@ -91,7 +91,6 @@ void Player::determineDirection(const SDL_Rect &possiblePosition) {
 
 
 void playDeathAnimation() {
-
     std::shared_ptr<Player> &player = GameManager::getPlayer();
     std::vector<std::shared_ptr<Stationary>> &stationary = GameManager::getStationery();
     auto game = GameManager::getInstance();
@@ -104,18 +103,8 @@ void playDeathAnimation() {
         }
         player->deathAnimator.animate(&player->m_texture, player->direction);
         player->render();
-
-        if (player->newHighScore > player->highScore) {
-            game.drawText("Highscore: %d", 35, 0, player->newHighScore);
-        } else {
-            game.drawText("Highscore: %d", 35, 0, player->highScore);
-        }
-        game.drawText("Points: %d", 400, 0, player->points);
-        game.drawText("Lives: %d", 775, 0, player->lives);
-
         SDL_RenderPresent(GameManager::renderer);
         SDL_RenderClear(GameManager::renderer);
-        SDL_Delay(25);
     }
 }
 
@@ -181,7 +170,7 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
                 points += 10;
 
             }
-            if (stationary->getType() == FRUIT){
+            if (stationary->getType() == FRUIT) {
                 collectedFruit = true;
                 dynamic_cast<Fruit *>(stationary.get())->eaten = true;
                 points += 300;
@@ -193,7 +182,7 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
     if (collectedPellet && !Mix_Playing(1)) {
         playSound(EAT_PELLET, 1);
     }
-    if (collectedFruit){
+    if (collectedFruit) {
         playSound(EAT_FRUIT);
     }
     return didNotCollideWithWall;

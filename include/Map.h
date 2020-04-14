@@ -10,6 +10,8 @@ class Map {
 
 public:
     Map(const char *filePath);
+    ~Map();
+
 
     int currentMap[32][29];
 

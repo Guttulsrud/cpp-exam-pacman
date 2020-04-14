@@ -266,5 +266,9 @@ void Map::loadMapFromFile(const char *filePath) {
     }
 }
 
+Map::~Map() {
+
+}
+
 
 

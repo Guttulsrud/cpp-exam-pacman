@@ -76,12 +76,14 @@ public:
     void mapCompleted();
 
     void renderStartScreen();
+    void renderTopDisplay();
 
     bool pelletsAreRemaining();
 
 private:
     GameManager() = default;
 
+    SDL_Texture* liveCountTexture;
     FC_Font *font;
     bool isRunning;
     SDL_Window *window;
