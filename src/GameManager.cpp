@@ -338,6 +338,8 @@ void GameManager::gameOver() {
     if (getPlayer()->currentScore > getPlayer()->highScore) {
         getPlayer()->writeHighScore(getPlayer()->currentScore);
     }
+    getMovables().clear();
+    getStationery().clear();
     isRunning() = false;
 }
 
