@@ -3,10 +3,17 @@
 #include "../include/TextureManager.h"
 #include "../include/GameManager.h"
 
+
+
+std::map<std::string, SDL_Texture *> TextureManager::createdTextures;
+
 SDL_Texture *TextureManager::loadTexture(const std::string& path) {
-    const char * texture = path.c_str();
-    SDL_Surface *surface = IMG_Load(texture);
-    SDL_Texture *tex = SDL_CreateTextureFromSurface(GameManager::renderer, surface);
-    SDL_FreeSurface(surface);
-    return tex;
+    const char * imagePath = path.c_str();
+    if(!createdTextures.count(imagePath)){
+        SDL_Surface *surface = IMG_Load(imagePath);
+        createdTextures[imagePath] = SDL_CreateTextureFromSurface(GameManager::renderer, surface);
+        SDL_FreeSurface(surface);
+    }
+    return createdTextures[imagePath];
 }
+
