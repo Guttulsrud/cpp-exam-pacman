@@ -2,11 +2,11 @@
 #define EXAM_FRUIT_H
 
 
-#include "StationaryObject.h"
+#include "Stationary.h"
 
-class Fruit : public StationaryObject {
+class Fruit : public Stationary {
 public:
-    Fruit(SDL_Texture *texturePtr, int x, int y, int id, int w, int h, bool active) : StationaryObject(FRUIT, id, x, y, texturePtr, h, w){
+    Fruit(SDL_Texture *texturePtr, int x, int y, int id, int w, int h, bool active) : Stationary(FRUIT, id, x, y, texturePtr, h, w){
     }
 
     void update();

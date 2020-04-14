@@ -93,7 +93,7 @@ void Player::determineDirection(const SDL_Rect &possiblePosition) {
 void playDeathAnimation() {
 
     std::shared_ptr<Player> &player = GameManager::getPlayer();
-    std::vector<std::shared_ptr<StationaryObject>> &stationary = GameManager::getStationaryGameObjects();
+    std::vector<std::shared_ptr<Stationary>> &stationary = GameManager::getStationaryGameObjects();
     auto game = GameManager::getInstance();
 
     for (int i = 0; i < 45; i++) {
@@ -129,7 +129,9 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
             auto ghost = dynamic_cast<Ghost *>(movable.get());
             if (ghost->eatable) {
                 if (!ghost->dead) {
-                    playSound(EAT_GHOST, 3);
+                    //todo: Alle ghost return lyder stopper når et spøkelse kommer hjem
+                    playSound(EAT_GHOST);
+                    playSound(GHOST_RETURN, 6);
                 }
                 ghost->dead = true;
                 ghost->eatable = false;
@@ -139,10 +141,10 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
                 ghost->switchedToEatable = false;
             } else {
                 lives--;
-                playSound(DEATH, 5);
+                playSound(DEATH);
                 auto tread = std::async(playDeathAnimation);
 
-                while (Mix_Playing(5)) {}
+                while (Mix_Playing(-1)) {}
                 lives < 1 ? GameManager::getInstance().gameOver() : GameManager::getInstance().resetRound();
 
                 return false;
@@ -165,7 +167,7 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
 
                 if (dynamic_cast<Pellet *>(stationary.get())->m_isPowerPellet) {
 
-                    playSound(EAT_POWER_PELLET, 2);
+                    playSound(EAT_POWER_PELLET);
 
 
                     for (auto &o : GameManager::getMovableGameObjects()) {
@@ -192,7 +194,7 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
         playSound(EAT_PELLET, 1);
     }
     if (collectedFruit){
-        playSound(EAT_FRUIT, 1);
+        playSound(EAT_FRUIT);
     }
     return didNotCollideWithWall;
 }

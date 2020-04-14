@@ -1,12 +1,12 @@
-#ifndef EXAM_MOVABLEOBJECT_H
-#define EXAM_MOVABLEOBJECT_H
+#ifndef EXAM_MOVABLE_H
+#define EXAM_MOVABLE_H
 
 
 #include "GameObject.h"
 
-class MovableObject : public GameObject {
+class Movable : public GameObject {
 public:
-    MovableObject(SDL_Texture * texturePtr, int x, int y, int id, int movementSpeed) : GameObject(60, 60, x, y, id, texturePtr){
+    Movable(SDL_Texture * texturePtr, int x, int y, int id, int movementSpeed) : GameObject(60, 60, x, y, id, texturePtr){
         m_movementSpeed = movementSpeed;
         hitbox.h = 20;
         hitbox.w = 20;
