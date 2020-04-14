@@ -20,9 +20,7 @@ int main(int argc, char *argv[]) {
 
     game.renderStartScreen();
 
-
     game.startGame();
-
 
     while (game.running()) {
         frameStart = SDL_GetTicks();

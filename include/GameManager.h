@@ -31,7 +31,6 @@ public:
     bool running() {
         return isRunning;
     }
-
     std::shared_ptr<Player> m_player;
     std::vector<std::shared_ptr<Movable>> movables;
     std::vector<std::shared_ptr<Stationary>> stationery;
@@ -42,9 +41,14 @@ public:
 
     static std::vector<std::shared_ptr<Stationary>> &getStationery();
 
+    std::vector<std::string> levelPaths = {
+            "../resources/maps/level_one.txt",
+            "../resources/maps/level_two.txt",
+            "../resources/maps/level_three.txt"
+    };
+
     static std::shared_ptr<Player> &getPlayer();
 
-    static int &getCurrentLevel();
 
     static void setPlayer(const std::shared_ptr<Player> &p);
 
@@ -57,29 +61,20 @@ public:
     static void addStationary(const std::shared_ptr<Stationary> &s);
 
     void setMap(const int &mapIndex);
-
     int currentLevel = 0;
     std::shared_ptr<Map> map;
-
     void resetRound();
-
     void startGame();
-
     void gameOver();
 
     void drawText(const char *text, float x, float y, int parameter = 0);
 
     void initFont(int size);
-
     void initFonts();
-
     void mapCompleted();
-
     void renderStartScreen();
-    void renderTopDisplay();
 
     bool pelletsAreRemaining();
-
 private:
     GameManager() = default;
 

@@ -144,19 +144,8 @@ void GameManager::clean() {
 
 
 void GameManager::setMap(const int &mapIndex) {
-    setCurrentLevel(mapIndex);
-
-    switch (mapIndex) {
-        case 1:
-            map = std::make_shared<Map>("../resources/maps/level_one.txt");
-            break;
-        case 2:
-            map = std::make_shared<Map>("../resources/maps/level_two.txt");
-            break;
-        case 3:
-            map = std::make_shared<Map>("../resources/maps/level_three.txt");
-            break;
-    }
+    currentLevel = mapIndex;
+    map = std::make_shared<Map>(levelPaths[mapIndex], mapIndex);
 }
 
 void GameManager::setPlayer(std::shared_ptr<Player> const &object) {
@@ -368,7 +357,7 @@ void GameManager::gameOver() {
         IM.update();
     }
 
-    setMap(1);
+    setMap(0);
     getPlayer()->lives = 3;
     getPlayer()->currentScore = 0;
 
@@ -378,8 +367,8 @@ void GameManager::gameOver() {
 
 void GameManager::startGame() {
     initFonts();
+    setMap(currentLevel);
     addMovables();
-    setMap(1);
     resetRound();
 }
 
@@ -404,11 +393,14 @@ void GameManager::initFont(int size) {
 void GameManager::mapCompleted() {
     Mix_HaltChannel(-1);
     getPlayer()->playSound(MAP_COMPLETED);
-    while(Mix_Playing(-1)){}
+    while (Mix_Playing(-1)) {}
 
     getStationery().clear();
     SDL_RenderPresent(renderer);
     SDL_RenderClear(renderer);
+
+    currentLevel++;
+
 
     if (currentLevel == 3) {
         initFont(100);
@@ -416,14 +408,12 @@ void GameManager::mapCompleted() {
         SDL_RenderPresent(renderer);
         SDL_Delay(3000);
         SDL_RenderClear(renderer);
-        setMap(1);
-        resetRound();
-
-    } else {
-        setMap(2);
-        getCurrentLevel()++;
-        resetRound();
+        currentLevel = 0;
     }
+
+    setMap(currentLevel);
+    resetRound();
+
 }
 
 bool GameManager::pelletsAreRemaining() {
@@ -436,14 +426,6 @@ bool GameManager::pelletsAreRemaining() {
     }
 
     return pelletsRemaining > 0;
-}
-
-int &GameManager::getCurrentLevel() {
-    return getInstance().currentLevel;
-}
-
-void GameManager::setCurrentLevel(const int &currentLevel) {
-    getInstance().currentLevel = currentLevel;
 }
 
 void GameManager::renderTopDisplay() {
