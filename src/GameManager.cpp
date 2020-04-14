@@ -353,8 +353,8 @@ void GameManager::resetRound() {
 }
 
 void GameManager::gameOver() {
-    if (getPlayer()->points > getPlayer()->highScore) {
-        getPlayer()->writeHighScore(getPlayer()->points);
+    if (getPlayer()->currentScore > getPlayer()->highScore) {
+        getPlayer()->writeHighScore(getPlayer()->currentScore);
     }
     getStationery().clear();
 
@@ -370,7 +370,7 @@ void GameManager::gameOver() {
 
     setMap(1);
     getPlayer()->lives = 3;
-    getPlayer()->points = 0;
+    getPlayer()->currentScore = 0;
 
     resetRound();
 }
@@ -452,7 +452,7 @@ void GameManager::renderTopDisplay() {
     } else {
         drawText("Highscore: %d", 35, 0, getPlayer()->highScore);
     }
-    drawText("Points: %d", 400, 0, getPlayer()->points);
+    drawText("Score: %d", 400, 0, getPlayer()->currentScore);
 
     auto sourceRect = SDL_Rect{0, 0, 1600, 1600};
     for(int i = 0; i < getPlayer()->lives; i++) {

@@ -43,7 +43,7 @@ public:
 
     Direction direction = UP;
     EntityAnimator m_animator;
-    int points = 0;
+    int currentScore = 0;
     int highScore = 0;
     int newHighScore = 0;
     int lives = 3;

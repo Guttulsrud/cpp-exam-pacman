@@ -70,8 +70,8 @@ void Player::update() {
     movementChange = possibleMovementChange;
     updateHitbox();
 
-    if (points > highScore) {
-        newHighScore = points;
+    if (currentScore > highScore) {
+        newHighScore = currentScore;
     }
 }
 
@@ -167,14 +167,14 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
                     }
                 }
                 dynamic_cast<Pellet *>(stationary.get())->eaten = true;
-                points += 10;
+                currentScore += 10;
 
             }
             if (stationary->getType() == FRUIT) {
                 collectedFruit = true;
                 dynamic_cast<Fruit *>(stationary.get())->eaten = true;
-                points += 300;
-                //TODO: Fix indivudual points for different types of fruits
+                currentScore += 300;
+                //TODO: Fix indivudual currentScore for different types of fruits
             }
         }
 
