@@ -18,7 +18,7 @@ int main(int argc, char *argv[]) {
 
     game.init("PacMan", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 930, 1020);
 
-   game.renderStartScreen();
+    game.renderStartScreen();
 
 
     game.startGame();

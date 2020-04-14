@@ -129,8 +129,9 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
             auto ghost = dynamic_cast<Ghost *>(movable.get());
             if (ghost->eatable) {
                 if (!ghost->dead) {
+                    //todo: Alle ghost return lyder stopper når et spøkelse kommer hjem
                     playSound(EAT_GHOST);
-                    playSound(GHOST_RETURN);
+                    playSound(GHOST_RETURN, 6);
                 }
                 ghost->dead = true;
                 ghost->eatable = false;

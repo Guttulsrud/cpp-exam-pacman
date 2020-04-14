@@ -103,12 +103,15 @@ void GameManager::update() {
         m->update();
     }
     removeFruit(GameManager::getStationaryGameObjects());
-    if (pelletsAreRemaining()) {
-        removeEatenPellets(GameManager::getStationaryGameObjects());
-    } else {
 
-        mapCompleted();
-    }
+    mapCompleted();
+
+//    if (pelletsAreRemaining()) {
+//        removeEatenPellets(GameManager::getStationaryGameObjects());
+//    } else {
+//
+//        mapCompleted();
+//    }
 }
 
 void GameManager::render() {
@@ -119,6 +122,7 @@ void GameManager::render() {
     for (auto const &m :movables) {
         m->render();
     }
+
     for (auto const &s : stationary) {
         s->render();
     }
@@ -146,21 +150,20 @@ void GameManager::clean() {
 }
 
 
-void GameManager::setMap(int map) {
-    switch (map) {
+void GameManager::setMap(const int &mapIndex) {
+    setCurrentLevel(mapIndex);
+
+    switch (mapIndex) {
         case 1:
-            maps[1] = std::make_shared<Map>("../resources/maps/level_one.txt");
+            map = std::make_shared<Map>("../resources/maps/level_one.txt");
             break;
         case 2:
-            maps[2] = std::make_shared<Map>("../resources/maps/level_two.txt");
+            map = std::make_shared<Map>("../resources/maps/level_two.txt");
             break;
         case 3:
-            maps[3] = std::make_shared<Map>("../resources/maps/level_three.txt");
+            map = std::make_shared<Map>("../resources/maps/level_three.txt");
             break;
-        default:
-            maps[1] = std::make_shared<Map>("../resources/maps/level_one.txt");
     }
-    activeMap = map;
 }
 
 void GameManager::setPlayer(std::shared_ptr<Player> const &object) {
@@ -414,19 +417,18 @@ void GameManager::mapCompleted() {
     SDL_RenderPresent(renderer);
     SDL_RenderClear(renderer);
 
-    if (activeMap > 2) {
+    if (currentLevel == 3) {
         initFont(100);
         drawText("You win!", 200, 400);
         SDL_RenderPresent(renderer);
         SDL_Delay(3000);
         SDL_RenderClear(renderer);
-        activeMap = 1;
-        setMap(activeMap);
+        setMap(1);
         resetRound();
 
     } else {
-        activeMap++;
-        setMap(activeMap);
+        setMap(2);
+        getCurrentLevel()++;
         resetRound();
     }
 }
@@ -441,6 +443,14 @@ bool GameManager::pelletsAreRemaining() {
     }
 
     return pelletsRemaining > 0;
+}
+
+int &GameManager::getCurrentLevel() {
+    return getInstance().currentLevel;
+}
+
+void GameManager::setCurrentLevel(const int &currentLevel) {
+    getInstance().currentLevel = currentLevel;
 }
 
 

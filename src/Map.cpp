@@ -14,9 +14,8 @@ Map::Map(const char *filePath) {
 
 
     round = TextureManager::loadTexture("../resources/img/walls/round.png");
-    black = TextureManager::loadTexture("../resources/img/black.png");
-
-    if(GameManager::getInstance().activeMap == 1){
+    int currentLevel = GameManager::getCurrentLevel();
+    if(currentLevel == 1){
 
         fill = TextureManager::loadTexture("../resources/img/walls/wall.png");
         pellet = TextureManager::loadTexture("../resources/img/pickups/pellet.png");
@@ -47,7 +46,7 @@ Map::Map(const char *filePath) {
 
         fruit = TextureManager::loadTexture("../resources/img/pickups/cherry.png");
 
-    } else if (GameManager::getInstance().activeMap == 2){
+    } else if (currentLevel == 2){
 
         fill = TextureManager::loadTexture("../resources/img/walls_red/wall_red.png");
         pellet = TextureManager::loadTexture("../resources/img/pickups/pellet_orange.png");
@@ -79,7 +78,7 @@ Map::Map(const char *filePath) {
         fruit = TextureManager::loadTexture("../resources/img/pickups/melon.png");
 
 
-    } else if (GameManager::getInstance().activeMap == 3){
+    } else if (currentLevel == 3){
 
         fill = TextureManager::loadTexture("../resources/img/walls_green/wall_green.png");
         pellet = TextureManager::loadTexture("../resources/img/pickups/pellet_cyan.png");
@@ -110,6 +109,8 @@ Map::Map(const char *filePath) {
 
         fruit = TextureManager::loadTexture("../resources/img/pickups/strawberry.png");
 
+    } else {
+        std::cout << "lol fail" << std::endl;
     }
 
     loadLevelMap(currentMap);

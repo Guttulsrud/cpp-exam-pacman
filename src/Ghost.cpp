@@ -172,6 +172,7 @@ Direction Ghost::getDirectionToPoint(const std::map<Direction, SDL_Rect> &possib
 }
 
 void Ghost::reset() {
+    Mix_HaltChannel(6);
     m_positionRectangle.x = spawn.x;
     m_positionRectangle.y = spawn.y;
     dead = false;
