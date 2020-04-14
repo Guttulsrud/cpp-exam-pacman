@@ -375,8 +375,8 @@ void GameManager::gameOver() {
 
 void GameManager::startGame() {
     initFonts();
-    setGameObjects();
     setMap(1);
+    setGameObjects();
     render();
     resetRound();
 }
