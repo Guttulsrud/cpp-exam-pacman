@@ -35,22 +35,21 @@ int GameManager::init(const char *title, int xPos, int yPos, int width, int heig
         if (TTF_Init() == 0) {
             std::cout << "TTF init" << std::endl;
         }
-
-        std::cout << "GameManager running" << std::endl;
-        isRunning = true;
-
     }
     numberOfLivesDisplayTexture = TextureManager::loadTexture("../resources/img/pacman/medium-open-right.png");
     return 0;
 }
 
 void GameManager::renderStartScreen() {
+    SDL_RenderPresent(renderer);
+    SDL_RenderClear(renderer);
+
     InputManager IM = InputManager::getInstance();
 
     SDL_Texture *startScreenTexture = TextureManager::loadTexture(
             "../resources/startscreenassets/start_screen_alt.png");
 
-    SDL_Rect startScreenRect = SDL_Rect{0, 0, 930, 1020};
+    auto startScreenRect = SDL_Rect{0, 0, 930, 1020};
 
     SDL_RenderCopy(GameManager::renderer, startScreenTexture, &startScreenRect, &startScreenRect);
 
@@ -64,14 +63,6 @@ void GameManager::renderStartScreen() {
     SDL_RenderPresent(renderer);
     SDL_RenderClear(renderer);
 
-    while (true) {
-        if (!IM.KeyStillUp(SDL_SCANCODE_SPACE)) {
-            break;
-        } else if (!IM.KeyStillUp(SDL_SCANCODE_Q)) {
-            abort();
-        }
-        IM.update();
-    }
 
 }
 
@@ -98,7 +89,6 @@ void GameManager::update() {
     std::vector<std::shared_ptr<Movable>> &movablesObjects = GameManager::getMovables();
     std::shared_ptr<Player> &player = GameManager::getPlayer();
 
-    player->update();
 
     for (auto const &m : movablesObjects) {
         m->update();
@@ -111,6 +101,8 @@ void GameManager::update() {
     } else {
         mapCompleted();
     }
+    player->update();
+
 }
 
 void GameManager::render() {
@@ -342,26 +334,11 @@ void GameManager::resetRound() {
 }
 
 void GameManager::gameOver() {
+    SDL_RenderClear(renderer);
     if (getPlayer()->currentScore > getPlayer()->highScore) {
         getPlayer()->writeHighScore(getPlayer()->currentScore);
     }
-    getStationery().clear();
-
-    initFont(40);
-    drawText("Press space to play again", 150, 500);
-    SDL_RenderPresent(renderer);
-    SDL_RenderClear(renderer);
-    InputManager IM = InputManager::getInstance();
-
-    while (!IM.KeyDown(SDL_SCANCODE_SPACE)) {
-        IM.update();
-    }
-
-    setMap(0);
-    getPlayer()->lives = 3;
-    getPlayer()->currentScore = 0;
-
-    resetRound();
+    isRunning() = false;
 }
 
 
@@ -370,6 +347,7 @@ void GameManager::startGame() {
     setMap(currentLevel);
     addMovables();
     resetRound();
+    isRunning() = true;
 }
 
 

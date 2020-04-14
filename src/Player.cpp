@@ -134,7 +134,12 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
                 auto tread = std::async(playDeathAnimation);
 
                 while (Mix_Playing(-1)) {}
-                lives < 1 ? GameManager::getInstance().gameOver() : GameManager::getInstance().resetRound();
+                if(lives < 3) {
+                    tread.get();
+                    GameManager::getInstance().gameOver();
+                } else {
+                    GameManager::getInstance().resetRound();
+                }
 
                 return false;
             }

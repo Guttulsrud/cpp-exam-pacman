@@ -49,14 +49,15 @@ public:
 
     void clean();
 
-    bool running() {
-        return isRunning;
+    static bool &isRunning() {
+        return getInstance().running;
     }
 
     static GameManager &getInstance() {
         static GameManager instance;
         return instance;
     }
+    bool running;
 
 private:
     GameManager() = default;
@@ -64,7 +65,6 @@ private:
     std::shared_ptr<Player> m_player;
     SDL_Texture *numberOfLivesDisplayTexture;
     FC_Font *font;
-    bool isRunning;
     SDL_Window *window;
     int currentLevel = 0;
 
