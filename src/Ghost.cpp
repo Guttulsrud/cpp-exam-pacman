@@ -61,7 +61,7 @@ void Ghost::update() {
     //Finds valid move direction
     for (auto &directionPosition : directions) {
         bool didNotCollideWithWall = true;
-        for (auto &object : GameManager::getStationaryGameObjects()) {
+        for (auto &object : GameManager::getStationery()) {
             if (object->getType() == WALL) {
                 if (SDL_HasIntersection(&directionPosition.second, &object->m_positionRectangle)) {
                     didNotCollideWithWall = false;

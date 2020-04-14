@@ -94,7 +94,7 @@ void removeEatenPellets(std::vector<std::shared_ptr<Stationary>> &objects) {
 }
 
 void GameManager::update() {
-    std::vector<std::shared_ptr<Movable>> &movables = GameManager::getMovableGameObjects();
+    std::vector<std::shared_ptr<Movable>> &movables = GameManager::getMovables();
     std::shared_ptr<Player> &player = GameManager::getPlayer();
 
     player->update();
@@ -102,24 +102,22 @@ void GameManager::update() {
     for (auto const &m : movables) {
         m->update();
     }
-    removeFruit(GameManager::getStationaryGameObjects());
+    removeFruit(GameManager::getStationery());
 
-    mapCompleted();
 
-//    if (pelletsAreRemaining()) {
-//        removeEatenPellets(GameManager::getStationaryGameObjects());
-//    } else {
-//
-//        mapCompleted();
-//    }
+    if (pelletsAreRemaining()) {
+        removeEatenPellets(GameManager::getStationery());
+    } else {
+        mapCompleted();
+    }
 }
 
 void GameManager::render() {
-    std::vector<std::shared_ptr<Movable>> &movables = GameManager::getMovableGameObjects();
-    std::vector<std::shared_ptr<Stationary>> &stationary = GameManager::getStationaryGameObjects();
+    std::vector<std::shared_ptr<Movable>> &movableObjects = GameManager::getMovables();
+    std::vector<std::shared_ptr<Stationary>> &stationary = GameManager::getStationery();
     std::shared_ptr<Player> &player = GameManager::getPlayer();
 
-    for (auto const &m :movables) {
+    for (auto const &m :movableObjects) {
         m->render();
     }
 
@@ -175,20 +173,20 @@ std::shared_ptr<Player> &GameManager::getPlayer() {
     return getInstance().m_player;
 }
 
-std::vector<std::shared_ptr<Movable>> &GameManager::getMovableGameObjects() {
-    return getInstance().movableGameObjects;
+std::vector<std::shared_ptr<Movable>> &GameManager::getMovables() {
+    return getInstance().movables;
 }
 
-void GameManager::addMovableGameObject(const std::shared_ptr<Movable> &object) {
-    getMovableGameObjects().emplace_back(object);
+void GameManager::addMovable(const std::shared_ptr<Movable> &object) {
+    getMovables().emplace_back(object);
 }
 
-std::vector<std::shared_ptr<Stationary>> &GameManager::getStationaryGameObjects() {
-    return getInstance().stationaryGameObjects;
+std::vector<std::shared_ptr<Stationary>> &GameManager::getStationery() {
+    return getInstance().stationery;
 }
 
-void GameManager::addStationaryGameObject(const std::shared_ptr<Stationary> &object) {
-    getStationaryGameObjects().emplace_back(object);
+void GameManager::addStationary(const std::shared_ptr<Stationary> &object) {
+    getStationery().emplace_back(object);
 }
 
 void GameManager::addMovables() {
@@ -233,7 +231,7 @@ void GameManager::addMovables() {
 
 
     //TODO: Draw with map class
-    addMovableGameObject(std::make_shared<Ghost>(
+    addMovable(std::make_shared<Ghost>(
             TextureManager::loadTexture("../resources/img/ghosts/green_E1.png"),
             30 * 15, 30 * 15, 0, 3,
             EntityAnimator({{UP,
@@ -261,7 +259,7 @@ void GameManager::addMovables() {
                                     }
                             }})));
 
-    addMovableGameObject(std::make_shared<Ghost>(
+    addMovable(std::make_shared<Ghost>(
             TextureManager::loadTexture("../resources/img/ghosts/orange_E1.png"),
             30 * 15, 30 * 15, 0, 3,
             EntityAnimator({{UP,
@@ -289,7 +287,7 @@ void GameManager::addMovables() {
                                     }
                             }})));
 
-    addMovableGameObject(std::make_shared<Ghost>(
+    addMovable(std::make_shared<Ghost>(
             TextureManager::loadTexture("../resources/img/ghosts/red_E1.png"),
             30 * 15, 30 * 15, 0, 3,
             EntityAnimator({{UP,
@@ -317,7 +315,7 @@ void GameManager::addMovables() {
                                     }
                             }})));
 
-    addMovableGameObject(std::make_shared<Ghost>(
+    addMovable(std::make_shared<Ghost>(
             TextureManager::loadTexture("../resources/img/ghosts/purple_E1.png"),
             30 * 15, 30 * 15, 0, 3,
             EntityAnimator({{UP,
@@ -350,7 +348,7 @@ void GameManager::resetRound() {
     Mix_HaltChannel(-1);
     getPlayer()->reset();
 
-    for (auto const &ghost : getMovableGameObjects()) {
+    for (auto const &ghost : getMovables()) {
         ghost->reset();
     }
     initFonts();
@@ -363,7 +361,7 @@ void GameManager::gameOver() {
     if (getPlayer()->points > getPlayer()->highScore) {
         getPlayer()->writeHighScore(getPlayer()->points);
     }
-    getStationaryGameObjects().clear();
+    getStationery().clear();
 
     initFont(40);
     drawText("Press space to play again", 150, 500);
@@ -413,7 +411,7 @@ void GameManager::mapCompleted() {
     getPlayer()->playSound(MAP_COMPLETED);
     while(Mix_Playing(-1)){}
 
-    getStationaryGameObjects().clear();
+    getStationery().clear();
     SDL_RenderPresent(renderer);
     SDL_RenderClear(renderer);
 
@@ -436,7 +434,7 @@ void GameManager::mapCompleted() {
 bool GameManager::pelletsAreRemaining() {
     int pelletsRemaining = 0;
 
-    for (auto &p : GameManager::getStationaryGameObjects()) {
+    for (auto &p : GameManager::getStationery()) {
         if (p->getType() == PELLET) {
             pelletsRemaining++;
         }

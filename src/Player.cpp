@@ -93,7 +93,7 @@ void Player::determineDirection(const SDL_Rect &possiblePosition) {
 void playDeathAnimation() {
 
     std::shared_ptr<Player> &player = GameManager::getPlayer();
-    std::vector<std::shared_ptr<Stationary>> &stationary = GameManager::getStationaryGameObjects();
+    std::vector<std::shared_ptr<Stationary>> &stationary = GameManager::getStationery();
     auto game = GameManager::getInstance();
 
     for (int i = 0; i < 45; i++) {
@@ -124,7 +124,7 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
 
 
     // Check for collision with moving game objects
-    for (auto &movable : GameManager::getMovableGameObjects()) {
+    for (auto &movable : GameManager::getMovables()) {
         if (SDL_HasIntersection(&hitbox, &movable->hitbox) && movable->getType() == GHOST) {
             auto ghost = dynamic_cast<Ghost *>(movable.get());
             if (ghost->eatable) {
@@ -156,7 +156,7 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
     // Check for collision with stationary game objects
     bool collectedFruit = false;
     bool collectedPellet = false;
-    for (auto &stationary : GameManager::getStationaryGameObjects()) {
+    for (auto &stationary : GameManager::getStationery()) {
         if (SDL_HasIntersection(&possiblePosition, &stationary->m_positionRectangle)) {
             if (stationary->getType() == WALL) {
                 didNotCollideWithWall = false;
@@ -170,7 +170,7 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
                     playSound(EAT_POWER_PELLET);
 
 
-                    for (auto &o : GameManager::getMovableGameObjects()) {
+                    for (auto &o : GameManager::getMovables()) {
                         if (o->getType() == GHOST) {
                             dynamic_cast<Ghost *>(o.get())->switchedToEatable = true;
                             dynamic_cast<Ghost *>(o.get())->eatableStateEnd = false;
