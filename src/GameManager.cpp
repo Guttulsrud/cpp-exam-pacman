@@ -401,7 +401,6 @@ void GameManager::mapCompleted() {
 
     currentLevel++;
 
-
     if (currentLevel == 3) {
         initFont(100);
         drawText("You win!", 200, 400);
