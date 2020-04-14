@@ -188,7 +188,7 @@ void GameManager::addStationaryGameObject(const std::shared_ptr<Stationary> &obj
     getStationaryGameObjects().emplace_back(object);
 }
 
-void GameManager::setGameObjects() {
+void GameManager::addMovables() {
 
     setPlayer(std::make_shared<Player>(TextureManager::loadTexture("../resources/img/pacman/base.png"),
                                        30 * 14.5, 30 * 24, 0, 3,
@@ -382,9 +382,8 @@ void GameManager::gameOver() {
 
 void GameManager::startGame() {
     initFonts();
-    setGameObjects();
+    addMovables();
     setMap(1);
-    render();
     resetRound();
 }
 
