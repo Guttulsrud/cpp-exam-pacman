@@ -3,11 +3,15 @@
 
 
 #include <SDL2/SDL.h>
-#include <string>
+#include <map>
 
 class TextureManager {
 public:
     static SDL_Texture *loadTexture(const std::string& path);
+
+private:
+    static std::map<std::string, SDL_Texture *> createdTextures;
+
 };
 
 #endif

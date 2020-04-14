@@ -35,7 +35,7 @@ int GameManager::init(const char *title, int xPos, int yPos, int width, int heig
             std::cout << "TTF init" << std::endl;
         }
     }
-    numberOfLivesDisplayTexture = TextureManager::loadTexture("../resources/img/pacman/medium-open-right.png");
+//    numberOfLivesDisplayTexture = TextureManager::loadTexture("../resources/img/pacman/medium-open-right.png");
     return 0;
 }
 
@@ -309,6 +309,7 @@ void GameManager::resetRound() {
 }
 
 void GameManager::gameOver() {
+    currentLevel = 0;
     SDL_RenderClear(renderer);
     if (getPlayer()->currentScore > getPlayer()->highScore) {
         getPlayer()->writeHighScore(getPlayer()->currentScore);

@@ -15,17 +15,13 @@ public:
         for(auto const& [key, vec] : paths){
             std::vector<SDL_Texture *> directionTextures;
             for(auto &path : vec){
-                if(!createdTextures.count(path)){
-                    createdTextures[path] = TextureManager::loadTexture(path);
-                }
-                directionTextures.emplace_back(createdTextures[path]);
+                directionTextures.emplace_back(TextureManager::loadTexture(path));
             }
             textures.insert({key, directionTextures});
         }
     };
 
     std::map<Direction, std::vector<SDL_Texture *>> textures;
-    std::map<const char *, SDL_Texture *> createdTextures;
     int frameCount = 0;
     int animationIndex = 0;
 

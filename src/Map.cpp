@@ -11,7 +11,6 @@ Map::Map(const std::string &filePath, int mapIndex) {
 
     loadMapFromFile(filePath.c_str());
 
-    round = TextureManager::loadTexture("../resources/img/walls/round.png");
     std::string folderPath;
 
     switch (mapIndex) {
@@ -35,6 +34,9 @@ Map::Map(const std::string &filePath, int mapIndex) {
             folderPath = "../resources/img/walls/blue/";
             break;
     }
+
+
+    round = TextureManager::loadTexture(folderPath + "round.png");
     fill = TextureManager::loadTexture(folderPath + "default.png");
 
     endN = TextureManager::loadTexture(folderPath + "end_N.png");
