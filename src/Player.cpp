@@ -3,7 +3,6 @@
 #include "../include/GameManager.h"
 #include "../include/Pellet.h"
 #include "../include/Ghost.h"
-#include "../include/Fruit.h"
 #include <SDL_mixer.h>
 #include <future>
 #include <fstream>
@@ -134,7 +133,7 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
                 auto tread = std::async(playDeathAnimation);
 
                 while (Mix_Playing(-1)) {}
-                if(lives < 1) {
+                if (lives < 1) {
                     tread.get();
                     GameManager::getInstance().gameOver();
                 } else {
@@ -157,38 +156,32 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
             }
             if (stationary->getType() == PELLET) {
                 collectedPellet = true;
+                currentScore += 10;
 
 
                 if (dynamic_cast<Pellet *>(stationary.get())->m_isPowerPellet) {
-
                     playSound(EAT_POWER_PELLET);
-
-
                     for (auto &o : GameManager::getMovables()) {
                         if (o->getType() == GHOST) {
                             dynamic_cast<Ghost *>(o.get())->switchedToEatable = true;
                             dynamic_cast<Ghost *>(o.get())->eatableStateEnd = false;
                         }
                     }
+                } else if (dynamic_cast<Pellet *>(stationary.get())->m_isFruit) {
+                    collectedFruit = true;
+                    currentScore += 300;
                 }
                 dynamic_cast<Pellet *>(stationary.get())->eaten = true;
-                currentScore += 10;
-
-            }
-            if (stationary->getType() == FRUIT) {
-                collectedFruit = true;
-                dynamic_cast<Fruit *>(stationary.get())->eaten = true;
-                currentScore += 300;
-                //TODO: Fix indivudual currentScore for different types of fruits
             }
         }
 
     }
     if (collectedPellet && !Mix_Playing(1)) {
         playSound(EAT_PELLET, 1);
-    }
-    if (collectedFruit) {
+
+    } else if (collectedFruit) {
         playSound(EAT_FRUIT);
+        currentScore += 300;
     }
     return didNotCollideWithWall;
 }

@@ -46,6 +46,7 @@ public:
     void update();
 
     void render();
+    static void renderGameObjects();
 
     void clean();
 

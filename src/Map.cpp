@@ -5,7 +5,6 @@
 #include "../include/TextureManager.h"
 #include "../include/Pellet.h"
 #include "../include/Stationary.h"
-#include "../include/Fruit.h"
 
 
 Map::Map(const std::string &filePath, int mapIndex) {
@@ -186,9 +185,9 @@ void Map::loadLevelMap(int map[32][29]) {
 
             switch (tileType) {
                 case 4:
-                    GameManager::addStationary(std::make_shared<Fruit>(fruit, row * tileLength,
-                                                                       column * tileLength, idIncrementer, 60,
-                                                                       60, false));
+                    GameManager::addStationary(
+                            std::make_shared<Pellet>(fruit, row * tileLength + 30, column * tileLength + 30,
+                                                     idIncrementer, 25, 25, false, true));
                     break;
                 case 3:
                     GameManager::addStationary(std::make_shared<Pellet>(pelletLarge, row * tileLength + 25,
@@ -199,13 +198,15 @@ void Map::loadLevelMap(int map[32][29]) {
                     GameManager::addStationary(
                             std::make_shared<Pellet>(pellet, row * tileLength + 30, column * tileLength + 30,
                                                      idIncrementer, 5, 5));
+
                 default:
                     createWallWithTexture(map, column, row);
-                    //todo: Consider different approach to large pellet positions. Will be different on other maps
             }
         }
     }
 }
+
+
 
 void Map::loadMapFromFile(const char *filePath) {
 

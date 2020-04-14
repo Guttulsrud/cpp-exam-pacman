@@ -3,7 +3,6 @@
 #include "../include/Ghost.h"
 #include "../include/Pellet.h"
 #include "../include/InputManager.h"
-#include "../include/Fruit.h"
 
 #include <SDL2/SDL.h>
 #include <SDL_ttf.h>
@@ -66,15 +65,6 @@ void GameManager::renderStartScreen() {
 
 }
 
-void removeFruit(std::vector<std::shared_ptr<Stationary>> &objects) {
-    objects.erase(
-            std::remove_if(objects.begin(), objects.end(),
-                           [](const std::shared_ptr<Stationary> &fruit) {
-                               return fruit->getType() == FRUIT && dynamic_cast<Fruit *>(fruit.get())->eaten;
-                           }),
-            objects.end());
-}
-
 void removeEatenPellets(std::vector<std::shared_ptr<Stationary>> &objects) {
 
     objects.erase(
@@ -93,7 +83,6 @@ void GameManager::update() {
     for (auto const &m : movablesObjects) {
         m->update();
     }
-    removeFruit(GameManager::getStationery());
 
 
     if (pelletsAreRemaining()) {
@@ -108,18 +97,8 @@ void GameManager::update() {
 void GameManager::render() {
     renderTopDisplay();
 
-    std::vector<std::shared_ptr<Movable>> &movableObjects = GameManager::getMovables();
-    std::vector<std::shared_ptr<Stationary>> &stationary = GameManager::getStationery();
-    std::shared_ptr<Player> &player = GameManager::getPlayer();
+    renderGameObjects();
 
-    for (auto const &m :movableObjects) {
-        m->render();
-    }
-
-    for (auto const &s : stationary) {
-        s->render();
-    }
-    player->render();
     SDL_RenderPresent(renderer);
     SDL_RenderClear(renderer);
 }
@@ -416,11 +395,32 @@ void GameManager::renderTopDisplay() {
     drawText("Score: %d", 400, 0, getPlayer()->currentScore);
 
     auto sourceRect = SDL_Rect{0, 0, 1600, 1600};
-    for(int i = 0; i < getPlayer()->lives; i++) {
-        auto destRect = SDL_Rect{780+i*40, 0, 30, 30};
+    for (int i = 0; i < getPlayer()->lives; i++) {
+        auto destRect = SDL_Rect{780 + i * 40, 0, 30, 30};
         SDL_RenderCopy(GameManager::renderer, numberOfLivesDisplayTexture, &sourceRect, &destRect);
     }
 
 }
+
+void GameManager::renderGameObjects() {
+    std::vector<std::shared_ptr<Movable>> &movableObjects = GameManager::getMovables();
+    std::vector<std::shared_ptr<Stationary>> &stationary = GameManager::getStationery();
+
+    for (auto const &m :movableObjects) {
+        m->render();
+    }
+
+    for (auto const &s : stationary) {
+        if(s.get()->getType() == PELLET && dynamic_cast<Pellet *>(s.get())->m_isFruit) {
+            if(getPlayer()->currentScore > 100) {
+                s->render();
+            }
+        } else {
+            s->render();
+        }
+    }
+    GameManager::getPlayer()->render();
+}
+
 
 
