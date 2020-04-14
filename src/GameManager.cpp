@@ -403,7 +403,7 @@ void GameManager::drawText(const char *text, float x, float y, int parameter) {
 
 void GameManager::initFont(int size) {
     font = FC_CreateFont();
-    FC_LoadFont(font, renderer, "../resources/fonts/arial.ttf", size, FC_MakeColor(255, 255, 0, 255), TTF_STYLE_ITALIC);
+    FC_LoadFont(font, renderer, "../resources/fonts/arial.ttf", size, FC_MakeColor(255, 255, 0, 255), TTF_STYLE_NORMAL);
 }
 
 void GameManager::mapCompleted() {
