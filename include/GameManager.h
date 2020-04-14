@@ -31,6 +31,7 @@ public:
     bool running() {
         return isRunning;
     }
+
     std::shared_ptr<Player> m_player;
     std::vector<std::shared_ptr<Movable>> movableGameObjects;
     std::vector<std::shared_ptr<Stationary>> stationaryGameObjects;
@@ -38,11 +39,13 @@ public:
     static SDL_Renderer *renderer;
     static std::vector<std::shared_ptr<Movable>> &getMovableGameObjects();
     static std::vector<std::shared_ptr<Stationary>> &getStationaryGameObjects();
+    std::vector<std::string> levelPaths = {
+            "../resources/maps/level_one.txt",
+            "../resources/maps/level_two.txt",
+            "../resources/maps/level_three.txt"
+    };
     static std::shared_ptr<Player> &getPlayer();
-    static int &getCurrentLevel();
-
     static void setPlayer(const std::shared_ptr<Player> &object);
-    static void setCurrentLevel(const int &currentLevel);
     static void addMovables();
     static void addMovableGameObject(const std::shared_ptr<Movable> &object);
     static void addStationaryGameObject(const std::shared_ptr<Stationary> &object);

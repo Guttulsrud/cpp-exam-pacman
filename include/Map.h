@@ -6,10 +6,8 @@
 #include <map>
 
 class Map {
-
-
 public:
-    Map(const char *filePath);
+    Map(const std::string& filePath, int mapIndex);
 
     int currentMap[32][29];
 
@@ -26,10 +24,10 @@ private:
     SDL_Texture *fill;
     SDL_Texture *round;
     SDL_Texture *black;
-    SDL_Texture *roundedWallN;
-    SDL_Texture *roundedWallW;
-    SDL_Texture *roundedWallS;
-    SDL_Texture *roundedWallE;
+    SDL_Texture *endN;
+    SDL_Texture *endW;
+    SDL_Texture *endS;
+    SDL_Texture *endE;
     SDL_Texture *wallDoubleEdgeWE;
     SDL_Texture *wallDoubleEdgeNS;
     SDL_Texture *cornerSW;

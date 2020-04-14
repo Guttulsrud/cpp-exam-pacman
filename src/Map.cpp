@@ -8,110 +8,61 @@
 #include "../include/Fruit.h"
 
 
-Map::Map(const char *filePath) {
+Map::Map(const std::string &filePath, int mapIndex) {
 
-    loadMapFromFile(filePath);
-
+    loadMapFromFile(filePath.c_str());
 
     round = TextureManager::loadTexture("../resources/img/walls/round.png");
-    int currentLevel = GameManager::getCurrentLevel();
-    if(currentLevel == 1){
+    std::string folderPath;
 
-        fill = TextureManager::loadTexture("../resources/img/walls/wall.png");
-        pellet = TextureManager::loadTexture("../resources/img/pickups/pellet.png");
-        pelletLarge = TextureManager::loadTexture("../resources/img/pickups/power_pellet.png");
+    switch (mapIndex) {
+        case 0:
+            folderPath = "../resources/img/walls/blue/";
+            pellet = TextureManager::loadTexture("../resources/img/pickups/pellet.png");
+            pelletLarge = TextureManager::loadTexture("../resources/img/pickups/power_pellet.png");
+            break;
+        case 1:
 
-        roundedWallN = TextureManager::loadTexture("../resources/img/walls/rounded_corner_N.png");
-        roundedWallS = TextureManager::loadTexture("../resources/img/walls/rounded_corner_S.png");
-        roundedWallW = TextureManager::loadTexture("../resources/img/walls/rounded_corner_W.png");
-        roundedWallE = TextureManager::loadTexture("../resources/img/walls/rounded_corner_E.png");
-
-        wallDoubleEdgeWE = TextureManager::loadTexture("../resources/img/walls/wall_double_edge_WE.png");
-        wallDoubleEdgeNS = TextureManager::loadTexture("../resources/img/walls/wall_double_edge_NS.png");
-
-        cornerSE = TextureManager::loadTexture("../resources/img/walls/single_corner_SE.png");
-        cornerSW = TextureManager::loadTexture("../resources/img/walls/single_corner_SW.png");
-        cornerNE = TextureManager::loadTexture("../resources/img/walls/single_corner_NE.png");
-        cornerNW = TextureManager::loadTexture("../resources/img/walls/single_corner_NW.png");
-
-        insideCornerNW = TextureManager::loadTexture("../resources/img/walls/inside_single_corner_NW.png");
-        insideCornerNE = TextureManager::loadTexture("../resources/img/walls/inside_single_corner_NE.png");
-        insideCornerSW = TextureManager::loadTexture("../resources/img/walls/inside_single_corner_SW.png");
-        insideCornerSE = TextureManager::loadTexture("../resources/img/walls/inside_single_corner_SE.png");
-
-        edgeN = TextureManager::loadTexture("../resources/img/walls/wall_single_edge_N.png");
-        edgeE = TextureManager::loadTexture("../resources/img/walls/wall_single_edge_E.png");
-        edgeW = TextureManager::loadTexture("../resources/img/walls/wall_single_edge_W.png");
-        edgeS = TextureManager::loadTexture("../resources/img/walls/wall_single_edge_S.png");
-
-        fruit = TextureManager::loadTexture("../resources/img/pickups/cherry.png");
-
-    } else if (currentLevel == 2){
-
-        fill = TextureManager::loadTexture("../resources/img/walls_red/wall_red.png");
-        pellet = TextureManager::loadTexture("../resources/img/pickups/pellet_orange.png");
-        pelletLarge = TextureManager::loadTexture("../resources/img/pickups/power_pellet.png");
-
-        roundedWallN = TextureManager::loadTexture("../resources/img/walls_red/rounded_corner_red_N.png");
-        roundedWallS = TextureManager::loadTexture("../resources/img/walls_red/rounded_corner_red_S.png");
-        roundedWallW = TextureManager::loadTexture("../resources/img/walls_red/rounded_corner_red_W.png");
-        roundedWallE = TextureManager::loadTexture("../resources/img/walls_red/rounded_corner_red_E.png");
-
-        wallDoubleEdgeWE = TextureManager::loadTexture("../resources/img/walls_red/wall_double_edge_red_WE.png");
-        wallDoubleEdgeNS = TextureManager::loadTexture("../resources/img/walls_red/wall_double_edge_red_NS.png");
-
-        cornerSE = TextureManager::loadTexture("../resources/img/walls_red/single_corner_red_SE.png");
-        cornerSW = TextureManager::loadTexture("../resources/img/walls_red/single_corner_red_SW.png");
-        cornerNE = TextureManager::loadTexture("../resources/img/walls_red/single_corner_red_NE.png");
-        cornerNW = TextureManager::loadTexture("../resources/img/walls_red/single_corner_red_NW.png");
-
-        insideCornerNW = TextureManager::loadTexture("../resources/img/walls_red/inside_single_corner_red_NW.png");
-        insideCornerNE = TextureManager::loadTexture("../resources/img/walls_red/inside_single_corner_red_NE.png");
-        insideCornerSW = TextureManager::loadTexture("../resources/img/walls_red/inside_single_corner_red_SW.png");
-        insideCornerSE = TextureManager::loadTexture("../resources/img/walls_red/inside_single_corner_red_SE.png");
-
-        edgeN = TextureManager::loadTexture("../resources/img/walls_red/wall_single_edge_red_N.png");
-        edgeE = TextureManager::loadTexture("../resources/img/walls_red/wall_single_edge_red_E.png");
-        edgeW = TextureManager::loadTexture("../resources/img/walls_red/wall_single_edge_red_W.png");
-        edgeS = TextureManager::loadTexture("../resources/img/walls_red/wall_single_edge_red_S.png");
-
-        fruit = TextureManager::loadTexture("../resources/img/pickups/melon.png");
-
-
-    } else if (currentLevel == 3){
-
-        fill = TextureManager::loadTexture("../resources/img/walls_green/wall_green.png");
-        pellet = TextureManager::loadTexture("../resources/img/pickups/pellet_cyan.png");
-        pelletLarge = TextureManager::loadTexture("../resources/img/pickups/power_pellet_yellow.png");
-
-        roundedWallN = TextureManager::loadTexture("../resources/img/walls_green/rounded_corner_green_N.png");
-        roundedWallS = TextureManager::loadTexture("../resources/img/walls_green/rounded_corner_green_S.png");
-        roundedWallW = TextureManager::loadTexture("../resources/img/walls_green/rounded_corner_green_W.png");
-        roundedWallE = TextureManager::loadTexture("../resources/img/walls_green/rounded_corner_green_E.png");
-
-        wallDoubleEdgeWE = TextureManager::loadTexture("../resources/img/walls_green/wall_double_edge_green_WE.png");
-        wallDoubleEdgeNS = TextureManager::loadTexture("../resources/img/walls_green/wall_double_edge_green_NS.png");
-
-        cornerSE = TextureManager::loadTexture("../resources/img/walls_green/single_corner_green_SE.png");
-        cornerSW = TextureManager::loadTexture("../resources/img/walls_green/single_corner_green_SW.png");
-        cornerNE = TextureManager::loadTexture("../resources/img/walls_green/single_corner_green_NE.png");
-        cornerNW = TextureManager::loadTexture("../resources/img/walls_green/single_corner_green_NW.png");
-
-        insideCornerNW = TextureManager::loadTexture("../resources/img/walls_green/inside_single_corner_green_NW.png");
-        insideCornerNE = TextureManager::loadTexture("../resources/img/walls_green/inside_single_corner_green_NE.png");
-        insideCornerSW = TextureManager::loadTexture("../resources/img/walls_green/inside_single_corner_green_SW.png");
-        insideCornerSE = TextureManager::loadTexture("../resources/img/walls_green/inside_single_corner_green_SE.png");
-
-        edgeN = TextureManager::loadTexture("../resources/img/walls_green/wall_single_edge_green_N.png");
-        edgeE = TextureManager::loadTexture("../resources/img/walls_green/wall_single_edge_green_E.png");
-        edgeW = TextureManager::loadTexture("../resources/img/walls_green/wall_single_edge_green_W.png");
-        edgeS = TextureManager::loadTexture("../resources/img/walls_green/wall_single_edge_green_S.png");
-
-        fruit = TextureManager::loadTexture("../resources/img/pickups/strawberry.png");
-
-    } else {
-        std::cout << "lol fail" << std::endl;
+            folderPath = "../resources/img/walls/red/";
+            pellet = TextureManager::loadTexture("../resources/img/pickups/pellet_orange.png");
+            pelletLarge = TextureManager::loadTexture("../resources/img/pickups/power_pellet.png");
+            break;
+        case 2:
+            folderPath = "../resources/img/walls/green/";
+            pellet = TextureManager::loadTexture("../resources/img/pickups/pellet_cyan.png");
+            pelletLarge = TextureManager::loadTexture("../resources/img/pickups/power_pellet_yellow.png");
+            break;
+        default:
+            folderPath = "../resources/img/walls/blue/";
+            break;
     }
+    fill = TextureManager::loadTexture(folderPath + "default.png");
+
+    endN = TextureManager::loadTexture(folderPath + "end_N.png");
+    endS = TextureManager::loadTexture(folderPath + "end_S.png");
+    endW = TextureManager::loadTexture(folderPath + "end_W.png");
+    endE = TextureManager::loadTexture(folderPath + "end_E.png");
+
+    wallDoubleEdgeWE = TextureManager::loadTexture(folderPath + "double_edge_WE.png");
+    wallDoubleEdgeNS = TextureManager::loadTexture(folderPath + "double_edge_NS.png");
+
+    cornerSE = TextureManager::loadTexture(folderPath + "outer_corner_SE.png");
+    cornerSW = TextureManager::loadTexture(folderPath + "outer_corner_SW.png");
+    cornerNE = TextureManager::loadTexture(folderPath + "outer_corner_NE.png");
+    cornerNW = TextureManager::loadTexture(folderPath + "outer_corner_NW.png");
+
+    insideCornerNW = TextureManager::loadTexture(folderPath + "inner_corner_NW.png");
+    insideCornerNE = TextureManager::loadTexture(folderPath + "inner_corner_NE.png");
+    insideCornerSW = TextureManager::loadTexture(folderPath + "inner_corner_SW.png");
+    insideCornerSE = TextureManager::loadTexture(folderPath + "inner_corner_SE.png");
+
+    edgeN = TextureManager::loadTexture(folderPath + "edge_N.png");
+    edgeE = TextureManager::loadTexture(folderPath + "edge_E.png");
+    edgeW = TextureManager::loadTexture(folderPath + "edge_W.png");
+    edgeS = TextureManager::loadTexture(folderPath + "edge_S.png");
+
+    fruit = TextureManager::loadTexture("../resources/img/pickups/strawberry.png");
+
 
     loadLevelMap(currentMap);
 }
@@ -124,6 +75,11 @@ void Map::createWallWithTexture(int map[32][29], int row, int column) {
     int eastTile = map[row][column + 1] == wall ? wall : 0;
     int northTile = map[row - 1][column] == wall ? wall : 0;
     int southTile = map[row + 1][column] == wall ? wall : 0;
+
+    int nwTile = map[row - 1][column - 1] == wall ? wall : 0;
+    int neTile = map[row - 1][column + 1] == wall ? wall : 0;
+    int swTile = map[row + 1][column - 1] == wall ? wall : 0;
+    int seTile = map[row + 1][column + 1] == wall ? wall : 0;
 
     //sets padding to 0
     if (column - 1 < 0) {
@@ -154,10 +110,10 @@ void Map::createWallWithTexture(int map[32][29], int row, int column) {
         if (wallNeighbours == 0) {
             tileTexture = round;
         } else if (wallNeighbours == 1) {
-            if (southTile == wall) tileTexture = roundedWallN;
-            if (northTile == wall) tileTexture = roundedWallS;
-            if (eastTile == wall) tileTexture = roundedWallW;
-            if (westTile == wall) tileTexture = roundedWallE;
+            if (southTile == wall) tileTexture = endN;
+            if (northTile == wall) tileTexture = endS;
+            if (eastTile == wall) tileTexture = endW;
+            if (westTile == wall) tileTexture = endE;
 
         } else if (wallNeighbours == 2) {
             if (southTile == wall) {
@@ -187,7 +143,7 @@ void Map::createWallWithTexture(int map[32][29], int row, int column) {
         }
         GameManager::addStationaryGameObject(
                 std::make_shared<Stationary>(WALL, 0, column * tileLength + tileLength,
-                                                   row * tileLength + tileLength, tileTexture));
+                                             row * tileLength + tileLength, tileTexture));
 
 
     }
@@ -195,18 +151,16 @@ void Map::createWallWithTexture(int map[32][29], int row, int column) {
         ///TODO: Should check tile in corner as well
 
     else if (tileType != wall && wallNeighbours == 2) {
-        if (southTile == wall) {
-            if (westTile == wall) {
+        if ((northTile == wall && southTile == wall) || (eastTile == wall && westTile == wall)) {
+            tileTexture = black;
+        } else if (southTile == wall) {
+            if (westTile == wall && swTile == wall) {
                 tileTexture = insideCornerSW;
-            } else if (northTile == wall) {
-                tileTexture = black;
-            } else {
+            } else if (seTile == wall) {
                 tileTexture = insideCornerSE;
             }
         } else {
-            if (westTile == wall && eastTile == wall) {
-                tileTexture = black;
-            } else if (westTile == wall) {
+            if (westTile == wall && nwTile == wall) {
                 tileTexture = insideCornerNW;
             } else {
                 tileTexture = insideCornerNE;
@@ -214,7 +168,7 @@ void Map::createWallWithTexture(int map[32][29], int row, int column) {
         }
         GameManager::addStationaryGameObject(
                 std::make_shared<Stationary>(HALLWAY, 0, column * tileLength + tileLength,
-                                                   row * tileLength + tileLength, tileTexture));
+                                             row * tileLength + tileLength, tileTexture));
     }
 }
 
@@ -229,15 +183,17 @@ void Map::loadLevelMap(int map[32][29]) {
 
             tileType = map[column][row];
             idIncrementer++;
+
             switch (tileType) {
                 case 4:
                     GameManager::addStationaryGameObject(std::make_shared<Fruit>(fruit, row * tileLength,
-                                                                          column * tileLength, idIncrementer, 60,
+                                                                                 column * tileLength, idIncrementer, 60,
                                                                                  60, false));
                     break;
                 case 3:
                     GameManager::addStationaryGameObject(std::make_shared<Pellet>(pelletLarge, row * tileLength + 25,
-                                                                           column * tileLength + 30, idIncrementer, 15,
+                                                                                  column * tileLength + 30,
+                                                                                  idIncrementer, 15,
                                                                                   15, true));
                     break;
                 case 2:
