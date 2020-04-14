@@ -40,7 +40,7 @@ int GameManager::init(const char *title, int xPos, int yPos, int width, int heig
         isRunning = true;
 
     }
-    liveCountTexture = TextureManager::loadTexture("../resources/img/pacman/medium-open-right.png");
+    numberOfLivesDisplayTexture = TextureManager::loadTexture("../resources/img/pacman/medium-open-right.png");
     return 0;
 }
 
@@ -457,7 +457,7 @@ void GameManager::renderTopDisplay() {
     auto sourceRect = SDL_Rect{0, 0, 1600, 1600};
     for(int i = 0; i < getPlayer()->lives; i++) {
         auto destRect = SDL_Rect{780+i*40, 0, 30, 30};
-        SDL_RenderCopy(GameManager::renderer, liveCountTexture, &sourceRect, &destRect);
+        SDL_RenderCopy(GameManager::renderer, numberOfLivesDisplayTexture, &sourceRect, &destRect);
     }
 
 }

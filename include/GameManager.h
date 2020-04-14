@@ -83,7 +83,7 @@ public:
 private:
     GameManager() = default;
 
-    SDL_Texture* liveCountTexture;
+    SDL_Texture* numberOfLivesDisplayTexture;
     FC_Font *font;
     bool isRunning;
     SDL_Window *window;
