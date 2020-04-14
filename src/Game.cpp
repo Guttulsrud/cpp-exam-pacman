@@ -26,9 +26,6 @@ int Game::init(const char *title, int xPos, int yPos, int width, int height, boo
 
         Mix_AllocateChannels(8);
 
-        if (window) {
-        }
-
         renderer = SDL_CreateRenderer(window, -1, flags);
 
         if (renderer) {
@@ -41,7 +38,6 @@ int Game::init(const char *title, int xPos, int yPos, int width, int height, boo
 
         std::cout << "Game running" << std::endl;
         isRunning = true;
-
     }
     return 0;
 }
@@ -221,11 +217,7 @@ void Game::setGameObjects() {
                                                                        "../resources/img/pacman/medium-open-right.png"
                                                                }
                                                        }})
-
     ));
-
-
-
     //TODO: Draw with map class
     addMovableGameObject(std::make_shared<Ghost>(
             TextureManager::loadTexture("../resources/img/ghosts/green_E1.png"),
@@ -378,8 +370,8 @@ void Game::gameOver() {
 
 void Game::startGame() {
     initFonts();
-    setGameObjects();
     setMap(1);
+    setGameObjects();
     render();
     resetRound();
 }

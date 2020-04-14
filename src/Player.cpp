@@ -130,6 +130,7 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
             if (ghost->eatable) {
                 if (!ghost->dead) {
                     playSound(EAT_GHOST, 3);
+                    points += 200;
                 }
                 ghost->dead = true;
                 ghost->eatable = false;
