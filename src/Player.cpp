@@ -102,8 +102,8 @@ void playDeathAnimation() {
         }
         player->deathAnimator.animate(&player->m_texture, player->direction);
         player->render();
-        SDL_RenderPresent(GameManager::renderer);
-        SDL_RenderClear(GameManager::renderer);
+        SDL_RenderPresent(GameManager::m_renderer);
+        SDL_RenderClear(GameManager::m_renderer);
     }
 }
 

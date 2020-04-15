@@ -11,7 +11,7 @@ SDL_Texture *TextureManager::loadTexture(const std::string& path) {
     const char * imagePath = path.c_str();
     if(!createdTextures.count(imagePath)){
         SDL_Surface *surface = IMG_Load(imagePath);
-        createdTextures[imagePath] = SDL_CreateTextureFromSurface(GameManager::renderer, surface);
+        createdTextures[imagePath] = SDL_CreateTextureFromSurface(GameManager::m_renderer, surface);
         SDL_FreeSurface(surface);
     }
     return createdTextures[imagePath];

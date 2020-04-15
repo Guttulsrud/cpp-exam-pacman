@@ -17,94 +17,78 @@
 
 class GameManager {
 public:
+    static SDL_Renderer *m_renderer;
 
-
-    void resetRound();
-
-    void startGame();
-
-    void gameOver();
-
-    void drawText(const char *text, float x, float y, int parameter = 0);
-
-    void initFont(int size);
-
-    void initFonts();
-
-    void mapCompleted();
-
-    void calculateAndDelayFrameTime();
-    void run();
-    static void addStationary(const std::shared_ptr<Stationary> &s);
-    static void addPellet(const std::shared_ptr<Pellet> &p);
-    static void addGhost(const std::shared_ptr<Ghost> &s);
-
-    static std::shared_ptr<Player> &getPlayer();
-
-    static SDL_Renderer *renderer;
-
-    static std::vector<std::shared_ptr<Stationary>> &getStationery();
-    static std::vector<std::shared_ptr<Pellet>> &getPellets();
-    static std::vector<std::shared_ptr<Ghost>> &getGhosts();
-
-    void update();
-
-    void render();
-    static void renderGameObjects();
-
-    void checkForRemainingPelletsAndRemove();
-    void clean();
-
-    static bool &isRunning() {
-        return getInstance().running;
-    }
-
-    static bool &isInGame() {
-        return getInstance().inGame;
-    }
-
-    static GameManager &getInstance() {
-        static GameManager instance;
-        return instance;
-    }
-    bool running;
-    bool inGame;
-
-private:
-    GameManager() = default;
-    int init(const char *title, int x, int y, int w, int h);
-    void renderStartScreen();
-
-    const int FPS = 60;
-    const int frameDelay = 1000 / FPS;
-    Uint32 frameStart = 0;
-    Uint32 frameTime;
-    std::shared_ptr<Player> m_player;
-    SDL_Texture *numberOfLivesDisplayTexture;
-    FC_Font *font;
-    SDL_Window *window;
-    int currentLevel = 0;
-    InputManager inputManager = InputManager::getInstance();
-
-
-    static void setPlayer(const std::shared_ptr<Player> &p);
-
-    static void addMovables();
-
-    void setMap(const int &mapIndex);
-
-    void renderTopDisplay();
-
-    std::vector<std::shared_ptr<Stationary>> stationery;
-    std::vector<std::shared_ptr<Pellet>> pellets;
-    std::vector<std::shared_ptr<Ghost>> ghosts;
-    std::shared_ptr<Map> map;
     std::vector<std::string> levelPaths = {
             "../resources/maps/level_one.txt",
             "../resources/maps/level_two.txt",
             "../resources/maps/level_three.txt"
     };
 
+    static GameManager &getInstance() {
+        static GameManager instance;
+        return instance;
+    }
+
+    void run();
+    void render();
+    void gameOver();
+    void resetRound();
+
+    static std::shared_ptr<Player> &getPlayer();
+    static std::vector<std::shared_ptr<Stationary>> &getStationery();
+    static std::vector<std::shared_ptr<Pellet>> &getPellets();
+    static std::vector<std::shared_ptr<Ghost>> &getGhosts();
+
+    static void addStationary(const std::shared_ptr<Stationary> &s);
+    static void addPellet(const std::shared_ptr<Pellet> &p);
+
+private:
+
+    const int FPS = 60;
+    const int frameDelay = 1000 / FPS;
+
+    int currentLevel = 0;
+    bool running;
+    bool inGame;
+
+    SDL_Texture *numberOfLivesDisplayTexture;
+    FC_Font *font;
+    SDL_Window *window;
+
+    InputManager inputManager = InputManager::getInstance();
+
+    std::shared_ptr<Player> m_player;
+    std::vector<std::shared_ptr<Stationary>> stationery;
+    std::vector<std::shared_ptr<Pellet>> pellets;
+    std::vector<std::shared_ptr<Ghost>> ghosts;
+    std::shared_ptr<Map> map;
+
+    GameManager() = default;
+    int init(const char *title, int x, int y, int w, int h);
+
+    void startGame();
+    void update();
+    void clean();
+    void mapCompleted();
+    void addMovables();
+    void checkForRemainingPelletsAndRemove();
+
+    void initFonts();
+    void setFontSize(int size);
+    void drawText(const char *text, float x, float y, int parameter = 0);
+
+    void renderGameObjects();
+    void renderTopDisplay();
+    void renderStartScreen();
+
+    void addGhost(const std::shared_ptr<Ghost> &s);
+    void setPlayer(const std::shared_ptr<Player> &p);
+    void setMap(const int &mapIndex);
+
+    Uint32 frameTime;
+    Uint32 frameStart = 0;
+    void calculateAndDelayFrameTime();
 };
 
 #endif

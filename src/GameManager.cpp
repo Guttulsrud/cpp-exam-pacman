@@ -8,7 +8,7 @@
 #include <SDL_ttf.h>
 #include <fstream>
 
-SDL_Renderer *GameManager::renderer = nullptr;
+SDL_Renderer *GameManager::m_renderer = nullptr;
 
 int GameManager::init(const char *title, int xPos, int yPos, int width, int height) {
 
@@ -18,13 +18,12 @@ int GameManager::init(const char *title, int xPos, int yPos, int width, int heig
 
         if (!window) {
             std::cout << "Couldn't open Window!" << std::endl;
-
         }
 
-        renderer = SDL_CreateRenderer(window, -1, flags);
+        m_renderer = SDL_CreateRenderer(window, -1, flags);
 
-        if (renderer) {
-            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+        if (m_renderer) {
+            SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, 255);
         } else {
             std::cout << "Couldn't create renderer" << std::endl;
 
@@ -38,7 +37,7 @@ int GameManager::init(const char *title, int xPos, int yPos, int width, int heig
             std::cout << "Couldn't open TTF" << std::endl;
         }
     }
-    isRunning() = true;
+    running = true;
 
     return 0;
 }
@@ -47,7 +46,7 @@ void GameManager::run() {
 
     init("PacMan", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 930, 1020);
 
-    while (GameManager::isRunning()) {
+    while (running) {
         renderStartScreen();
         while (true) {
             if (!inputManager.KeyStillUp(SDL_SCANCODE_SPACE)) {
@@ -59,11 +58,11 @@ void GameManager::run() {
         }
 
         startGame();
-        while (GameManager::isInGame()) {
+        while (inGame) {
             calculateAndDelayFrameTime();
             inputManager.update();
             update();
-            if(GameManager::isInGame()) {
+            if(inGame) {
                 render();
             }
         }
@@ -76,18 +75,18 @@ void GameManager::renderStartScreen() {
 
     auto startScreenRect = SDL_Rect{0, 0, 930, 1020};
 
-    SDL_RenderCopy(renderer, TextureManager::loadTexture(
+    SDL_RenderCopy(m_renderer, TextureManager::loadTexture(
             "../resources/startscreenassets/start_screen_alt.png"), &startScreenRect, &startScreenRect);
 
     font = FC_CreateFont();
-    FC_LoadFont(font, renderer, "../resources/fonts/arial.ttf", 30, FC_MakeColor(240, 153, 63, 255), TTF_STYLE_BOLD);
-    FC_Draw(font, renderer, 295, 380, "Press Space to start!");
-    FC_Draw(font, renderer, 330, 550, "Press 'Q' to quit!");
+    FC_LoadFont(font, m_renderer, "../resources/fonts/arial.ttf", 30, FC_MakeColor(240, 153, 63, 255), TTF_STYLE_BOLD);
+    FC_Draw(font, m_renderer, 295, 380, "Press Space to start!");
+    FC_Draw(font, m_renderer, 330, 550, "Press 'Q' to quit!");
 
     FC_FreeFont(font);
 
-    SDL_RenderPresent(renderer);
-    SDL_RenderClear(renderer);
+    SDL_RenderPresent(m_renderer);
+    SDL_RenderClear(m_renderer);
 
 
 }
@@ -119,15 +118,15 @@ void GameManager::render() {
     renderTopDisplay();
     renderGameObjects();
 
-    SDL_RenderPresent(renderer);
-    SDL_RenderClear(renderer);
+    SDL_RenderPresent(m_renderer);
+    SDL_RenderClear(m_renderer);
 }
 
 void GameManager::clean() {
     TTF_Quit();
     FC_FreeFont(font);
     Mix_CloseAudio();
-    SDL_DestroyRenderer(renderer);
+    SDL_DestroyRenderer(m_renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
     std::cout << "Cleaned.." << std::endl;
@@ -327,14 +326,14 @@ void GameManager::resetRound() {
 
 void GameManager::gameOver() {
     currentLevel = 0;
-    SDL_RenderClear(renderer);
+    SDL_RenderClear(m_renderer);
     if (getPlayer()->currentScore > getPlayer()->highScore) {
         getPlayer()->writeHighScore(getPlayer()->currentScore);
     }
     getGhosts().clear();
     getStationery().clear();
     getPellets().clear();
-    isInGame() = false;
+    inGame = false;
 }
 
 
@@ -345,26 +344,26 @@ void GameManager::startGame() {
     setMap(currentLevel);
     addMovables();
     resetRound();
-    isInGame() = true;
+    inGame = true;
     getPellets();
 }
 
 
 void GameManager::initFonts() {
-    initFont(42);
+    setFontSize(42);
     drawText("Ready!", 375, 545);
-    initFont(24);
+    setFontSize(24);
 }
 
 
 void GameManager::drawText(const char *text, float x, float y, int parameter) {
-    FC_Draw(font, renderer, x, y, text, parameter);
+    FC_Draw(font, m_renderer, x, y, text, parameter);
 }
 
 
-void GameManager::initFont(int size) {
+void GameManager::setFontSize(int size) {
     font = FC_CreateFont();
-    FC_LoadFont(font, renderer, "../resources/fonts/arial.ttf", size, FC_MakeColor(255, 255, 0, 255), TTF_STYLE_NORMAL);
+    FC_LoadFont(font, m_renderer, "../resources/fonts/arial.ttf", size, FC_MakeColor(255, 255, 0, 255), TTF_STYLE_NORMAL);
 }
 
 void GameManager::mapCompleted() {
@@ -373,17 +372,17 @@ void GameManager::mapCompleted() {
     while (Mix_Playing(-1)) {}
 
     getStationery().clear();
-    SDL_RenderPresent(renderer);
-    SDL_RenderClear(renderer);
+    SDL_RenderPresent(m_renderer);
+    SDL_RenderClear(m_renderer);
 
     currentLevel++;
 
     if (currentLevel == 3) {
-        initFont(100);
+        setFontSize(100);
         drawText("You win!", 200, 400);
-        SDL_RenderPresent(renderer);
+        SDL_RenderPresent(m_renderer);
         SDL_Delay(3000);
-        SDL_RenderClear(renderer);
+        SDL_RenderClear(m_renderer);
         currentLevel = 0;
     }
 
@@ -404,7 +403,7 @@ void GameManager::renderTopDisplay() {
     auto sourceRect = SDL_Rect{0, 0, 1600, 1600};
     for (int i = 0; i < getPlayer()->lives; i++) {
         auto destRect = SDL_Rect{780 + i * 40, 0, 30, 30};
-        SDL_RenderCopy(renderer, numberOfLivesDisplayTexture, &sourceRect, &destRect);
+        SDL_RenderCopy(m_renderer, numberOfLivesDisplayTexture, &sourceRect, &destRect);
     }
 
 }
