@@ -44,7 +44,6 @@ int GameManager::init(const char *title, int xPos, int yPos, int width, int heig
 }
 
 void GameManager::run() {
-    InputManager inputManager = InputManager::getInstance();
 
     init("PacMan", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 930, 1020);
 
@@ -73,17 +72,12 @@ void GameManager::run() {
 
 
 void GameManager::renderStartScreen() {
-    SDL_RenderPresent(renderer);
-    SDL_RenderClear(renderer);
 
-    InputManager IM = InputManager::getInstance();
-
-    SDL_Texture *startScreenTexture = TextureManager::loadTexture(
-            "../resources/startscreenassets/start_screen_alt.png");
 
     auto startScreenRect = SDL_Rect{0, 0, 930, 1020};
 
-    SDL_RenderCopy(renderer, startScreenTexture, &startScreenRect, &startScreenRect);
+    SDL_RenderCopy(renderer, TextureManager::loadTexture(
+            "../resources/startscreenassets/start_screen_alt.png"), &startScreenRect, &startScreenRect);
 
     font = FC_CreateFont();
     FC_LoadFont(font, renderer, "../resources/fonts/arial.ttf", 30, FC_MakeColor(240, 153, 63, 255), TTF_STYLE_BOLD);

@@ -10,6 +10,7 @@
 #include "../utils/SDL_FontCache.h"
 #include "Pellet.h"
 #include "Ghost.h"
+#include "InputManager.h"
 #include <memory>
 #include <iostream>
 #include <algorithm>
@@ -83,6 +84,8 @@ private:
     FC_Font *font;
     SDL_Window *window;
     int currentLevel = 0;
+    InputManager inputManager = InputManager::getInstance();
+
 
     static void setPlayer(const std::shared_ptr<Player> &p);
 
