@@ -25,21 +25,7 @@ Direction getOppositeDirection(Direction direction) {
 void Ghost::update() {
     std::map<Direction, SDL_Rect> directions;
 
-    //NEW VOIDWARP
-    //TODO: put voidwarp in method
-    if(m_positionRectangle.x > 892){
-        m_positionRectangle.x = -21;
-
-    } else if(m_positionRectangle.x < -22){
-        m_positionRectangle.x = 891;
-    }
-
-    if (m_positionRectangle.y > 960) {
-        m_positionRectangle.y = -21;
-
-    } else if (m_positionRectangle.y < -22) {
-        m_positionRectangle.y = 960;
-    }
+    moveInBoundsIfOutOfBounds();
 
 
     SDL_Rect temp = m_positionRectangle;
@@ -180,6 +166,7 @@ void Ghost::reset() {
     eatable = false;
     updateHitbox();
     eatable = false;
+    direction = RIGHT;
     m_animator.animate(&m_texture, direction);
 }
 

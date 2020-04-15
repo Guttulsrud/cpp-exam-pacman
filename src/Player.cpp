@@ -12,21 +12,7 @@ using namespace std::chrono_literals;
 void Player::update() {
     framesSinceTextureChange++;
 
-    //NEW VOIDWARP
-    //TODO: put voidwarp in method
-    if (m_positionRectangle.x > 892) {
-        m_positionRectangle.x = -21;
-
-    } else if (m_positionRectangle.x < -22) {
-        m_positionRectangle.x = 891;
-    }
-
-    if (m_positionRectangle.y > 960) {
-        m_positionRectangle.y = -21;
-
-    } else if (m_positionRectangle.y < -22) {
-        m_positionRectangle.y = 960;
-    }
+    moveInBoundsIfOutOfBounds();
 
     SDL_Rect possiblePosition = m_positionRectangle;
     SDL_Point possibleMovementChange = movementChange;
@@ -92,28 +78,33 @@ void Player::determineDirection(const SDL_Rect &possiblePosition) {
 void playDeathAnimation() {
     std::shared_ptr<Player> &player = GameManager::getPlayer();
     std::vector<std::shared_ptr<Stationary>> &stationary = GameManager::getStationery();
+    std::vector<std::shared_ptr<Pellet>> &pellets = GameManager::getPellets();
     auto game = GameManager::getInstance();
 
     for (int i = 0; i < 45; i++) {
-
-
         for (auto const &s : stationary) {
             s->render();
         }
+        for (auto const &pellet : pellets) {
+            pellet->render();
+        }
+
         player->deathAnimator.animate(&player->m_texture, player->direction);
         player->render();
-        SDL_RenderPresent(GameManager::m_renderer);
-        SDL_RenderClear(GameManager::m_renderer);
+        SDLManager::getInstance().renderBuffer();
+        SDL_Delay(25);
     }
 }
 
 bool Player::positionIsValid(SDL_Rect &possiblePosition) {
+
+    //Todo: refactor
     bool didNotCollideWithWall = true;
 
 
     // Check for collision with moving game objects
     for (auto &ghost : GameManager::getGhosts()) {
-        if (SDL_HasIntersection(&hitbox, &ghost->hitbox)) {
+        if (SDL_HasIntersection(&hitBox, &ghost->hitBox)) {
             if (ghost->eatable) {
                 if (!ghost->dead) {
                     playSound(EAT_GHOST);

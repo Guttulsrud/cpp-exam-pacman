@@ -2,10 +2,6 @@
 #include <fstream>
 #include "../include/Map.h"
 #include "../include/GameManager.h"
-#include "../include/TextureManager.h"
-#include "../include/Pellet.h"
-#include "../include/Stationary.h"
-
 
 Map::Map(const std::string &filePath, int mapIndex) {
 
@@ -69,7 +65,6 @@ Map::Map(const std::string &filePath, int mapIndex) {
 }
 
 void Map::createWallWithTexture(int map[32][29], int row, int column) {
-    ///TODO: Player needs to be rendered last so that its in front
     int wall = 1;
 
     int westTile = map[row][column - 1] == wall ? wall : 0;
@@ -148,9 +143,6 @@ void Map::createWallWithTexture(int map[32][29], int row, int column) {
 
 
     }
-
-        ///TODO: Should check tile in corner as well
-
     else if (tileType != wall && wallNeighbours == 2) {
         if ((northTile == wall && southTile == wall) || (eastTile == wall && westTile == wall)) {
             tileTexture = black;
@@ -178,31 +170,31 @@ void Map::loadLevelMap(int map[32][29]) {
     int tileType = 0;
     int idIncrementer = 0;
 
-    for (int column = 0; column < 32; column++) {
-        for (int row = 0; row < 29; row++) {
-            currentMap[column][row] = map[column][row];
+    for (int row = 0; row < 32; row++) {
+        for (int column = 0; column < 29; column++) {
+            currentMap[row][column] = map[row][column];
 
-            tileType = map[column][row];
+            tileType = map[row][column];
             idIncrementer++;
 
             switch (tileType) {
                 case 4:
                     GameManager::addPellet(
-                            std::make_shared<Pellet>(fruit, row * tileLength + 30, column * tileLength + 30,
+                            std::make_shared<Pellet>(fruit, column * tileLength + 30, row * tileLength + 30,
                                                      idIncrementer, 25, 25, false, true));
                     break;
                 case 3:
-                    GameManager::addPellet(std::make_shared<Pellet>(pelletLarge, row * tileLength + 25,
-                                                                        column * tileLength + 30, idIncrementer, 15,
-                                                                        15, true));
+                    GameManager::addPellet(std::make_shared<Pellet>(pelletLarge, column * tileLength + 30 -8,
+                                                                    row * tileLength + 30 -8, idIncrementer, 16,
+                                                                    16, true));
                     break;
                 case 2:
                     GameManager::addPellet(
-                            std::make_shared<Pellet>(pellet, row * tileLength + 30, column * tileLength + 30,
-                                                     idIncrementer, 5, 5));
+                            std::make_shared<Pellet>(pellet, column * tileLength + 30 - 5, row * tileLength + 30 - 5,
+                                                     idIncrementer, 10, 10));
 
                 default:
-                    createWallWithTexture(map, column, row);
+                    createWallWithTexture(map, row, column);
             }
         }
     }

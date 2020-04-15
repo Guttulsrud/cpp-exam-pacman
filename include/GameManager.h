@@ -1,7 +1,6 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include <SDL2/SDL.h>
 #include <vector>
 #include "Map.h"
 #include "GameObject.h"
@@ -14,11 +13,11 @@
 #include <memory>
 #include <iostream>
 #include <algorithm>
+#include "SDLManager.h"
+
 
 class GameManager {
 public:
-    static SDL_Renderer *m_renderer;
-
     std::vector<std::string> levelPaths = {
             "../resources/maps/level_one.txt",
             "../resources/maps/level_two.txt",
@@ -49,14 +48,13 @@ private:
     const int frameDelay = 1000 / FPS;
 
     int currentLevel = 0;
-    bool running;
-    bool inGame;
-
-    SDL_Texture *numberOfLivesDisplayTexture;
-    FC_Font *font;
-    SDL_Window *window;
+    bool running = true;
+    bool inGame = true;
 
     InputManager inputManager = InputManager::getInstance();
+    SDLManager sdlManager = SDLManager::getInstance();
+
+    SDL_Texture *numberOfLivesDisplayTexture;
 
     std::shared_ptr<Player> m_player;
     std::vector<std::shared_ptr<Stationary>> stationery;
@@ -65,25 +63,17 @@ private:
     std::shared_ptr<Map> map;
 
     GameManager() = default;
-    int init(const char *title, int x, int y, int w, int h);
 
     void startGame();
     void update();
-    void clean();
     void mapCompleted();
-    void addMovables();
+    void createMovables();
     void checkForRemainingPelletsAndRemove();
-
-    void initFonts();
-    void setFontSize(int size);
-    void drawText(const char *text, float x, float y, int parameter = 0);
 
     void renderGameObjects();
     void renderTopDisplay();
-    void renderStartScreen();
 
     void addGhost(const std::shared_ptr<Ghost> &s);
-    void setPlayer(const std::shared_ptr<Player> &p);
     void setMap(const int &mapIndex);
 
     Uint32 frameTime;
