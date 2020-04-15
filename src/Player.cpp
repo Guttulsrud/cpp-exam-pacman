@@ -110,6 +110,7 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
                     playSound(EAT_GHOST);
                     playSound(GHOST_RETURN, 6);
                 }
+                ghost->m_movementSpeed = 5 ;
                 ghost->dead = true;
                 ghost->eatable = false;
                 ghost->switchedToEatable = false;
@@ -149,6 +150,7 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
                 for (auto &ghost : GameManager::getGhosts()) {
                     ghost->switchedToEatable = true;
                     ghost->eatableStateEnd = false;
+                    ghost->m_movementSpeed = 2;
                 }
 
             } else if (p->m_isFruit) {

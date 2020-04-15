@@ -120,6 +120,15 @@ void Ghost::update() {
     if(m_positionRectangle.x == spawn.x && m_positionRectangle.y == spawn.y && dead){
         reset();
     }
+
+    while(m_positionRectangle.x % m_movementSpeed){
+
+            m_positionRectangle.x++;
+    }
+    while(m_positionRectangle.y % m_movementSpeed){
+
+            m_positionRectangle.y++;
+    }
 }
 
 Direction Ghost::getDirectionToPoint(const std::map<Direction, SDL_Rect> &possibleDirections) const {
@@ -158,6 +167,7 @@ Direction Ghost::getDirectionToPoint(const std::map<Direction, SDL_Rect> &possib
 }
 
 void Ghost::reset() {
+    m_movementSpeed = 3;
     Mix_HaltChannel(6);
     m_positionRectangle.x = spawn.x;
     m_positionRectangle.y = spawn.y;
@@ -182,6 +192,7 @@ Uint32 Ghost::reviveGhostCallback(Uint32 n, void *ghost) {
     if (!g->dead && g->eatable && g->eatableStateEnd) {
         g->eatableStateEnd = false;
         g->eatable = false;
+        g->m_movementSpeed = 3;
     }
     return 0;
 }
