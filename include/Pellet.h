@@ -10,8 +10,6 @@ public:
         m_isPowerPellet = isPowerPellet;
         m_isFruit = isFruit;
     }
-    void update();
-    TYPE getType() override;
 
     bool eaten = false;
     bool m_isPowerPellet;

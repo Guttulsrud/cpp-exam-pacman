@@ -187,17 +187,17 @@ void Map::loadLevelMap(int map[32][29]) {
 
             switch (tileType) {
                 case 4:
-                    GameManager::addStationary(
+                    GameManager::addPellet(
                             std::make_shared<Pellet>(fruit, row * tileLength + 30, column * tileLength + 30,
                                                      idIncrementer, 25, 25, false, true));
                     break;
                 case 3:
-                    GameManager::addStationary(std::make_shared<Pellet>(pelletLarge, row * tileLength + 25,
+                    GameManager::addPellet(std::make_shared<Pellet>(pelletLarge, row * tileLength + 25,
                                                                         column * tileLength + 30, idIncrementer, 15,
                                                                         15, true));
                     break;
                 case 2:
-                    GameManager::addStationary(
+                    GameManager::addPellet(
                             std::make_shared<Pellet>(pellet, row * tileLength + 30, column * tileLength + 30,
                                                      idIncrementer, 5, 5));
 

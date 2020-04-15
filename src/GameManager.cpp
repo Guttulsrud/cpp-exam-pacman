@@ -16,28 +16,61 @@ int GameManager::init(const char *title, int xPos, int yPos, int width, int heig
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) == 0) {
         window = SDL_CreateWindow(title, xPos, yPos, width, height, flags);
 
-        if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024) < 0) {
-            // Error message if can't initialize
-        }
+        if (!window) {
+            std::cout << "Couldn't open Window!" << std::endl;
 
-        Mix_AllocateChannels(8);
-
-        if (window) {
         }
 
         renderer = SDL_CreateRenderer(window, -1, flags);
 
         if (renderer) {
             SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+        } else {
+            std::cout << "Couldn't create renderer" << std::endl;
+
         }
 
-        if (TTF_Init() == 0) {
-            std::cout << "TTF init" << std::endl;
+        if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024)) {
+            Mix_AllocateChannels(8);
+        }
+
+        if (TTF_Init() != 0) {
+            std::cout << "Couldn't open TTF" << std::endl;
         }
     }
-    numberOfLivesDisplayTexture = TextureManager::loadTexture("../resources/img/pacman/medium-open-right.png");
+    isRunning() = true;
+
     return 0;
 }
+
+void GameManager::run() {
+    InputManager inputManager = InputManager::getInstance();
+
+    init("PacMan", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 930, 1020);
+
+    while (GameManager::isRunning()) {
+        renderStartScreen();
+        while (true) {
+            if (!inputManager.KeyStillUp(SDL_SCANCODE_SPACE)) {
+                break;
+            } else if (!inputManager.KeyStillUp(SDL_SCANCODE_Q)) {
+                clean();
+            }
+            inputManager.update();
+        }
+
+        startGame();
+        while (GameManager::isInGame()) {
+            calculateAndDelayFrameTime();
+            inputManager.update();
+            update();
+            if(GameManager::isInGame()) {
+                render();
+            }
+        }
+    }
+}
+
 
 void GameManager::renderStartScreen() {
     SDL_RenderPresent(renderer);
@@ -65,34 +98,31 @@ void GameManager::renderStartScreen() {
 
 }
 
-void removeEatenPellets(std::vector<std::shared_ptr<Stationary>> &objects) {
+void removeEatenPellets(std::vector<std::shared_ptr<Pellet>> &pellets) {
 
-    objects.erase(
-            std::remove_if(objects.begin(), objects.end(),
-                           [](const std::shared_ptr<Stationary> &pellet) {
-                               return pellet->getType() == PELLET && dynamic_cast<Pellet *>(pellet.get())->eaten;
+    pellets.erase(
+            std::remove_if(pellets.begin(), pellets.end(),
+                           [](const std::shared_ptr<Pellet> &pellet) {
+                               return pellet.get()->eaten;
                            }),
-            objects.end());
+            pellets.end());
 }
 
 void GameManager::update() {
-    std::vector<std::shared_ptr<Movable>> &movablesObjects = getMovables();
-    std::shared_ptr<Player> &player = getPlayer();
 
 
-    for (auto const &m : movablesObjects) {
-        m->update();
+    for (auto const &g : getGhosts()) {
+        g->update();
     }
 
     checkForRemainingPelletsAndRemove();
 
-    player->update();
+    getPlayer()->update();
 
 }
 
 void GameManager::render() {
     renderTopDisplay();
-
     renderGameObjects();
 
     SDL_RenderPresent(renderer);
@@ -124,13 +154,6 @@ std::shared_ptr<Player> &GameManager::getPlayer() {
     return getInstance().m_player;
 }
 
-std::vector<std::shared_ptr<Movable>> &GameManager::getMovables() {
-    return getInstance().movables;
-}
-
-void GameManager::addMovable(const std::shared_ptr<Movable> &object) {
-    getMovables().emplace_back(object);
-}
 
 std::vector<std::shared_ptr<Stationary>> &GameManager::getStationery() {
     return getInstance().stationery;
@@ -182,7 +205,7 @@ void GameManager::addMovables() {
 
 
     //TODO: Draw with map class
-    addMovable(std::make_shared<Ghost>(
+    addGhost(std::make_shared<Ghost>(
             TextureManager::loadTexture("../resources/img/ghosts/green_E1.png"),
             30 * 15, 30 * 15, 0, 3,
             EntityAnimator({{UP,
@@ -210,7 +233,7 @@ void GameManager::addMovables() {
                                     }
                             }})));
 
-    addMovable(std::make_shared<Ghost>(
+    addGhost(std::make_shared<Ghost>(
             TextureManager::loadTexture("../resources/img/ghosts/orange_E1.png"),
             30 * 15, 30 * 15, 0, 3,
             EntityAnimator({{UP,
@@ -238,7 +261,7 @@ void GameManager::addMovables() {
                                     }
                             }})));
 
-    addMovable(std::make_shared<Ghost>(
+    addGhost(std::make_shared<Ghost>(
             TextureManager::loadTexture("../resources/img/ghosts/red_E1.png"),
             30 * 15, 30 * 15, 0, 3,
             EntityAnimator({{UP,
@@ -266,7 +289,7 @@ void GameManager::addMovables() {
                                     }
                             }})));
 
-    addMovable(std::make_shared<Ghost>(
+    addGhost(std::make_shared<Ghost>(
             TextureManager::loadTexture("../resources/img/ghosts/purple_E1.png"),
             30 * 15, 30 * 15, 0, 3,
             EntityAnimator({{UP,
@@ -299,7 +322,7 @@ void GameManager::resetRound() {
     Mix_HaltChannel(-1);
     getPlayer()->reset();
 
-    for (auto const &ghost : getMovables()) {
+    for (auto const &ghost : getGhosts()) {
         ghost->reset();
     }
     initFonts();
@@ -314,18 +337,22 @@ void GameManager::gameOver() {
     if (getPlayer()->currentScore > getPlayer()->highScore) {
         getPlayer()->writeHighScore(getPlayer()->currentScore);
     }
-    getMovables().clear();
+    getGhosts().clear();
     getStationery().clear();
-    isRunning() = false;
+    getPellets().clear();
+    isInGame() = false;
 }
 
 
 void GameManager::startGame() {
+    numberOfLivesDisplayTexture = TextureManager::loadTexture("../resources/img/pacman/medium-open-right.png");
+
     initFonts();
     setMap(currentLevel);
     addMovables();
     resetRound();
-    isRunning() = true;
+    isInGame() = true;
+    getPellets();
 }
 
 
@@ -371,17 +398,6 @@ void GameManager::mapCompleted() {
 
 }
 
-bool GameManager::pelletsAreRemaining() {
-    int pelletsRemaining = 0;
-
-    for (auto &p : getStationery()) {
-        if (p->getType() == PELLET) {
-            pelletsRemaining++;
-        }
-    }
-
-    return pelletsRemaining > 0;
-}
 
 void GameManager::renderTopDisplay() {
     if (getPlayer()->newHighScore > getPlayer()->highScore) {
@@ -400,32 +416,60 @@ void GameManager::renderTopDisplay() {
 }
 
 void GameManager::renderGameObjects() {
-    std::vector<std::shared_ptr<Movable>> &movableObjects = getMovables();
     std::vector<std::shared_ptr<Stationary>> &stationary = getStationery();
+    std::vector<std::shared_ptr<Pellet>> &pelletObjects = getPellets();
+    std::vector<std::shared_ptr<Ghost>> &ghostObjects = getGhosts();
 
-    for (auto const &m :movableObjects) {
-        m->render();
+    for (auto const &p : pelletObjects) {
+        p->render();
     }
 
     for (auto const &s : stationary) {
-        if(s.get()->getType() == PELLET && dynamic_cast<Pellet *>(s.get())->m_isFruit) {
-            if(getPlayer()->currentScore > getPlayer()->scoreLastRound + 200) {
-                s->render();
-            }
-        } else {
-            s->render();
-        }
+        s->render();
     }
+
+    for (auto const &g : ghostObjects) {
+        g->render();
+    }
+
     getPlayer()->render();
 }
 
 void GameManager::checkForRemainingPelletsAndRemove() {
-    if (pelletsAreRemaining()) {
-        removeEatenPellets(getStationery());
+    if (!getPellets().empty()) {
+        removeEatenPellets(getPellets());
     } else {
         mapCompleted();
     }
 }
+
+
+void GameManager::addPellet(const std::shared_ptr<Pellet> &pellet) {
+    getPellets().emplace_back(pellet);
+}
+
+void GameManager::addGhost(const std::shared_ptr<Ghost> &ghost) {
+    getGhosts().emplace_back(ghost);
+}
+
+std::vector<std::shared_ptr<Pellet>> &GameManager::getPellets() {
+    return getInstance().pellets;
+}
+
+std::vector<std::shared_ptr<Ghost>> &GameManager::getGhosts() {
+    return getInstance().ghosts;
+}
+
+void GameManager::calculateAndDelayFrameTime() {
+    frameTime = SDL_GetTicks() - frameStart;
+
+    if (frameDelay > frameTime) {
+        SDL_Delay(frameDelay - frameTime);
+    }
+    frameStart = SDL_GetTicks();
+}
+
+
 
 
 

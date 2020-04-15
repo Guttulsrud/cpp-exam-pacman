@@ -112,12 +112,10 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
 
 
     // Check for collision with moving game objects
-    for (auto &movable : GameManager::getMovables()) {
-        if (SDL_HasIntersection(&hitbox, &movable->hitbox) && movable->getType() == GHOST) {
-            auto ghost = dynamic_cast<Ghost *>(movable.get());
+    for (auto &ghost : GameManager::getGhosts()) {
+        if (SDL_HasIntersection(&hitbox, &ghost->hitbox)) {
             if (ghost->eatable) {
                 if (!ghost->dead) {
-                    //todo: Alle ghost return lyder stopper når et spøkelse kommer hjem
                     playSound(EAT_GHOST);
                     playSound(GHOST_RETURN, 6);
                 }
@@ -149,33 +147,34 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
     // Check for collision with stationary game objects
     bool collectedFruit = false;
     bool collectedPellet = false;
-    for (auto &stationary : GameManager::getStationery()) {
-        if (SDL_HasIntersection(&possiblePosition, &stationary->m_positionRectangle)) {
-            if (stationary->getType() == WALL) {
-                didNotCollideWithWall = false;
-            }
-            if (stationary->getType() == PELLET) {
-                collectedPellet = true;
-                currentScore += 10;
 
+    for (auto &p : GameManager::getPellets()) {
+        if (SDL_HasIntersection(&possiblePosition, &p->m_positionRectangle)) {
+            collectedPellet = true;
+            currentScore += 10;
 
-                if (dynamic_cast<Pellet *>(stationary.get())->m_isPowerPellet) {
-                    playSound(EAT_POWER_PELLET);
-                    for (auto &o : GameManager::getMovables()) {
-                        if (o->getType() == GHOST) {
-                            dynamic_cast<Ghost *>(o.get())->switchedToEatable = true;
-                            dynamic_cast<Ghost *>(o.get())->eatableStateEnd = false;
-                        }
-                    }
-                } else if (dynamic_cast<Pellet *>(stationary.get())->m_isFruit) {
-                    collectedFruit = true;
-                    currentScore += 300;
+            if (p->m_isPowerPellet) {
+                playSound(EAT_POWER_PELLET);
+                for (auto &ghost : GameManager::getGhosts()) {
+                    ghost->switchedToEatable = true;
+                    ghost->eatableStateEnd = false;
                 }
-                dynamic_cast<Pellet *>(stationary.get())->eaten = true;
-            }
-        }
 
+            } else if (p->m_isFruit) {
+                collectedFruit = true;
+                currentScore += 300;
+            }
+            p->eaten = true;
+
+        }
     }
+
+    for (auto &stationary : GameManager::getStationery()) {
+        if (stationary->getType() == WALL && SDL_HasIntersection(&possiblePosition, &stationary->m_positionRectangle)) {
+            didNotCollideWithWall = false;
+        }
+    }
+
     if (collectedPellet && !Mix_Playing(1)) {
         playSound(EAT_PELLET, 1);
 
