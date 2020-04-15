@@ -60,7 +60,6 @@ void SDLManager::drawText(const char *text, float x, float y, int parameter) {
     FC_Draw(font, m_renderer, x, y, text, parameter);
 }
 
-
 void SDLManager::setFontSize(int size) {
     font = FC_CreateFont();
     FC_LoadFont(font, m_renderer, "../resources/fonts/arial.ttf", size, FC_MakeColor(255, 255, 0, 255), TTF_STYLE_NORMAL);
@@ -71,11 +70,15 @@ void SDLManager::renderBuffer() {
     SDL_RenderClear(m_renderer);
 }
 
+void SDLManager::render(SDL_Texture *texture, const SDL_Rect *src, const SDL_Rect *dest) {
+    SDL_RenderCopy(m_renderer, texture, src, dest);
+}
+
 
 void SDLManager::renderStartScreen() {
     auto startScreenRect = SDL_Rect{0, 0, 930, 1020};
 
-    SDL_RenderCopy(m_renderer, TextureManager::loadTexture(
+    render( TextureManager::loadTexture(
             "../resources/startscreenassets/start_screen_alt.png"), &startScreenRect, &startScreenRect);
 
     font = FC_CreateFont();

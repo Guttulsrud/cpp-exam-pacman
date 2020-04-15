@@ -27,6 +27,8 @@ public:
 
     void initFonts();
 
+    static void render(SDL_Texture *texture, const SDL_Rect * src, const SDL_Rect * dest);
+
     void renderStartScreen();
 
 private:

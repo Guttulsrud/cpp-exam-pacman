@@ -7,5 +7,5 @@ GameObject::~GameObject() {
 }
 
 void GameObject::render() {
-    SDL_RenderCopy(SDLManager::m_renderer, m_texture, &m_sourceRectangle, &m_positionRectangle);
+    SDLManager::render(m_texture, &m_sourceRectangle, &m_positionRectangle);
 }

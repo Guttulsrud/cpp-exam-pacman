@@ -116,7 +116,6 @@ void Ghost::update() {
     } else {
         m_animator.animate(&m_texture, direction);
     }
-
     if(m_positionRectangle.x == spawn.x && m_positionRectangle.y == spawn.y && dead){
         reset();
     }

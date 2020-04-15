@@ -23,14 +23,12 @@ void GameManager::run() {
             calculateAndDelayFrameTime();
             inputManager.update();
             update();
-            if(inGame) {
+            if (inGame) {
                 render();
             }
         }
     }
 }
-
-
 
 
 void removeEatenPellets(std::vector<std::shared_ptr<Pellet>> &pellets) {
@@ -82,39 +80,39 @@ void GameManager::addStationary(const std::shared_ptr<Stationary> &object) {
 void GameManager::createMovables() {
 
     m_player = std::make_shared<Player>(TextureManager::loadTexture("../resources/img/pacman/base.png"),
-                                       30 * 14.5, 30 * 24, 0, 3,
-                                       EntityAnimator({{UP,
-                                                               {
-                                                                       "../resources/img/pacman/base.png",
-                                                                       "../resources/img/pacman/medium-open-up.png",
-                                                                       "../resources/img/pacman/large-open-up.png",
-                                                                       "../resources/img/pacman/medium-open-up.png"
-                                                               }
-                                                       },
-                                                       {DOWN,
-                                                               {
-                                                                       "../resources/img/pacman/base.png",
-                                                                       "../resources/img/pacman/medium-open-down.png",
-                                                                       "../resources/img/pacman/large-open-down.png",
-                                                                       "../resources/img/pacman/medium-open-down.png"
-                                                               }
-                                                       },
-                                                       {LEFT,
-                                                               {
-                                                                       "../resources/img/pacman/base.png",
-                                                                       "../resources/img/pacman/medium-open-left.png",
-                                                                       "../resources/img/pacman/large-open-left.png",
-                                                                       "../resources/img/pacman/medium-open-left.png"
-                                                               }
-                                                       },
-                                                       {RIGHT,
-                                                               {
-                                                                       "../resources/img/pacman/base.png",
-                                                                       "../resources/img/pacman/medium-open-right.png",
-                                                                       "../resources/img/pacman/large-open-right.png",
-                                                                       "../resources/img/pacman/medium-open-right.png"
-                                                               }
-                                                       }})
+                                        30 * 14.5, 30 * 24, 0, 3,
+                                        EntityAnimator({{UP,
+                                                                {
+                                                                        "../resources/img/pacman/base.png",
+                                                                        "../resources/img/pacman/medium-open-up.png",
+                                                                        "../resources/img/pacman/large-open-up.png",
+                                                                        "../resources/img/pacman/medium-open-up.png"
+                                                                }
+                                                        },
+                                                        {DOWN,
+                                                                {
+                                                                        "../resources/img/pacman/base.png",
+                                                                        "../resources/img/pacman/medium-open-down.png",
+                                                                        "../resources/img/pacman/large-open-down.png",
+                                                                        "../resources/img/pacman/medium-open-down.png"
+                                                                }
+                                                        },
+                                                        {LEFT,
+                                                                {
+                                                                        "../resources/img/pacman/base.png",
+                                                                        "../resources/img/pacman/medium-open-left.png",
+                                                                        "../resources/img/pacman/large-open-left.png",
+                                                                        "../resources/img/pacman/medium-open-left.png"
+                                                                }
+                                                        },
+                                                        {RIGHT,
+                                                                {
+                                                                        "../resources/img/pacman/base.png",
+                                                                        "../resources/img/pacman/medium-open-right.png",
+                                                                        "../resources/img/pacman/large-open-right.png",
+                                                                        "../resources/img/pacman/medium-open-right.png"
+                                                                }
+                                                        }})
 
     );
 
@@ -179,7 +177,7 @@ void GameManager::createMovables() {
 
     addGhost(std::make_shared<Ghost>(
             TextureManager::loadTexture("../resources/img/ghosts/red_E1.png"),
-            30 * 14+15, 30 * 12, 0, 3,
+            30 * 14 + 15, 30 * 12, 0, 3,
             EntityAnimator({{UP,
                                     {
                                             "../resources/img/ghosts/red_N1.png",
@@ -207,7 +205,7 @@ void GameManager::createMovables() {
 
     addGhost(std::make_shared<Ghost>(
             TextureManager::loadTexture("../resources/img/ghosts/purple_E1.png"),
-            30 * 14+15, 30 * 15, 0, 3,
+            30 * 14 + 15, 30 * 15, 0, 3,
             EntityAnimator({{UP,
                                     {
                                             "../resources/img/ghosts/orange_N1.png",
@@ -261,13 +259,11 @@ void GameManager::gameOver() {
 
 void GameManager::startGame() {
     numberOfLivesDisplayTexture = TextureManager::loadTexture("../resources/img/pacman/medium-open-right.png");
-
     sdlManager.initFonts();
     setMap(currentLevel);
     createMovables();
     resetRound();
     inGame = true;
-    getPellets();
 }
 
 void GameManager::mapCompleted() {
@@ -276,7 +272,7 @@ void GameManager::mapCompleted() {
     while (Mix_Playing(-1)) {}
 
     getStationery().clear();
-sdlManager.renderBuffer();
+    sdlManager.renderBuffer();
 
     currentLevel++;
 
@@ -296,19 +292,19 @@ sdlManager.renderBuffer();
 
 
 void GameManager::renderTopDisplay() {
-    //TODO: Make better
-//    if (getPlayer()->newHighScore > getPlayer()->highScore) {
-//        sdlManager.drawText("Highscore: %d", 35, 0, getPlayer()->newHighScore);
-//    } else {
-//        sdlManager.drawText("Highscore: %d", 35, 0, getPlayer()->highScore);
-//    }
-//    sdlManager.drawText("Score: %d", 400, 0, getPlayer()->currentScore);
-//
-//    auto sourceRect = SDL_Rect{0, 0, 1600, 1600};
-//    for (int i = 0; i < getPlayer()->lives; i++) {
-//        auto destRect = SDL_Rect{780 + i * 40, 0, 30, 30};
-//        SDL_RenderCopy(m_renderer, numberOfLivesDisplayTexture, &sourceRect, &destRect);
-//    }
+    if (getPlayer()->newHighScore > getPlayer()->highScore) {
+        sdlManager.drawText("Highscore: %d", 35, 0, getPlayer()->newHighScore);
+    } else {
+        sdlManager.drawText("Highscore: %d", 35, 0, getPlayer()->highScore);
+    }
+    sdlManager.drawText("Score: %d", 400, 0, getPlayer()->currentScore);
+
+    auto sourceRect = SDL_Rect{0, 0, 1600, 1600};
+    for (int i = 0; i < getPlayer()->lives; i++) {
+        auto destRect = SDL_Rect{780 + i * 40, 0, 30, 30};
+
+        sdlManager.render(numberOfLivesDisplayTexture, &sourceRect, &destRect);
+    }
 }
 
 void GameManager::renderGameObjects() {
@@ -324,7 +320,7 @@ void GameManager::renderGameObjects() {
         g->render();
     }
 
-   m_player->render();
+    m_player->render();
 }
 
 void GameManager::checkForRemainingPelletsAndRemove() {
