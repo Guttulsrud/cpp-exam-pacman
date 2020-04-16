@@ -1,7 +1,3 @@
-//
-// Created by mathi on 4/15/2020.
-//
-
 #ifndef EXAM_SDLMANAGER_H
 #define EXAM_SDLMANAGER_H
 
@@ -42,4 +38,4 @@ private:
 };
 
 
-#endif //EXAM_SDLMANAGER_H
+#endif

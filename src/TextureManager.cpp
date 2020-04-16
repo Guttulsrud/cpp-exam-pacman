@@ -4,7 +4,6 @@
 #include "../include/GameManager.h"
 
 
-
 std::map<std::string, SDL_Texture *> TextureManager::createdTextures;
 
 SDL_Texture *TextureManager::loadTexture(const std::string& path) {

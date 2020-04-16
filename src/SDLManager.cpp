@@ -1,7 +1,3 @@
-//
-// Created by mathi on 4/15/2020.
-//
-
 #include <iostream>
 #include "../include/SDLManager.h"
 #include "../include/TextureManager.h"
