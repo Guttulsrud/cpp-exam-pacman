@@ -3,10 +3,6 @@
 #include "../include/Ghost.h"
 #include "../include/GameManager.h"
 
-TYPE Ghost::getType() {
-    return GHOST;
-}
-
 Direction getOppositeDirection(Direction direction) {
     switch (direction) {
         case UP:
@@ -44,7 +40,7 @@ void Ghost::update() {
     std::map<Direction, SDL_Rect> possibleDirections;
     std::vector<Direction> possibleDirectionsVector;
 
-    //Finds valid move direction
+    //Finds valid move m_direction
     for (auto &directionPosition : directions) {
         bool didNotCollideWithWall = true;
         for (auto &object : GameManager::getStationery()) {
@@ -106,7 +102,7 @@ void Ghost::update() {
     }
 
     prevDirections = possibleDirectionsVector;
-    updateHitbox();
+    updateHitBox();
     if (dead) {
         deadAnimator.animate(&m_texture, direction);
     } else if (eatableStateEnd) {
@@ -173,7 +169,7 @@ void Ghost::reset() {
     dead = false;
     eatableStateEnd = false;
     eatable = false;
-    updateHitbox();
+    updateHitBox();
     eatable = false;
     direction = RIGHT;
     m_animator.animate(&m_texture, direction);

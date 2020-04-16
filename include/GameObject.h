@@ -37,8 +37,6 @@ public:
     }
     ~GameObject();
 
-    virtual TYPE getType() = 0;
-
     void render();
 
     SDL_Rect m_sourceRectangle, m_positionRectangle;

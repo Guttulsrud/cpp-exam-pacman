@@ -6,9 +6,9 @@
 #include "../include/GameManager.h"
 
 
-void Movable::updateHitbox() {
-    hitBox.x = m_positionRectangle.x;
-    hitBox.y = m_positionRectangle.y;
+void Movable::updateHitBox() {
+    hitBox.x = m_positionRectangle.x+20;
+    hitBox.y = m_positionRectangle.y+20;
 }
 
 void Movable::moveInBoundsIfOutOfBounds() {

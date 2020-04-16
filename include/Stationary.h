@@ -11,7 +11,7 @@ public:
 
         m_type = t;
     }
-    TYPE getType() override;
+    TYPE getType();
     TYPE m_type;
 };
 
