@@ -14,6 +14,8 @@ public:
     bool eaten = false;
     bool m_isPowerPellet;
     bool m_isFruit;
+private:
+
 };
 
 

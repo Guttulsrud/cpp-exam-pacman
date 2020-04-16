@@ -30,17 +30,21 @@ public:
     }
 
     void run();
+    void runGameLoop();
+    void waitForMenuInput();
     void render();
     void gameOver();
-    void resetRound();
-
+    void startNewRound();
+    void stopSoundOnChannel(int channel);
+    void stopExecutionWhileSoundPlaying(int channel);
     static std::shared_ptr<Player> &getPlayer();
     static std::vector<std::shared_ptr<Stationary>> &getStationery();
     static std::vector<std::shared_ptr<Pellet>> &getPellets();
     static std::vector<std::shared_ptr<Ghost>> &getGhosts();
-
     static void addStationary(const std::shared_ptr<Stationary> &s);
     static void addPellet(const std::shared_ptr<Pellet> &p);
+    static void addGhost(const std::shared_ptr<Ghost> &s);
+
 
 private:
 
@@ -57,23 +61,23 @@ private:
     SDL_Texture *numberOfLivesDisplayTexture;
 
     std::shared_ptr<Player> m_player;
-    std::vector<std::shared_ptr<Stationary>> stationery;
-    std::vector<std::shared_ptr<Pellet>> pellets;
-    std::vector<std::shared_ptr<Ghost>> ghosts;
-    std::shared_ptr<Map> map;
+    std::vector<std::shared_ptr<Stationary>> m_stationery;
+    std::vector<std::shared_ptr<Pellet>> m_pellets;
+    std::vector<std::shared_ptr<Ghost>> m_ghosts;
+    std::shared_ptr<Map> m_map;
 
     GameManager() = default;
 
-    void startGame();
     void update();
+    void startGame();
+    void updateMovables();
     void mapCompleted();
     void createMovables();
-    void checkForRemainingPelletsAndRemove();
+    void checkIfMapComplete();
 
     void renderGameObjects();
     void renderTopDisplay();
 
-    void addGhost(const std::shared_ptr<Ghost> &s);
     void setMap(const int &mapIndex);
 
     Uint32 frameTime;

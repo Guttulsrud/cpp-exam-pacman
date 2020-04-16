@@ -127,7 +127,7 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
                     tread.get();
                     GameManager::getInstance().gameOver();
                 } else {
-                    GameManager::getInstance().resetRound();
+                    GameManager::getInstance().startNewRound();
                 }
 
                 return false;

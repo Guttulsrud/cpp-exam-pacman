@@ -4,73 +4,37 @@
 void GameManager::run() {
 
     sdlManager.init("PacMan", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 930, 1020);
-
     while (running) {
         sdlManager.renderStartScreen();
-        while (true) {
-            if (!inputManager.KeyStillUp(SDL_SCANCODE_SPACE)) {
-                break;
-            } else if (!inputManager.KeyStillUp(SDL_SCANCODE_Q)) {
-                sdlManager.clean();
-                running = false;
-                inGame = false;
-            }
-            inputManager.update();
-        }
-
-        startGame();
+        waitForMenuInput();
         while (inGame) {
-            calculateAndDelayFrameTime();
-            inputManager.update();
-            update();
-            if (inGame) {
-                render();
-            }
+            runGameLoop();
         }
     }
-}
-
-
-void removeEatenPellets(std::vector<std::shared_ptr<Pellet>> &pellets) {
-
-    pellets.erase(
-            std::remove_if(pellets.begin(), pellets.end(),
-                           [](const std::shared_ptr<Pellet> &pellet) {
-                               return pellet->eaten;
-                           }),
-            pellets.end());
 }
 
 void GameManager::update() {
-    for (auto const &g : getGhosts()) {
-        g->update();
-    }
-
-    checkForRemainingPelletsAndRemove();
-
-    getPlayer()->update();
+    checkIfMapComplete();
+    updateMovables();
 }
 
 void GameManager::render() {
     renderTopDisplay();
     renderGameObjects();
-
     sdlManager.renderBuffer();
 }
 
-
 void GameManager::setMap(const int &mapIndex) {
     currentLevel = mapIndex;
-    map = std::make_shared<Map>(levelPaths[mapIndex], mapIndex);
+    m_map = std::make_shared<Map>(levelPaths[mapIndex], mapIndex);
 }
 
 std::shared_ptr<Player> &GameManager::getPlayer() {
     return getInstance().m_player;
 }
 
-
 std::vector<std::shared_ptr<Stationary>> &GameManager::getStationery() {
-    return getInstance().stationery;
+    return getInstance().m_stationery;
 }
 
 void GameManager::addStationary(const std::shared_ptr<Stationary> &object) {
@@ -116,9 +80,6 @@ void GameManager::createMovables() {
 
     );
 
-
-
-    //TODO: Draw with map class
     addGhost(std::make_shared<Ghost>(
             TextureManager::loadTexture("../resources/img/ghosts/green_E1.png"),
             30 * 13, 30 * 15, 3,
@@ -232,28 +193,28 @@ void GameManager::createMovables() {
                             }})));
 }
 
-void GameManager::resetRound() {
-    Mix_HaltChannel(-1);
-    getPlayer()->reset();
+void GameManager::startNewRound() {
+    stopSoundOnChannel(-1);
+    m_player->reset();
 
     for (auto const &ghost : getGhosts()) {
         ghost->reset();
     }
     sdlManager.initFonts();
     render();
-    getPlayer()->playSound(INTRO, 5);
-    while (Mix_Playing(5)) {}
+    m_player->playSound(INTRO, 5);
+    stopExecutionWhileSoundPlaying(5);
 }
 
 void GameManager::gameOver() {
     currentLevel = 0;
     SDL_RenderClear(SDLManager::m_renderer);
-    if (getPlayer()->currentScore > getPlayer()->highScore) {
-        getPlayer()->writeHighScore(getPlayer()->currentScore);
+    if (m_player->currentScore > m_player->highScore) {
+        m_player->writeHighScore(m_player->currentScore);
     }
-    getGhosts().clear();
-    getStationery().clear();
-    getPellets().clear();
+    m_pellets.clear();
+    m_stationery.clear();
+    m_ghosts.clear();
     inGame = false;
 }
 
@@ -262,20 +223,18 @@ void GameManager::startGame() {
     sdlManager.initFonts();
     setMap(currentLevel);
     createMovables();
-    resetRound();
+    startNewRound();
     inGame = true;
 }
 
 void GameManager::mapCompleted() {
-    Mix_HaltChannel(-1);
-    getPlayer()->playSound(MAP_COMPLETED);
-    while (Mix_Playing(-1)) {}
-
-    getStationery().clear();
+    stopSoundOnChannel(-1);
+    m_player->playSound(MAP_COMPLETED);
+    stopExecutionWhileSoundPlaying(-1);
+    m_stationery.clear();
     sdlManager.renderBuffer();
 
     currentLevel++;
-
     if (currentLevel == 3) {
         sdlManager.setFontSize(100);
         sdlManager.drawText("You win!", 200, 400);
@@ -284,23 +243,20 @@ void GameManager::mapCompleted() {
         SDL_RenderClear(SDLManager::m_renderer);
         currentLevel = 0;
     }
-
     setMap(currentLevel);
-    resetRound();
-
+    startNewRound();
 }
 
-
 void GameManager::renderTopDisplay() {
-    if (getPlayer()->newHighScore > getPlayer()->highScore) {
-        sdlManager.drawText("Highscore: %d", 35, 0, getPlayer()->newHighScore);
+    if (m_player->newHighScore > m_player->highScore) {
+        sdlManager.drawText("Highscore: %d", 35, 0, m_player->newHighScore);
     } else {
-        sdlManager.drawText("Highscore: %d", 35, 0, getPlayer()->highScore);
+        sdlManager.drawText("Highscore: %d", 35, 0, m_player->highScore);
     }
-    sdlManager.drawText("Score: %d", 400, 0, getPlayer()->currentScore);
+    sdlManager.drawText("Score: %d", 400, 0, m_player->currentScore);
 
     auto sourceRect = SDL_Rect{0, 0, 1600, 1600};
-    for (int i = 0; i < getPlayer()->lives; i++) {
+    for (int i = 0; i < m_player->lives; i++) {
         auto destRect = SDL_Rect{780 + i * 40, 0, 30, 30};
 
         sdlManager.render(numberOfLivesDisplayTexture, &sourceRect, &destRect);
@@ -308,29 +264,36 @@ void GameManager::renderTopDisplay() {
 }
 
 void GameManager::renderGameObjects() {
-    for (auto const &p : pellets) {
-        p->render();
+    for (auto const &p : m_pellets) {
+        if (p->m_isFruit) {
+            if (m_player->currentScore > m_player->scoreLastRound + 200) {
+                p->render();
+            }
+        } else {
+            p->render();
+        }
     }
 
-    for (auto const &s : stationery) {
+    for (auto const &s : m_stationery) {
         s->render();
     }
 
-    for (auto const &g : ghosts) {
+    for (auto const &g : m_ghosts) {
         g->render();
     }
 
     m_player->render();
 }
 
-void GameManager::checkForRemainingPelletsAndRemove() {
-    if (!getPellets().empty()) {
-        removeEatenPellets(getPellets());
-    } else {
+void GameManager::checkIfMapComplete() {
+    if (m_pellets.empty()) {
         mapCompleted();
+    } else {
+        m_pellets.erase(std::remove_if(
+                m_pellets.begin(), m_pellets.end(), [](auto &pellet) { return pellet->eaten; }),
+                        m_pellets.end());
     }
 }
-
 
 void GameManager::addPellet(const std::shared_ptr<Pellet> &pellet) {
     getPellets().emplace_back(pellet);
@@ -341,11 +304,11 @@ void GameManager::addGhost(const std::shared_ptr<Ghost> &ghost) {
 }
 
 std::vector<std::shared_ptr<Pellet>> &GameManager::getPellets() {
-    return getInstance().pellets;
+    return getInstance().m_pellets;
 }
 
 std::vector<std::shared_ptr<Ghost>> &GameManager::getGhosts() {
-    return getInstance().ghosts;
+    return getInstance().m_ghosts;
 }
 
 void GameManager::calculateAndDelayFrameTime() {
@@ -357,6 +320,43 @@ void GameManager::calculateAndDelayFrameTime() {
     frameStart = SDL_GetTicks();
 }
 
+void GameManager::updateMovables() {
+    for (auto const &g : m_ghosts) {
+        g->update();
+    }
+    getPlayer()->update();
+}
+
+void GameManager::runGameLoop() {
+    calculateAndDelayFrameTime();
+    inputManager.update();
+    update();
+    if (inGame) {
+        render();
+    }
+}
+
+void GameManager::waitForMenuInput() {
+    while (true) {
+        if (!inputManager.KeyStillUp(SDL_SCANCODE_SPACE)) {
+            break;
+        } else if (!inputManager.KeyStillUp(SDL_SCANCODE_Q)) {
+            sdlManager.clean();
+            running = false;
+            inGame = false;
+        }
+        inputManager.update();
+    }
+    startGame();
+}
+
+void GameManager::stopSoundOnChannel(int channel) {
+    Mix_HaltChannel(channel);
+}
+
+void GameManager::stopExecutionWhileSoundPlaying(int channel) {
+    while (Mix_Playing(channel)) {}
+}
 
 
 
