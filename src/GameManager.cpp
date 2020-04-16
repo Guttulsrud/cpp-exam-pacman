@@ -44,7 +44,7 @@ void GameManager::addStationary(const std::shared_ptr<Stationary> &object) {
 void GameManager::createMovables() {
 
     m_player = std::make_shared<Player>(TextureManager::loadTexture("../resources/img/pacman/base.png"),
-                                        30 * 14.5, 30 * 24, 0, 3);
+                                        30 * 14.5, 30 * 24, 3);
 
     addGhost(std::make_shared<Ghost>(
             TextureManager::loadTexture("../resources/img/ghosts/green_E1.png"),
