@@ -6,7 +6,7 @@
 
 class Movable : public GameObject {
 public:
-    Movable(SDL_Texture * texturePtr, int x, int y, int id, int movementSpeed) : GameObject(60, 60, x, y, id, texturePtr){
+    Movable(SDL_Texture * texturePtr, int x, int y, int movementSpeed) : GameObject(60, 60, x, y, texturePtr){
         m_movementSpeed = movementSpeed;
         hitBox.h = 20;
         hitBox.w = 20;

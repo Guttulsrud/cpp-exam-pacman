@@ -15,8 +15,8 @@ enum Sound {
 
 class Player : public Movable {
 public:
-    Player(SDL_Texture *texturePtr, int x, int y, int id, int movementSpeed, EntityAnimator animator) :
-            Movable(texturePtr, x, y, id, movementSpeed), m_animator(animator) {
+    Player(SDL_Texture *texturePtr, int x, int y, int movementSpeed, EntityAnimator animator) :
+            Movable(texturePtr, x, y, movementSpeed), m_animator(animator) {
         movementChange.x = 0;
         movementChange.y = 0;
         highScore = readHighScoreFromFile();

@@ -80,7 +80,7 @@ void GameManager::addStationary(const std::shared_ptr<Stationary> &object) {
 void GameManager::createMovables() {
 
     m_player = std::make_shared<Player>(TextureManager::loadTexture("../resources/img/pacman/base.png"),
-                                        30 * 14.5, 30 * 24, 0, 3,
+                                        30 * 14.5, 30 * 24, 3,
                                         EntityAnimator({{UP,
                                                                 {
                                                                         "../resources/img/pacman/base.png",
@@ -121,7 +121,7 @@ void GameManager::createMovables() {
     //TODO: Draw with map class
     addGhost(std::make_shared<Ghost>(
             TextureManager::loadTexture("../resources/img/ghosts/green_E1.png"),
-            30 * 13, 30 * 15, 0, 3,
+            30 * 13, 30 * 15, 3,
             EntityAnimator({{UP,
                                     {
                                             "../resources/img/ghosts/green_N1.png",
@@ -149,7 +149,7 @@ void GameManager::createMovables() {
 
     addGhost(std::make_shared<Ghost>(
             TextureManager::loadTexture("../resources/img/ghosts/orange_E1.png"),
-            30 * 16, 30 * 15, 0, 3,
+            30 * 16, 30 * 15, 3,
             EntityAnimator({{UP,
                                     {
                                             "../resources/img/ghosts/purpleN1.png",
@@ -177,7 +177,7 @@ void GameManager::createMovables() {
 
     addGhost(std::make_shared<Ghost>(
             TextureManager::loadTexture("../resources/img/ghosts/red_E1.png"),
-            30 * 14 + 15, 30 * 12, 0, 3,
+            30 * 14 + 15, 30 * 12, 3,
             EntityAnimator({{UP,
                                     {
                                             "../resources/img/ghosts/red_N1.png",
@@ -205,7 +205,7 @@ void GameManager::createMovables() {
 
     addGhost(std::make_shared<Ghost>(
             TextureManager::loadTexture("../resources/img/ghosts/purple_E1.png"),
-            30 * 14 + 15, 30 * 15, 0, 3,
+            30 * 14 + 15, 30 * 15, 3,
             EntityAnimator({{UP,
                                     {
                                             "../resources/img/ghosts/orange_N1.png",

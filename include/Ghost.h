@@ -7,8 +7,8 @@
 #include <map>
 class Ghost : public Movable {
 public:
-    Ghost(SDL_Texture *texturePtr, int x, int y, int id, int movementSpeed, EntityAnimator animator) :
-            Movable(texturePtr, x, y, id, movementSpeed),
+    Ghost(SDL_Texture *texturePtr, int x, int y, int movementSpeed, EntityAnimator animator) :
+            Movable(texturePtr, x, y, movementSpeed),
             m_animator(animator) {
         spawn.x = x;
         spawn.y = y;
