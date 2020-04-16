@@ -42,8 +42,6 @@ void SDLManager::clean() {
     SDL_DestroyRenderer(m_renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
-
-    std::cout << "Cleaned.." << std::endl;
 }
 
 void SDLManager::initFonts() {

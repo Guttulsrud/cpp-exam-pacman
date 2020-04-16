@@ -32,7 +32,6 @@ public:
 
     void update() override;
     void reset() override;
-    TYPE getType() override;
     Direction getDirectionToPoint(const std::map<Direction, SDL_Rect> &possibleDirections) const;
 
 

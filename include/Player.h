@@ -39,8 +39,6 @@ public:
 
     void update() override;
 
-    TYPE getType() override;
-
     Direction direction = UP;
     EntityAnimator m_animator;
     int currentScore = 0;

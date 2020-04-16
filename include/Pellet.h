@@ -11,7 +11,7 @@ public:
         m_isFruit = isFruit;
     }
 
-    bool eaten = false;
+    bool m_eaten = false;
     bool m_isPowerPellet;
     bool m_isFruit;
 private:

@@ -53,7 +53,7 @@ void Player::update() {
         }
     }
     movementChange = possibleMovementChange;
-    updateHitbox();
+    updateHitBox();
 
     if (currentScore > highScore) {
         newHighScore = currentScore;
@@ -157,7 +157,7 @@ bool Player::positionIsValid(SDL_Rect &possiblePosition) {
                 collectedFruit = true;
                 currentScore += 300;
             }
-            p->eaten = true;
+            p->m_eaten = true;
 
         }
     }
@@ -186,15 +186,12 @@ void Player::writeHighScore(int score) {
     }
 }
 
-TYPE Player::getType() {
-    return PLAYER;
-}
 
 void Player::reset() {
     m_positionRectangle.x = 30 * 14.5;
     m_positionRectangle.y = 30 * 24;
     m_animator.animate(&m_texture, direction);
-    updateHitbox();
+    updateHitBox();
     scoreLastRound = currentScore;
 }
 

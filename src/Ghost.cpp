@@ -3,9 +3,6 @@
 #include "../include/Ghost.h"
 #include "../include/GameManager.h"
 
-TYPE Ghost::getType() {
-    return GHOST;
-}
 
 Direction getOppositeDirection(Direction direction) {
     switch (direction) {
@@ -106,7 +103,7 @@ void Ghost::update() {
     }
 
     prevDirections = possibleDirectionsVector;
-    updateHitbox();
+    updateHitBox();
     if (dead) {
         deadAnimator.animate(&m_texture, direction);
     } else if (eatableStateEnd) {
@@ -173,7 +170,7 @@ void Ghost::reset() {
     dead = false;
     eatableStateEnd = false;
     eatable = false;
-    updateHitbox();
+    updateHitBox();
     eatable = false;
     direction = RIGHT;
     m_animator.animate(&m_texture, direction);

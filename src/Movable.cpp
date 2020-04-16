@@ -1,7 +1,7 @@
 #include "../include/Movable.h"
 
 
-void Movable::updateHitbox() {
+void Movable::updateHitBox() {
     hitBox.x = m_positionRectangle.x;
     hitBox.y = m_positionRectangle.y;
 }

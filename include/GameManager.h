@@ -30,19 +30,27 @@ public:
     }
 
     void run();
-    void runGameLoop();
-    void waitForMenuInput();
-    void render();
+
     void gameOver();
+
     void startNewRound();
+
     void stopSoundOnChannel(int channel);
+
     void stopExecutionWhileSoundPlaying(int channel);
+
     static std::shared_ptr<Player> &getPlayer();
+
     static std::vector<std::shared_ptr<Stationary>> &getStationery();
+
     static std::vector<std::shared_ptr<Pellet>> &getPellets();
+
     static std::vector<std::shared_ptr<Ghost>> &getGhosts();
+
     static void addStationary(const std::shared_ptr<Stationary> &s);
+
     static void addPellet(const std::shared_ptr<Pellet> &p);
+
     static void addGhost(const std::shared_ptr<Ghost> &s);
 
 
@@ -66,23 +74,38 @@ private:
     std::vector<std::shared_ptr<Ghost>> m_ghosts;
     std::shared_ptr<Map> m_map;
 
-    GameManager() = default;
+
+    void render();
 
     void update();
+
     void startGame();
+
+    void runGameLoop();
+
+    void waitForMenuInput();
+
     void updateMovables();
+
     void mapCompleted();
+
     void createMovables();
+
     void checkIfMapComplete();
 
+    void calculateAndDelayFrameTime();
+
     void renderGameObjects();
+
     void renderTopDisplay();
 
     void setMap(const int &mapIndex);
 
     Uint32 frameTime;
     Uint32 frameStart = 0;
-    void calculateAndDelayFrameTime();
+
+    GameManager() = default;
+
 };
 
 #endif

@@ -264,22 +264,22 @@ void GameManager::renderTopDisplay() {
 }
 
 void GameManager::renderGameObjects() {
-    for (auto const &p : m_pellets) {
-        if (p->m_isFruit) {
+    for (auto const &pellet : m_pellets) {
+        if (pellet->m_isFruit) {
             if (m_player->currentScore > m_player->scoreLastRound + 200) {
-                p->render();
+                pellet->render();
             }
         } else {
-            p->render();
+            pellet->render();
         }
     }
 
-    for (auto const &s : m_stationery) {
-        s->render();
+    for (auto const &stationary : m_stationery) {
+        stationary->render();
     }
 
-    for (auto const &g : m_ghosts) {
-        g->render();
+    for (auto const &ghost : m_ghosts) {
+        ghost->render();
     }
 
     m_player->render();
@@ -290,7 +290,7 @@ void GameManager::checkIfMapComplete() {
         mapCompleted();
     } else {
         m_pellets.erase(std::remove_if(
-                m_pellets.begin(), m_pellets.end(), [](auto &pellet) { return pellet->eaten; }),
+                m_pellets.begin(), m_pellets.end(), [](auto &pellet) { return pellet->m_eaten; }),
                         m_pellets.end());
     }
 }
@@ -321,8 +321,8 @@ void GameManager::calculateAndDelayFrameTime() {
 }
 
 void GameManager::updateMovables() {
-    for (auto const &g : m_ghosts) {
-        g->update();
+    for (auto const &ghost : m_ghosts) {
+        ghost->update();
     }
     getPlayer()->update();
 }
@@ -338,13 +338,15 @@ void GameManager::runGameLoop() {
 
 void GameManager::waitForMenuInput() {
     while (true) {
-        if (!inputManager.KeyStillUp(SDL_SCANCODE_SPACE)) {
+        if (inputManager.KeyDown(SDL_SCANCODE_SPACE)) {
             break;
-        } else if (!inputManager.KeyStillUp(SDL_SCANCODE_Q)) {
+        }
+        if (inputManager.KeyDown(SDL_SCANCODE_Q)) {
             sdlManager.clean();
             running = false;
             inGame = false;
         }
+
         inputManager.update();
     }
     startGame();

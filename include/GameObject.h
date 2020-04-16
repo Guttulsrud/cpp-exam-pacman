@@ -5,26 +5,16 @@
 #include <SDL2/SDL.h>
 #include "TextureManager.h"
 
-enum TYPE{
-    PLAYER,
-    GHOST,
-    WALL,
-    PELLET,
-    HALLWAY,
-    VOIDWARP,
-    FRUIT
+enum TYPE {
+    WALL, PELLET, HALLWAY,
 };
 enum Direction {
-    UP,
-    DOWN,
-    LEFT,
-    RIGHT,
-    NONE
+    UP, DOWN, LEFT, RIGHT, NONE
 };
 
 class GameObject {
 public:
-    GameObject(int w, int h, int x, int y, SDL_Texture * texture) : m_texture(texture) {
+    GameObject(int w, int h, int x, int y, SDL_Texture *texture) : m_texture(texture) {
         m_positionRectangle.x = x;
         m_positionRectangle.y = y;
         m_positionRectangle.w = w;
@@ -32,17 +22,14 @@ public:
         m_sourceRectangle.x = 0;
         m_sourceRectangle.y = 0;
         m_sourceRectangle.h = 1600;
-        m_sourceRectangle.w = 1600 ;
+        m_sourceRectangle.w = 1600;
     }
-    ~GameObject();
-
-    virtual TYPE getType() = 0;
 
     void render();
 
     SDL_Rect m_sourceRectangle, m_positionRectangle;
 
-    SDL_Texture * m_texture;
+    SDL_Texture *m_texture;
 };
 
 
