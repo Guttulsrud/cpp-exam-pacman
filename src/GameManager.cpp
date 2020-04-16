@@ -44,41 +44,7 @@ void GameManager::addStationary(const std::shared_ptr<Stationary> &object) {
 void GameManager::createMovables() {
 
     m_player = std::make_shared<Player>(TextureManager::loadTexture("../resources/img/pacman/base.png"),
-                                        30 * 14.5, 30 * 24, 3,
-                                        EntityAnimator({{UP,
-                                                                {
-                                                                        "../resources/img/pacman/base.png",
-                                                                        "../resources/img/pacman/medium-open-up.png",
-                                                                        "../resources/img/pacman/large-open-up.png",
-                                                                        "../resources/img/pacman/medium-open-up.png"
-                                                                }
-                                                        },
-                                                        {DOWN,
-                                                                {
-                                                                        "../resources/img/pacman/base.png",
-                                                                        "../resources/img/pacman/medium-open-down.png",
-                                                                        "../resources/img/pacman/large-open-down.png",
-                                                                        "../resources/img/pacman/medium-open-down.png"
-                                                                }
-                                                        },
-                                                        {LEFT,
-                                                                {
-                                                                        "../resources/img/pacman/base.png",
-                                                                        "../resources/img/pacman/medium-open-left.png",
-                                                                        "../resources/img/pacman/large-open-left.png",
-                                                                        "../resources/img/pacman/medium-open-left.png"
-                                                                }
-                                                        },
-                                                        {RIGHT,
-                                                                {
-                                                                        "../resources/img/pacman/base.png",
-                                                                        "../resources/img/pacman/medium-open-right.png",
-                                                                        "../resources/img/pacman/large-open-right.png",
-                                                                        "../resources/img/pacman/medium-open-right.png"
-                                                                }
-                                                        }})
-
-    );
+                                        30 * 14.5, 30 * 24, 0, 3);
 
     addGhost(std::make_shared<Ghost>(
             TextureManager::loadTexture("../resources/img/ghosts/green_E1.png"),

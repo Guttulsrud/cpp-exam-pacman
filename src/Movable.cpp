@@ -1,10 +1,10 @@
 #include "../include/Movable.h"
 
 
+
 void Movable::updateHitBox() {
-    hitBox.x = m_positionRectangle.x;
-    hitBox.y = m_positionRectangle.y;
-}
+    hitBox.x = m_positionRectangle.x+20;
+    hitBox.y = m_positionRectangle.y+20;
 
 void Movable::moveInBoundsIfOutOfBounds() {
     if (m_positionRectangle.x > 892) {
