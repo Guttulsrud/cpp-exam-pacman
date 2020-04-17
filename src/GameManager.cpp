@@ -5,13 +5,15 @@
 void GameManager::run() {
 
     sdlManager.init("PacMan", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 930, 1020);
+    m_highScore = readHighScoreFromFile();
+
     while (running) {
         sdlManager.renderStartScreen();
         waitForMenuInput();
         while (inGame) {
             runGameLoop();
-            if (currentScore > highScore) {
-                newHighScore = currentScore;
+            if (m_currentScore > m_highScore) {
+                m_newHighScore = m_currentScore;
             }
         }
     }
@@ -187,7 +189,6 @@ void GameManager::startNewRound() {
     stopSoundOnChannel(-1);
     m_player->reset();
 
-    lives = 3;
     Mix_HaltChannel(-1);
 
     for (auto const &ghost : getGhosts()) {
@@ -210,10 +211,11 @@ int GameManager::readHighScoreFromFile() {
 void GameManager::gameOver() {
     currentLevel = 0;
     SDL_RenderClear(SDLManager::m_renderer);
-    if (currentScore > highScore) {
-        writeHighScore(currentScore);
+    if (m_currentScore > m_highScore) {
+        writeHighScore(m_currentScore);
     }
     m_pellets.clear();
+    m_stationery.clear();
     m_stationery.clear();
     m_ghosts.clear();
     inGame = false;
@@ -226,6 +228,7 @@ void GameManager::startGame() {
     createMovables();
     startNewRound();
     inGame = true;
+    m_currentScore = 0;
 }
 
 void GameManager::mapCompleted() {
@@ -249,15 +252,15 @@ void GameManager::mapCompleted() {
 }
 
 void GameManager::renderTopDisplay() {
-    if (newHighScore > highScore) {
-        sdlManager.drawText("Highscore: %d", 35, 0, newHighScore);
+    if (m_newHighScore > m_highScore) {
+        sdlManager.drawText("Highscore: %d", 35, 0, m_newHighScore);
     } else {
-        sdlManager.drawText("Highscore: %d", 35, 0, highScore);
+        sdlManager.drawText("Highscore: %d", 35, 0, m_highScore);
     }
-    sdlManager.drawText("Score: %d", 400, 0, currentScore);
+    sdlManager.drawText("Score: %d", 400, 0, m_currentScore);
 
     auto sourceRect = SDL_Rect{0, 0, 1600, 1600};
-    for (int i = 0; i < lives; i++) {
+    for (int i = 0; i < m_lives; i++) {
         auto destRect = SDL_Rect{780 + i * 40, 0, 30, 30};
 
         sdlManager.render(numberOfLivesDisplayTexture, &sourceRect, &destRect);
@@ -267,7 +270,7 @@ void GameManager::renderTopDisplay() {
 void GameManager::renderGameObjects() {
     for (auto const &pellet : m_pellets) {
         if (pellet->m_isFruit) {
-            if (currentScore > scoreLastRound + 200) {
+            if (m_currentScore > m_scoreLastRound + 200) {
                 pellet->render();
             }
         } else {
@@ -371,7 +374,7 @@ void GameManager::handleCollisions() {
     for (auto &p : GameManager::getPellets()) {
         if (SDL_HasIntersection(&m_player->hitBox, &p->m_positionRectangle)) {
             collectedPellet = true;
-            currentScore += 10;
+            m_currentScore += 10;
 
             if (p->m_isPowerPellet) {
                 m_player->playSound(EAT_POWER_PELLET,1);
@@ -383,7 +386,7 @@ void GameManager::handleCollisions() {
 
             } else if (p->m_isFruit) {
                 collectedFruit = true;
-                currentScore += 300;
+                m_currentScore += 300;
             }
             p->m_eaten = true;
 
@@ -395,7 +398,7 @@ void GameManager::handleCollisions() {
 
     } else if (collectedFruit) {
         m_player->playSound(EAT_FRUIT,1);
-        currentScore += 300;
+        m_currentScore += 300;
     }
 }
 
@@ -407,14 +410,19 @@ void GameManager::checkForPelletPickup() {
 void playerDeathAnimation() {
     std::shared_ptr<Player> &player = GameManager::getPlayer();
     std::vector<std::shared_ptr<Stationary>> &stationary = GameManager::getStationery();
+    std::vector<std::shared_ptr<Pellet>> &pellets = GameManager::getPellets();
     auto game = GameManager::getInstance();
 
     for (int i = 0; i < 45; i++) {
 
-
+        for (auto const &p : pellets) {
+            if(!p->m_isFruit)
+                p->render();
+        }
         for (auto const &s : stationary) {
             s->render();
         }
+
         player->deathAnimator.animate(&player->m_texture, player->m_direction);
         player->render();
         SDLManager::getInstance().renderBuffer();
@@ -444,12 +452,12 @@ void GameManager::checkForPlayerAndGhost() {
 
 
 
-                lives--;
+                m_lives--;
                 m_player->playSound(DEATH,4);
                 auto tread = std::async(playerDeathAnimation);
 
                 while (Mix_Playing(-1)) {}
-                if (lives < 1) {
+                if (m_lives < 1) {
                     tread.get();
                     gameOver();
                 } else {

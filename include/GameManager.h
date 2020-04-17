@@ -33,7 +33,6 @@ public:
 
     void render();
 
-
     void gameOver();
 
     void startNewRound();
@@ -57,11 +56,11 @@ public:
     static void addGhost(const std::shared_ptr<Ghost> &s);
 
 
-    int currentScore = 0;
-    int scoreLastRound = 0;
-    int highScore = 0;
-    int newHighScore = 0;
-    int lives = 3;
+    int m_currentScore = 0;
+    int m_scoreLastRound = 0;
+    int m_highScore = 0;
+    int m_newHighScore = 0;
+    int m_lives = 3;
 
 
 

@@ -66,18 +66,11 @@ void Ghost::update() {
     //decides which way
     if ((prevDirections != possibleDirectionsVector || possibleDirections.size() > 2)) {
 
-        std::random_device rd;
-        std::mt19937 mt(rd());
-        std::uniform_int_distribution<int> dist(0, 10);
+        std::uniform_int_distribution<int> dist;
 
-        if (dist(mt) > difficulty && !dead) {
-
-            std::random_device rd;
-            std::mt19937 mt(rd());
-            std::uniform_int_distribution<int> dist(0, possibleDirections.size() - 1);
-
+        if (getRandomNumberInRange(0 , 10)) > difficulty && !dead) {
             auto item = possibleDirections.begin();
-            std::advance(item, dist(mt));
+            std::advance(item, getRandomNumberInRange(0 , possibleDirections.size() - 1));
 
             direction = item->first;
             m_positionRectangle = item->second;
@@ -125,6 +118,13 @@ void Ghost::update() {
 
             m_positionRectangle.y++;
     }
+}
+
+int Ghost::getRandomNumberInRange(int begin, int end) {
+    static std::random_device rd;
+    std::mt19937 mt(rd());
+    std::uniform_int_distribution<int> dist(begin, end);
+    return dist(mt);
 }
 
 Direction Ghost::getDirectionToPoint(const std::map<Direction, SDL_Rect> &possibleDirections) const {

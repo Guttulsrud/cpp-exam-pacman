@@ -19,6 +19,8 @@ public:
     virtual void update() = 0;
     virtual void reset() = 0;
     int m_movementSpeed;
+
+    bool willCollideWithWall(SDL_Rect &possiblePosition);
 };
 
 
