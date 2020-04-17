@@ -31,6 +31,9 @@ public:
 
     void run();
 
+    void render();
+
+
     void gameOver();
 
     void startNewRound();
@@ -39,19 +42,27 @@ public:
 
     void stopExecutionWhileSoundPlaying(int channel);
 
+    int readHighScoreFromFile();
+
+    static void writeHighScore(int score);
+
+
     static std::shared_ptr<Player> &getPlayer();
-
     static std::vector<std::shared_ptr<Stationary>> &getStationery();
-
     static std::vector<std::shared_ptr<Pellet>> &getPellets();
-
     static std::vector<std::shared_ptr<Ghost>> &getGhosts();
 
     static void addStationary(const std::shared_ptr<Stationary> &s);
-
     static void addPellet(const std::shared_ptr<Pellet> &p);
-
     static void addGhost(const std::shared_ptr<Ghost> &s);
+
+
+    int currentScore = 0;
+    int scoreLastRound = 0;
+    int highScore = 0;
+    int newHighScore = 0;
+    int lives = 3;
+
 
 
 private:
@@ -88,15 +99,19 @@ private:
     void updateMovables();
 
     void mapCompleted();
-
     void createMovables();
 
     void checkIfMapComplete();
 
     void calculateAndDelayFrameTime();
 
-    void renderGameObjects();
+    void handleCollisions();
 
+    void checkForPelletPickup();
+
+    void checkForPlayerAndGhost();
+
+    void renderGameObjects();
     void renderTopDisplay();
 
     void setMap(const int &mapIndex);
@@ -105,6 +120,8 @@ private:
     Uint32 frameStart = 0;
 
     GameManager() = default;
+
+
 
 };
 

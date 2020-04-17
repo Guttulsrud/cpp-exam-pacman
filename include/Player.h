@@ -38,18 +38,43 @@ public:
     void reset() override;
 
     void update() override;
+    void die();
 
-    Direction direction = UP;
-    EntityAnimator m_animator;
-    int currentScore = 0;
-    int scoreLastRound = 0;
-    int highScore = 0;
-    int newHighScore = 0;
-    int lives = 3;
+    Direction m_direction = UP;
 
     void playSound(Sound sound, int channel = -1);
-
-    void writeHighScore(int score);
+    EntityAnimator m_animator = EntityAnimator({{UP,
+                                                        {
+                                                                "../resources/img/pacman/base.png",
+                                                                "../resources/img/pacman/medium-open-up.png",
+                                                                "../resources/img/pacman/large-open-up.png",
+                                                                "../resources/img/pacman/medium-open-up.png"
+                                                        }
+                                                },
+                                                {DOWN,
+                                                        {
+                                                                "../resources/img/pacman/base.png",
+                                                                "../resources/img/pacman/medium-open-down.png",
+                                                                "../resources/img/pacman/large-open-down.png",
+                                                                "../resources/img/pacman/medium-open-down.png"
+                                                        }
+                                                },
+                                                {LEFT,
+                                                        {
+                                                                "../resources/img/pacman/base.png",
+                                                                "../resources/img/pacman/medium-open-left.png",
+                                                                "../resources/img/pacman/large-open-left.png",
+                                                                "../resources/img/pacman/medium-open-left.png"
+                                                        }
+                                                },
+                                                {RIGHT,
+                                                        {
+                                                                "../resources/img/pacman/base.png",
+                                                                "../resources/img/pacman/medium-open-right.png",
+                                                                "../resources/img/pacman/large-open-right.png",
+                                                                "../resources/img/pacman/medium-open-right.png"
+                                                        }
+                                                }});
 
     EntityAnimator deathAnimator = EntityAnimator({{UP,
                                                            {
@@ -63,58 +88,19 @@ public:
                                                                    "../resources/img/pacman/pacman_death_8.png",
                                                                    "../resources/img/pacman/pacman_death_9.png"
                                                            }
-                                                   },
-                                                   {DOWN,
-                                                           {
-                                                                   "../resources/img/pacman/pacman_death_1.png",
-                                                                   "../resources/img/pacman/pacman_death_2.png",
-                                                                   "../resources/img/pacman/pacman_death_3.png",
-                                                                   "../resources/img/pacman/pacman_death_4.png",
-                                                                   "../resources/img/pacman/pacman_death_5.png",
-                                                                   "../resources/img/pacman/pacman_death_6.png",
-                                                                   "../resources/img/pacman/pacman_death_7.png",
-                                                                   "../resources/img/pacman/pacman_death_8.png",
-                                                                   "../resources/img/pacman/pacman_death_9.png"
-                                                           }
-                                                   },
-                                                   {LEFT,
-                                                           {
-                                                                   "../resources/img/pacman/pacman_death_1.png",
-                                                                   "../resources/img/pacman/pacman_death_2.png",
-                                                                   "../resources/img/pacman/pacman_death_3.png",
-                                                                   "../resources/img/pacman/pacman_death_4.png",
-                                                                   "../resources/img/pacman/pacman_death_5.png",
-                                                                   "../resources/img/pacman/pacman_death_6.png",
-                                                                   "../resources/img/pacman/pacman_death_7.png",
-                                                                   "../resources/img/pacman/pacman_death_8.png",
-                                                                   "../resources/img/pacman/pacman_death_9.png"
-                                                           }
-                                                   },
-                                                   {RIGHT,
-                                                           {
-                                                                   "../resources/img/pacman/pacman_death_1.png",
-                                                                   "../resources/img/pacman/pacman_death_2.png",
-                                                                   "../resources/img/pacman/pacman_death_3.png",
-                                                                   "../resources/img/pacman/pacman_death_4.png",
-                                                                   "../resources/img/pacman/pacman_death_5.png",
-                                                                   "../resources/img/pacman/pacman_death_6.png",
-                                                                   "../resources/img/pacman/pacman_death_7.png",
-                                                                   "../resources/img/pacman/pacman_death_8.png",
-                                                                   "../resources/img/pacman/pacman_death_9.png"
-                                                           }
-                                                   },
-
-
+                                                   }
                                                   });
 private:
     SDL_Point movementChange;
 
-    int readHighScoreFromFile();
 
-    bool positionIsValid(SDL_Rect &possiblePosition);
+    void updateDirection();
 
-    void determineDirection(const SDL_Rect &possiblePosition);
+    SDL_Point updateMovementDirection();
 
+    bool willCollideWithWall(SDL_Rect& possiblePosition);
+
+    SDL_Rect moveOneFrame(SDL_Point potentialChange);
 };
 
 

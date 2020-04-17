@@ -18,7 +18,6 @@ public:
     void updateHitBox();
     virtual void update() = 0;
     virtual void reset() = 0;
-    int framesSinceTextureChange = 0;
     int m_movementSpeed;
 };
 
