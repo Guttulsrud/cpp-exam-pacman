@@ -31,7 +31,7 @@ void removeEatenPellets(std::vector<std::shared_ptr<Pellet>> &pellets) {
     pellets.erase(
             std::remove_if(pellets.begin(), pellets.end(),
                            [](const std::shared_ptr<Pellet> &pellet) {
-                               return pellet->eaten;
+                               return pellet->m_eaten;
                            }),
             pellets.end());
 }
@@ -68,42 +68,7 @@ void GameManager::addStationary(const std::shared_ptr<Stationary> &object) {
 void GameManager::createMovables() {
 
     m_player = std::make_shared<Player>(TextureManager::loadTexture("../resources/img/pacman/base.png"),
-                                        30 * 14.5, 30 * 24, 3,
-                                        EntityAnimator({{UP,
-                                                                {
-                                                                        "../resources/img/pacman/base.png",
-                                                                        "../resources/img/pacman/medium-open-up.png",
-                                                                        "../resources/img/pacman/large-open-up.png",
-                                                                        "../resources/img/pacman/medium-open-up.png"
-                                                                }
-                                                        },
-                                                        {DOWN,
-                                                                {
-                                                                        "../resources/img/pacman/base.png",
-                                                                        "../resources/img/pacman/medium-open-down.png",
-                                                                        "../resources/img/pacman/large-open-down.png",
-                                                                        "../resources/img/pacman/medium-open-down.png"
-                                                                }
-                                                        },
-                                                        {LEFT,
-                                                                {
-                                                                        "../resources/img/pacman/base.png",
-                                                                        "../resources/img/pacman/medium-open-left.png",
-                                                                        "../resources/img/pacman/large-open-left.png",
-                                                                        "../resources/img/pacman/medium-open-left.png"
-                                                                }
-                                                        },
-                                                        {RIGHT,
-                                                                {
-                                                                        "../resources/img/pacman/base.png",
-                                                                        "../resources/img/pacman/medium-open-right.png",
-                                                                        "../resources/img/pacman/large-open-right.png",
-                                                                        "../resources/img/pacman/medium-open-right.png"
-                                                                }
-                                                        }})
-
-    );
-                                        30 * 14.5, 30 * 24, 0, 3);
+                                        30 * 14.5, 30 * 24, 3);
 
     addGhost(std::make_shared<Ghost>(
             TextureManager::loadTexture("../resources/img/ghosts/green_E1.png"),
@@ -222,19 +187,8 @@ void GameManager::startNewRound() {
     stopSoundOnChannel(-1);
     m_player->reset();
 
-int GameManager::readHighScoreFromFile() {
-    int score = 0;
-    std::ifstream file("../resources/highscore.txt");
-    if (file) {
-        file >> score;
-    }
-    return score;
-}
-
-void GameManager::resetRound() {
     lives = 3;
     Mix_HaltChannel(-1);
-    getPlayer()->reset();
 
     for (auto const &ghost : getGhosts()) {
         ghost->reset();
@@ -243,6 +197,14 @@ void GameManager::resetRound() {
     render();
     m_player->playSound(INTRO, 5);
     stopExecutionWhileSoundPlaying(5);
+}
+int GameManager::readHighScoreFromFile() {
+    int score = 0;
+    std::ifstream file("../resources/highscore.txt");
+    if (file) {
+        file >> score;
+    }
+    return score;
 }
 
 void GameManager::gameOver() {
@@ -412,7 +374,7 @@ void GameManager::handleCollisions() {
             currentScore += 10;
 
             if (p->m_isPowerPellet) {
-                playSound(EAT_POWER_PELLET,1);
+                m_player->playSound(EAT_POWER_PELLET,1);
                 for (auto &ghost : GameManager::getGhosts()) {
                     ghost->switchedToEatable = true;
                     ghost->eatableStateEnd = false;
@@ -423,16 +385,16 @@ void GameManager::handleCollisions() {
                 collectedFruit = true;
                 currentScore += 300;
             }
-            p->eaten = true;
+            p->m_eaten = true;
 
         }
     }
 
     if (collectedPellet && !Mix_Playing(1)) {
-        playSound(EAT_PELLET, 1);
+        m_player->playSound(EAT_PELLET, 1);
 
     } else if (collectedFruit) {
-        playSound(EAT_FRUIT,1);
+        m_player->playSound(EAT_FRUIT,1);
         currentScore += 300;
     }
 }
@@ -467,8 +429,8 @@ void GameManager::checkForPlayerAndGhost() {
             if (ghost->eatable) {
                 //ghost is dead
                 if (!ghost->dead) {
-                    playSound(EAT_GHOST,2);
-                    playSound(GHOST_RETURN, 6);
+                    m_player->playSound(EAT_GHOST,2);
+                    m_player->playSound(GHOST_RETURN, 6);
                 }
                 ghost->m_movementSpeed = 5;
                 ghost->dead = true;
@@ -483,7 +445,7 @@ void GameManager::checkForPlayerAndGhost() {
 
 
                 lives--;
-                playSound(DEATH,4);
+                m_player->playSound(DEATH,4);
                 auto tread = std::async(playerDeathAnimation);
 
                 while (Mix_Playing(-1)) {}
@@ -491,18 +453,12 @@ void GameManager::checkForPlayerAndGhost() {
                     tread.get();
                     gameOver();
                 } else {
-                    resetRound();
+                    startNewRound();
                 }
 
             }
         }
     }
 }
-
-void GameManager::playSound(Sound sound, int channel) {
-    Mix_PlayChannel(channel, sounds[sound], 0);
-}
-
-
 
 
