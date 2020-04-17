@@ -178,7 +178,7 @@ void Map::loadLevelMap(int map[32][29]) {
             switch (tileType) {
                 case 4:
                     GameManager::addPellet(
-                            std::make_shared<Pellet>(fruit, column * tileLength + 30, row * tileLength + 30, 25, 25, false, true));
+                            std::make_shared<Pellet>(fruit, column * tileLength + 30, row * tileLength + 30, 50, 50, false, true));
                     break;
                 case 3:
                     GameManager::addPellet(std::make_shared<Pellet>(pelletLarge, column * tileLength + 30 -8,

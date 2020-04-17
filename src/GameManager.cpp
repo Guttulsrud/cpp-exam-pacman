@@ -29,16 +29,6 @@ void GameManager::writeHighScore(int score) {
 }
 
 
-void removeEatenPellets(std::vector<std::shared_ptr<Pellet>> &pellets) {
-
-    pellets.erase(
-            std::remove_if(pellets.begin(), pellets.end(),
-                           [](const std::shared_ptr<Pellet> &pellet) {
-                               return pellet->m_eaten;
-                           }),
-            pellets.end());
-}
-
 void GameManager::update() {
     checkIfMapComplete();
     updateMovables();
@@ -241,6 +231,7 @@ void GameManager::mapCompleted() {
     m_stationery.clear();
     sdlManager.renderBuffer();
 
+    m_scoreLastRound = m_currentScore;
     currentLevel++;
     if (currentLevel == 3) {
         sdlManager.setFontSize(100);
