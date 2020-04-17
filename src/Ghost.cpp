@@ -73,8 +73,7 @@ void Ghost::decideMove(
         std::vector<Direction> &possibleDirectionsVector
 ) {
 
-    if ((prevDirections != possibleDirectionsVector || possibleDirections.size() > 2)) {
-
+    if ((prevDirections != possibleDirectionsVector )) {
         if (getRandomNumberInRange(0, 10) > difficulty && !dead) {
             auto item = possibleDirections.begin();
             std::advance(item, getRandomNumberInRange(0, possibleDirections.size() - 1));
