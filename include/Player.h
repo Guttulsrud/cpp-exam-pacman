@@ -15,8 +15,8 @@ enum Sound {
 
 class Player : public Movable {
 public:
-    Player(SDL_Texture *texturePtr, int x, int y, int movementSpeed) :
-            Movable(texturePtr, x, y, movementSpeed){
+    Player(int x, int y, int movementSpeed) :
+            Movable(x, y, movementSpeed){
         movementChange.x = 0;
         movementChange.y = 0;
 
@@ -91,7 +91,6 @@ public:
                                                   });
 private:
     SDL_Point movementChange;
-
 
     void updateDirection();
 

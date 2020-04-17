@@ -5,13 +5,15 @@
 #include "Movable.h"
 #include "EntityAnimator.h"
 #include <map>
+
 class Ghost : public Movable {
 public:
-    Ghost(SDL_Texture *texturePtr, int x, int y, int movementSpeed, EntityAnimator animator) :
-            Movable(texturePtr, x, y, movementSpeed),
+    Ghost(int x, int y, int movementSpeed, EntityAnimator animator) :
+            Movable(x, y, movementSpeed),
             m_animator(animator) {
         spawn.x = x;
         spawn.y = y;
+
     }
 
     int difficulty = 4;
@@ -24,17 +26,20 @@ public:
     EntityAnimator m_animator;
     SDL_Point spawn;
 
-
     SDL_TimerID eatableStateEndTimer;
     SDL_TimerID ghostReviveTimer;
-    static Uint32 eatableStateEndCallback(Uint32 interval, void* param);
-    static Uint32 reviveGhostCallback(Uint32 interval, void* param);
+
+    static Uint32 eatableStateEndCallback(Uint32 interval, void *param);
+
+    static Uint32 reviveGhostCallback(Uint32 interval, void *param);
 
     void update() override;
+
     void reset() override;
-    Direction getDirectionToPoint(const std::map<Direction, SDL_Rect> &possibleDirections) const;
 
+    Direction getDirectionToPoint(std::map<Direction, SDL_Rect> &possibleDirections);
 
+    static int getRandomNumberInRange(int begin, int end);
 
     EntityAnimator powerPelletStateAnimator = EntityAnimator({{UP,
                                                                       {
@@ -63,53 +68,53 @@ public:
                                                               }});
 
     EntityAnimator powerPelletStateEndAnimator = EntityAnimator({{UP,
-                                                                      {
-                                                                              "../resources/img/ghosts/ghost_badTripState_1.png",
-                                                                              "../resources/img/ghosts/ghost_badTripState_2.png",
-                                                                              "../resources/img/ghosts/ghost_badTripState_1.png",
-                                                                              "../resources/img/ghosts/ghost_badTripState_2.png",
-                                                                              "../resources/img/ghosts/ghost_badTripState_flash_1.png",
-                                                                              "../resources/img/ghosts/ghost_badTripState_flash_2.png",
-                                                                              "../resources/img/ghosts/ghost_badTripState_flash_1.png",
-                                                                              "../resources/img/ghosts/ghost_badTripState_flash_2.png"
-                                                                      }
-                                                              },
-                                                              {DOWN,
-                                                                      {
-                                                                              "../resources/img/ghosts/ghost_badTripState_1.png",
-                                                                              "../resources/img/ghosts/ghost_badTripState_2.png",
-                                                                              "../resources/img/ghosts/ghost_badTripState_1.png",
-                                                                              "../resources/img/ghosts/ghost_badTripState_2.png",
-                                                                              "../resources/img/ghosts/ghost_badTripState_flash_1.png",
-                                                                              "../resources/img/ghosts/ghost_badTripState_flash_2.png",
-                                                                              "../resources/img/ghosts/ghost_badTripState_flash_1.png",
-                                                                              "../resources/img/ghosts/ghost_badTripState_flash_2.png"
-                                                                      }
-                                                              },
-                                                              {LEFT,
-                                                                      {
-                                                                              "../resources/img/ghosts/ghost_badTripState_1.png",
-                                                                              "../resources/img/ghosts/ghost_badTripState_2.png",
-                                                                              "../resources/img/ghosts/ghost_badTripState_1.png",
-                                                                              "../resources/img/ghosts/ghost_badTripState_2.png",
-                                                                              "../resources/img/ghosts/ghost_badTripState_flash_1.png",
-                                                                              "../resources/img/ghosts/ghost_badTripState_flash_2.png",
-                                                                              "../resources/img/ghosts/ghost_badTripState_flash_1.png",
-                                                                              "../resources/img/ghosts/ghost_badTripState_flash_2.png"
-                                                                      }
-                                                              },
-                                                              {RIGHT,
-                                                                      {
-                                                                              "../resources/img/ghosts/ghost_badTripState_1.png",
-                                                                              "../resources/img/ghosts/ghost_badTripState_2.png",
-                                                                              "../resources/img/ghosts/ghost_badTripState_1.png",
-                                                                              "../resources/img/ghosts/ghost_badTripState_2.png",
-                                                                              "../resources/img/ghosts/ghost_badTripState_flash_1.png",
-                                                                              "../resources/img/ghosts/ghost_badTripState_flash_2.png",
-                                                                              "../resources/img/ghosts/ghost_badTripState_flash_1.png",
-                                                                              "../resources/img/ghosts/ghost_badTripState_flash_2.png"
-                                                                      }
-                                                              }});
+                                                                         {
+                                                                                 "../resources/img/ghosts/ghost_badTripState_1.png",
+                                                                                 "../resources/img/ghosts/ghost_badTripState_2.png",
+                                                                                 "../resources/img/ghosts/ghost_badTripState_1.png",
+                                                                                 "../resources/img/ghosts/ghost_badTripState_2.png",
+                                                                                 "../resources/img/ghosts/ghost_badTripState_flash_1.png",
+                                                                                 "../resources/img/ghosts/ghost_badTripState_flash_2.png",
+                                                                                 "../resources/img/ghosts/ghost_badTripState_flash_1.png",
+                                                                                 "../resources/img/ghosts/ghost_badTripState_flash_2.png"
+                                                                         }
+                                                                 },
+                                                                 {DOWN,
+                                                                         {
+                                                                                 "../resources/img/ghosts/ghost_badTripState_1.png",
+                                                                                 "../resources/img/ghosts/ghost_badTripState_2.png",
+                                                                                 "../resources/img/ghosts/ghost_badTripState_1.png",
+                                                                                 "../resources/img/ghosts/ghost_badTripState_2.png",
+                                                                                 "../resources/img/ghosts/ghost_badTripState_flash_1.png",
+                                                                                 "../resources/img/ghosts/ghost_badTripState_flash_2.png",
+                                                                                 "../resources/img/ghosts/ghost_badTripState_flash_1.png",
+                                                                                 "../resources/img/ghosts/ghost_badTripState_flash_2.png"
+                                                                         }
+                                                                 },
+                                                                 {LEFT,
+                                                                         {
+                                                                                 "../resources/img/ghosts/ghost_badTripState_1.png",
+                                                                                 "../resources/img/ghosts/ghost_badTripState_2.png",
+                                                                                 "../resources/img/ghosts/ghost_badTripState_1.png",
+                                                                                 "../resources/img/ghosts/ghost_badTripState_2.png",
+                                                                                 "../resources/img/ghosts/ghost_badTripState_flash_1.png",
+                                                                                 "../resources/img/ghosts/ghost_badTripState_flash_2.png",
+                                                                                 "../resources/img/ghosts/ghost_badTripState_flash_1.png",
+                                                                                 "../resources/img/ghosts/ghost_badTripState_flash_2.png"
+                                                                         }
+                                                                 },
+                                                                 {RIGHT,
+                                                                         {
+                                                                                 "../resources/img/ghosts/ghost_badTripState_1.png",
+                                                                                 "../resources/img/ghosts/ghost_badTripState_2.png",
+                                                                                 "../resources/img/ghosts/ghost_badTripState_1.png",
+                                                                                 "../resources/img/ghosts/ghost_badTripState_2.png",
+                                                                                 "../resources/img/ghosts/ghost_badTripState_flash_1.png",
+                                                                                 "../resources/img/ghosts/ghost_badTripState_flash_2.png",
+                                                                                 "../resources/img/ghosts/ghost_badTripState_flash_1.png",
+                                                                                 "../resources/img/ghosts/ghost_badTripState_flash_2.png"
+                                                                         }
+                                                                 }});
     EntityAnimator deadAnimator = EntityAnimator({{UP,
                                                           {
                                                                   "../resources/img/ghosts/eyes_N.png"
@@ -131,7 +136,17 @@ public:
                                                           }
                                                   }});
 
-    static int getRandomNumberInRange(int begin, int end);
+    std::map<Direction, SDL_Rect> getDirectionsMap();
+
+    void updateValidMoves(std::map<Direction, SDL_Rect> &directions, std::map<Direction, SDL_Rect> &possibleDirections,
+                          std::vector<Direction> &possibleDirectionsVector);
+
+    void decideMove(std::map<Direction, SDL_Rect> &directions, std::map<Direction, SDL_Rect> &possibleDirections,
+                    std::vector<Direction> &possibleDirectionsVector);
+
+    void animateState();
+
+    void maintainPositionRelativeToTiles();
 };
 
 #endif
