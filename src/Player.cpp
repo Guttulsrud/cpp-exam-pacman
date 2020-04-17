@@ -25,13 +25,8 @@ void Player::update() {
     movementChange = potentialMovementDirection;
     updateDirection();
     m_animator.animate(&m_texture, m_direction);
-    handleStuffRefactorPls();
     updateHitBox();
     moveInBoundsIfOutOfBounds();
-
-    if (currentScore > highScore) {
-        newHighScore = currentScore;
-    }
 }
 
 SDL_Point Player::updateMovementDirection() {
@@ -88,108 +83,21 @@ void playDeathAnimation() {
     }
 }
 
-void Player::handleStuffRefactorPls() {
 
-    //Todo: refactor
-
-    // Check for collision with moving game objects
-    for (auto &ghost : GameManager::getGhosts()) {
-        if (SDL_HasIntersection(&hitBox, &ghost->hitBox)) {
-            if (ghost->eatable) {
-                if (!ghost->dead) {
-                    playSound(EAT_GHOST);
-                    playSound(GHOST_RETURN, 6);
-                }
-                ghost->m_movementSpeed = 5;
-                ghost->dead = true;
-                ghost->eatable = false;
-                ghost->switchedToEatable = false;
-            } else if (ghost->dead) {
-                ghost->eatable = false;
-                ghost->switchedToEatable = false;
-            } else {
-                lives--;
-                playSound(DEATH);
-                auto tread = std::async(playDeathAnimation);
-
-                while (Mix_Playing(-1)) {}
-                if (lives < 1) {
-                    tread.get();
-                    GameManager::getInstance().gameOver();
-                } else {
-                    GameManager::getInstance().resetRound();
-                }
-            }
-        }
-    }
-
-
-    // Check for collision with stationary game objects
-    bool collectedFruit = false;
-    bool collectedPellet = false;
-
-    for (auto &p : GameManager::getPellets()) {
-        if (SDL_HasIntersection(&hitBox, &p->m_positionRectangle)) {
-            collectedPellet = true;
-            currentScore += 10;
-
-            if (p->m_isPowerPellet) {
-                playSound(EAT_POWER_PELLET);
-                for (auto &ghost : GameManager::getGhosts()) {
-                    ghost->switchedToEatable = true;
-                    ghost->eatableStateEnd = false;
-                    ghost->m_movementSpeed = 2;
-                }
-
-            } else if (p->m_isFruit) {
-                collectedFruit = true;
-                currentScore += 300;
-            }
-            p->eaten = true;
-
-        }
-    }
-
-    if (collectedPellet && !Mix_Playing(1)) {
-        playSound(EAT_PELLET, 1);
-
-    } else if (collectedFruit) {
-        playSound(EAT_FRUIT);
-        currentScore += 300;
-    }
-}
-
-void Player::writeHighScore(int score) {
-    std::ofstream file;
-    file.open("../resources/highscore.txt");
-    if (file) {
-        file << score;
-    }
-}
 
 void Player::reset() {
     m_positionRectangle.x = 30 * 14.5;
     m_positionRectangle.y = 30 * 24;
     m_animator.animate(&m_texture, m_direction);
     updateHitBox();
-    scoreLastRound = currentScore;
 }
 
-void Player::playSound(Sound sound, int channel) {
-    Mix_PlayChannel(channel, sounds[sound], 0);
-}
 
-int Player::readHighScoreFromFile() {
-    int score = 0;
-    std::ifstream file("../resources/highscore.txt");
-    if (file) {
-        file >> score;
-    }
-    return score;
-}
+
 
 void Player::die() {
     m_direction = UP;
+
 }
 
 bool Player::willCollideWithWall(SDL_Rect &possiblePosition) {

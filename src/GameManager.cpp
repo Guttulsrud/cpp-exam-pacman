@@ -1,3 +1,4 @@
+#include <fstream>
 #include "../include/GameManager.h"
 
 
@@ -26,7 +27,19 @@ void GameManager::run() {
             if (inGame) {
                 render();
             }
+
+            if (currentScore > highScore) {
+                newHighScore = currentScore;
+            }
         }
+    }
+}
+
+void GameManager::writeHighScore(int score) {
+    std::ofstream file;
+    file.open("../resources/highscore.txt");
+    if (file) {
+        file << score;
     }
 }
 
@@ -49,6 +62,7 @@ void GameManager::update() {
     checkForRemainingPelletsAndRemove();
 
     getPlayer()->update();
+    handleCollisions();
 }
 
 void GameManager::render() {
@@ -198,7 +212,18 @@ void GameManager::createMovables() {
                             }})));
 }
 
+
+int GameManager::readHighScoreFromFile() {
+    int score = 0;
+    std::ifstream file("../resources/highscore.txt");
+    if (file) {
+        file >> score;
+    }
+    return score;
+}
+
 void GameManager::resetRound() {
+    lives = 3;
     Mix_HaltChannel(-1);
     getPlayer()->reset();
 
@@ -207,15 +232,16 @@ void GameManager::resetRound() {
     }
     sdlManager.initFonts();
     render();
-    getPlayer()->playSound(INTRO, 5);
+    playSound(INTRO, 5);
     while (Mix_Playing(5)) {}
+    scoreLastRound = currentScore;
 }
 
 void GameManager::gameOver() {
     currentLevel = 0;
     SDL_RenderClear(SDLManager::m_renderer);
-    if (getPlayer()->currentScore > getPlayer()->highScore) {
-        getPlayer()->writeHighScore(getPlayer()->currentScore);
+    if (currentScore > highScore) {
+        writeHighScore(currentScore);
     }
     getGhosts().clear();
     getStationery().clear();
@@ -234,7 +260,7 @@ void GameManager::startGame() {
 
 void GameManager::mapCompleted() {
     Mix_HaltChannel(-1);
-    getPlayer()->playSound(MAP_COMPLETED);
+    playSound(MAP_COMPLETED, 10);
     while (Mix_Playing(-1)) {}
 
     getStationery().clear();
@@ -258,15 +284,15 @@ void GameManager::mapCompleted() {
 
 
 void GameManager::renderTopDisplay() {
-    if (getPlayer()->newHighScore > getPlayer()->highScore) {
-        sdlManager.drawText("Highscore: %d", 35, 0, getPlayer()->newHighScore);
+    if (newHighScore > highScore) {
+        sdlManager.drawText("Highscore: %d", 35, 0, newHighScore);
     } else {
-        sdlManager.drawText("Highscore: %d", 35, 0, getPlayer()->highScore);
+        sdlManager.drawText("Highscore: %d", 35, 0, highScore);
     }
-    sdlManager.drawText("Score: %d", 400, 0, getPlayer()->currentScore);
+    sdlManager.drawText("Score: %d", 400, 0, currentScore);
 
     auto sourceRect = SDL_Rect{0, 0, 1600, 1600};
-    for (int i = 0; i < getPlayer()->lives; i++) {
+    for (int i = 0; i < lives; i++) {
         auto destRect = SDL_Rect{780 + i * 40, 0, 30, 30};
 
         sdlManager.render(numberOfLivesDisplayTexture, &sourceRect, &destRect);
@@ -323,6 +349,110 @@ void GameManager::calculateAndDelayFrameTime() {
     frameStart = SDL_GetTicks();
 }
 
+void GameManager::handleCollisions() {
+    checkForPelletPickup();
+    checkForPlayerAndGhost();
+
+    // Check for collision with stationary game objects
+    bool collectedFruit = false;
+    bool collectedPellet = false;
+
+    for (auto &p : GameManager::getPellets()) {
+        if (SDL_HasIntersection(&m_player->hitBox, &p->m_positionRectangle)) {
+            collectedPellet = true;
+            currentScore += 10;
+
+            if (p->m_isPowerPellet) {
+                playSound(EAT_POWER_PELLET,1);
+                for (auto &ghost : GameManager::getGhosts()) {
+                    ghost->switchedToEatable = true;
+                    ghost->eatableStateEnd = false;
+                    ghost->m_movementSpeed = 2;
+                }
+
+            } else if (p->m_isFruit) {
+                collectedFruit = true;
+                currentScore += 300;
+            }
+            p->eaten = true;
+
+        }
+    }
+
+    if (collectedPellet && !Mix_Playing(1)) {
+        playSound(EAT_PELLET, 1);
+
+    } else if (collectedFruit) {
+        playSound(EAT_FRUIT,1);
+        currentScore += 300;
+    }
+}
+
+void GameManager::checkForPelletPickup() {
+
+}
+
+
+void playerDeathAnimation() {
+    std::shared_ptr<Player> &player = GameManager::getPlayer();
+    std::vector<std::shared_ptr<Stationary>> &stationary = GameManager::getStationery();
+    auto game = GameManager::getInstance();
+
+    for (int i = 0; i < 45; i++) {
+
+
+        for (auto const &s : stationary) {
+            s->render();
+        }
+        player->deathAnimator.animate(&player->m_texture, player->m_direction);
+        player->render();
+        SDLManager::getInstance().renderBuffer();
+    }
+
+}
+
+void GameManager::checkForPlayerAndGhost() {
+
+    for (auto &ghost : GameManager::getGhosts()) {
+        if (SDL_HasIntersection(&m_player->hitBox, &ghost->hitBox)) {
+            if (ghost->eatable) {
+                //ghost is dead
+                if (!ghost->dead) {
+                    playSound(EAT_GHOST,2);
+                    playSound(GHOST_RETURN, 6);
+                }
+                ghost->m_movementSpeed = 5;
+                ghost->dead = true;
+                ghost->eatable = false;
+                ghost->switchedToEatable = false;
+            } else if (ghost->dead) {
+                ghost->eatable = false;
+                ghost->switchedToEatable = false;
+            } else {
+                m_player->die();
+
+
+
+                lives--;
+                playSound(DEATH,4);
+                auto tread = std::async(playerDeathAnimation);
+
+                while (Mix_Playing(-1)) {}
+                if (lives < 1) {
+                    tread.get();
+                    gameOver();
+                } else {
+                    resetRound();
+                }
+
+            }
+        }
+    }
+}
+
+void GameManager::playSound(Sound sound, int channel) {
+    Mix_PlayChannel(channel, sounds[sound], 0);
+}
 
 
 
