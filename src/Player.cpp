@@ -62,6 +62,7 @@ void Player::updateDirection() {
     }
 }
 
+//is in use
 void playDeathAnimation() {
     std::shared_ptr<Player> &player = GameManager::getPlayer();
     std::vector<std::shared_ptr<Stationary>> &stationary = GameManager::getStationery();
@@ -114,5 +115,10 @@ SDL_Rect Player::moveOneFrame(SDL_Point potentialChange) {
     returnPosition.x += potentialChange.x;
     returnPosition.y += potentialChange.y;
     return returnPosition;
+}
+
+void Player::playSound(Sound sound, int channel) {
+    Mix_PlayChannel(channel, sounds[sound], 0);
+
 }
 

@@ -15,11 +15,10 @@ enum Sound {
 
 class Player : public Movable {
 public:
-    Player(SDL_Texture *texturePtr, int x, int y, int movementSpeed, EntityAnimator animator) :
-            Movable(texturePtr, x, y, movementSpeed), m_animator(animator) {
+    Player(SDL_Texture *texturePtr, int x, int y, int movementSpeed) :
+            Movable(texturePtr, x, y, movementSpeed){
         movementChange.x = 0;
         movementChange.y = 0;
-        highScore = readHighScoreFromFile();
 
         sounds = {{EAT_PELLET,       Mix_LoadWAV("../resources/sounds/pacman/pacman_chomp.wav")},
                   {EAT_POWER_PELLET, Mix_LoadWAV("../resources/sounds/pacman/eat_powerpellet.mp3")},
