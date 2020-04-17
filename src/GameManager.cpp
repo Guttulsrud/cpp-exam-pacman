@@ -60,11 +60,10 @@ void GameManager::addStationary(const std::shared_ptr<Stationary> &object) {
 
 void GameManager::createMovables() {
 
-    m_player = std::make_shared<Player>(TextureManager::loadTexture("../resources/img/pacman/base.png"),
-                                        30 * 14.5, 30 * 24, 3);
+    m_player = std::make_shared<Player>(
+            30 * 14.5, 30 * 24, 3);
 
     addGhost(std::make_shared<Ghost>(
-            TextureManager::loadTexture("../resources/img/ghosts/green_E1.png"),
             30 * 13, 30 * 15, 3,
             EntityAnimator({{UP,
                                     {
@@ -92,7 +91,6 @@ void GameManager::createMovables() {
                             }})));
 
     addGhost(std::make_shared<Ghost>(
-            TextureManager::loadTexture("../resources/img/ghosts/orange_E1.png"),
             30 * 16, 30 * 15, 3,
             EntityAnimator({{UP,
                                     {
@@ -119,36 +117,33 @@ void GameManager::createMovables() {
                                     }
                             }})));
 
-    addGhost(std::make_shared<Ghost>(
-            TextureManager::loadTexture("../resources/img/ghosts/red_E1.png"),
-            30 * 14 + 15, 30 * 12, 3,
-            EntityAnimator({{UP,
-                                    {
-                                            "../resources/img/ghosts/red_N1.png",
-                                            "../resources/img/ghosts/red_N2.png"
-                                    }
-                            },
-                            {DOWN,
-                                    {
-                                            "../resources/img/ghosts/red_S1.png",
-                                            "../resources/img/ghosts/red_S2.png"
-                                    }
-                            },
-                            {LEFT,
-                                    {
-                                            "../resources/img/ghosts/red_W1.png",
-                                            "../resources/img/ghosts/red_W2.png"
-                                    }
-                            },
-                            {RIGHT,
-                                    {
-                                            "../resources/img/ghosts/red_E1.png",
-                                            "../resources/img/ghosts/red_E2.png"
-                                    }
-                            }})));
+    addGhost(std::make_shared<Ghost>(30 * 14 + 15, 30 * 12, 3,
+                                     EntityAnimator({{UP,
+                                                             {
+                                                                     "../resources/img/ghosts/red_N1.png",
+                                                                     "../resources/img/ghosts/red_N2.png"
+                                                             }
+                                                     },
+                                                     {DOWN,
+                                                             {
+                                                                     "../resources/img/ghosts/red_S1.png",
+                                                                     "../resources/img/ghosts/red_S2.png"
+                                                             }
+                                                     },
+                                                     {LEFT,
+                                                             {
+                                                                     "../resources/img/ghosts/red_W1.png",
+                                                                     "../resources/img/ghosts/red_W2.png"
+                                                             }
+                                                     },
+                                                     {RIGHT,
+                                                             {
+                                                                     "../resources/img/ghosts/red_E1.png",
+                                                                     "../resources/img/ghosts/red_E2.png"
+                                                             }
+                                                     }})));
 
     addGhost(std::make_shared<Ghost>(
-            TextureManager::loadTexture("../resources/img/ghosts/purple_E1.png"),
             30 * 14 + 15, 30 * 15, 3,
             EntityAnimator({{UP,
                                     {
@@ -408,7 +403,7 @@ void playerDeathAnimation() {
     for (int i = 0; i < 45; i++) {
 
         for (auto const &p : pellets) {
-            if(!p->m_isFruit)
+            if (!p->m_isFruit)
                 p->render();
         }
         for (auto const &s : stationary) {
@@ -442,6 +437,7 @@ void GameManager::checkForPlayerAndGhost() {
             } else {
                 stopSoundOnChannel(-1);
                 m_player->die();
+
 
                 m_lives--;
                 playSound(DEATH);

@@ -14,7 +14,7 @@ enum Direction {
 
 class GameObject {
 public:
-    GameObject(int w, int h, int x, int y, SDL_Texture *texture) : m_texture(texture) {
+    GameObject(int w, int h, int x, int y) {
         m_positionRectangle.x = x;
         m_positionRectangle.y = y;
         m_positionRectangle.w = w;
@@ -28,8 +28,8 @@ public:
     void render();
 
     SDL_Rect m_sourceRectangle, m_positionRectangle;
-
     SDL_Texture *m_texture;
+
 };
 
 
