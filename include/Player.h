@@ -17,7 +17,6 @@ public:
         m_movementChange.y = 0;
     }
 
-
     void reset() override;
 
     void update() override;
@@ -74,13 +73,15 @@ public:
                                                    }
                                                   });
 private:
-    SDL_Point m_movementChange;
 
     void updateDirection();
 
     SDL_Point updateMovementDirection();
 
     SDL_Rect moveOneFrame(SDL_Point potentialChange);
+
+    SDL_Point m_movementChange;
+
 };
 
 

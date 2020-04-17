@@ -8,27 +8,27 @@ class InputManager {
 public:
 
     InputManager() {
-        keys = SDL_GetKeyboardState(&keyCount);
-        oldKeys = new Uint8[keyCount];
+        m_keys = SDL_GetKeyboardState(&m_keyCount);
+        m_oldKeys = new Uint8[m_keyCount];
     }
 
     void update();
 
     static InputManager &getInstance();
 
-    bool KeyDown(int iKeyIndex);
+    bool keyDown(int iKeyIndex);
 
-    bool KeyStillDown(int iKeyIndex);
+    bool keyStillDown(int iKeyIndex);
 
-    bool KeyUp(int iKeyIndex);
+    bool keyUp(int iKeyIndex);
 
-    bool KeyStillUp(int iKeyIndex);
+    bool keyStillUp(int iKeyIndex);
 
 
 protected:
-    const Uint8 *keys;
-    Uint8 *oldKeys;
-    int keyCount;
+    const Uint8 *m_keys;
+    Uint8 *m_oldKeys;
+    int m_keyCount;
 };
 
 

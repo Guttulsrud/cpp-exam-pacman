@@ -9,7 +9,7 @@ public:
     Pellet(SDL_Texture *texturePtr, int x, int y, int w, int h, bool isPowerPellet = false, bool isFruit = false) :
             Stationary(PELLET, x, y, texturePtr, h, w),
             m_isPowerPellet(isPowerPellet),
-            m_isFruit(isFruit){}
+            m_isFruit(isFruit) {}
 
     bool m_eaten = false;
     bool m_isPowerPellet;

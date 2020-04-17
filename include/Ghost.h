@@ -8,38 +8,37 @@
 
 class Ghost : public Movable {
 public:
-    Ghost(int x, int y, int movementSpeed, EntityAnimator animator) :
-            Movable(x, y, movementSpeed),
-            m_animator(animator) {
-        spawn.x = x;
-        spawn.y = y;
-
-        respawnPoint.x = 30*15;
-        respawnPoint.y = 30*14+15;
-        respawnPoint.w = 60;
-        respawnPoint.h = 60;
-
+    Ghost(int x, int y, int movementSpeed, EntityAnimator animator) : Movable(x, y, movementSpeed),
+                                                                      m_animator(animator) {
+        m_spawn.x = x;
+        m_spawn.y = y;
+        m_respawnPoint.x = 30 * 15;
+        m_respawnPoint.y = 30 * 14 + 15;
+        m_respawnPoint.w = 60;
+        m_respawnPoint.h = 60;
     }
 
     void reset() override;
+
     void powerPelletState();
+
     void die();
+
     void update() override;
 
-    bool eatable = false;
-    bool dead = false;
+    bool m_eatable = false;
+    bool m_dead = false;
 private:
-    SDL_Rect respawnPoint;
-    int difficulty = 4;
-    Direction direction = RIGHT;
-    std::vector<Direction> prevDirections;
-    bool eatableStateEnd = false;
-    bool switchedToEatable = false;
+    int m_difficulty = 4;
+    bool m_eatableStateEnd = false;
+    bool m_switchedToEatable = false;
     EntityAnimator m_animator;
-    SDL_Point spawn;
-
-    SDL_TimerID eatableStateEndTimer;
-    SDL_TimerID ghostReviveTimer;
+    SDL_Point m_spawn;
+    SDL_TimerID m_eatableStateEndTimer;
+    SDL_TimerID m_ghostReviveTimer;
+    SDL_Rect m_respawnPoint;
+    Direction m_direction = RIGHT;
+    std::vector<Direction> m_prevDirections;
 
     static Uint32 eatableStateEndCallback(Uint32 interval, void *param);
 

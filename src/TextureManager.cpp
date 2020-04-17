@@ -4,15 +4,15 @@
 #include "../include/GameManager.h"
 
 
-std::map<std::string, SDL_Texture *> TextureManager::createdTextures;
+std::map<std::string, SDL_Texture *> TextureManager::m_createdTextures;
 
 SDL_Texture *TextureManager::loadTexture(const std::string& path) {
     const char * imagePath = path.c_str();
-    if(!createdTextures.count(imagePath)){
+    if(!m_createdTextures.count(imagePath)){
         SDL_Surface *surface = IMG_Load(imagePath);
-        createdTextures[imagePath] = SDL_CreateTextureFromSurface(SDLManager::m_renderer, surface);
+        m_createdTextures[imagePath] = SDL_CreateTextureFromSurface(SDLManager::m_renderer, surface);
         SDL_FreeSurface(surface);
     }
-    return createdTextures[imagePath];
+    return m_createdTextures[imagePath];
 }
 

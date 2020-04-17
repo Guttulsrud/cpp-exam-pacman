@@ -13,7 +13,6 @@ public:
         static SDLManager instance;
         return instance;
     }
-    static SDL_Renderer * m_renderer;
     int init(const char *title, int x, int y, int w, int h);
     void clean();
     void renderBuffer();
@@ -28,13 +27,15 @@ public:
 
     void renderStartScreen();
 
+    static SDL_Renderer * m_renderer;
+
 private:
 
-    FC_Font *font;
+    FC_Font *m_font;
 
     SDLManager() = default;
 
-    SDL_Window *window;
+    SDL_Window *m_window;
 
 };
 
