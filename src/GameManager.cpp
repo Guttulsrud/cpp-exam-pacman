@@ -360,26 +360,24 @@ void GameManager::handleCollisions() {
     bool collectedFruit = false;
     bool collectedPellet = false;
 
-    for (auto &p : GameManager::getPellets()) {
-        if (SDL_HasIntersection(&m_player->hitBox, &p->m_positionRectangle)) {
+    for (auto &pellet : GameManager::getPellets()) {
+        if (SDL_HasIntersection(&m_player->hitBox, &pellet->m_positionRectangle)) {
             collectedPellet = true;
             m_currentScore += 10;
 
-            if (p->m_isPowerPellet) {
+            if (pellet->m_isPowerPellet) {
                 if(!Mix_Playing(3)) {
                     playSound(EAT_POWER_PELLET, 3);
                 }
                 for (auto &ghost : GameManager::getGhosts()) {
-                    ghost->switchedToEatable = true;
-                    ghost->eatableStateEnd = false;
-                    ghost->m_movementSpeed = 2;
+                    ghost->powerPelletState();
                 }
 
-            } else if (p->m_isFruit) {
+            } else if (pellet->m_isFruit) {
                 collectedFruit = true;
                 m_currentScore += 300;
             }
-            p->m_eaten = true;
+            pellet->m_eaten = true;
 
         }
     }
@@ -419,40 +417,38 @@ void playerDeathAnimation() {
 
 void GameManager::checkForPlayerAndGhost() {
 
-    for (auto &ghost : GameManager::getGhosts()) {
+    for (auto &ghost : m_ghosts) {
         if (SDL_HasIntersection(&m_player->hitBox, &ghost->hitBox)) {
             if (ghost->eatable) {
-                //ghost is dead
-                if (!ghost->dead) {
-                    playSound(EAT_GHOST, 2);
-                    playSound(GHOST_RETURN, 6);
-                }
-                ghost->m_movementSpeed = 5;
-                ghost->dead = true;
-                ghost->eatable = false;
-                ghost->switchedToEatable = false;
-            } else if (ghost->dead) {
-                ghost->eatable = false;
-                ghost->switchedToEatable = false;
-            } else {
-                stopSoundOnChannel(-1);
-                m_player->die();
-
-
-                m_lives--;
-                playSound(DEATH);
-                auto tread = std::async(playerDeathAnimation);
-
-                stopExecutionWhileSoundPlaying(-1);
-                if (m_lives < 1) {
-                    tread.get();
-                    gameOver();
-                } else {
-                    startNewRound();
-                }
-
+                ghostDead(ghost);
+            } else if (!ghost->dead) {
+                playerDead();
             }
         }
+    }
+}
+
+void GameManager::ghostDead(std::shared_ptr<Ghost> &ghost) {
+    if (!ghost->dead) {
+        playSound(EAT_GHOST, 2);
+        playSound(GHOST_RETURN, 6);
+    }
+    ghost->die();
+}
+
+void GameManager::playerDead() {
+    m_player->die();
+    stopSoundOnChannel(-1);
+    m_lives--;
+    playSound(DEATH);
+    auto tread = std::async(playerDeathAnimation);
+
+    stopExecutionWhileSoundPlaying(-1);
+    if (m_lives < 1) {
+        tread.get();
+        gameOver();
+    } else {
+        startNewRound();
     }
 }
 

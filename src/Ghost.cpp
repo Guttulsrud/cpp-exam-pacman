@@ -35,6 +35,10 @@ void Ghost::update() {
 
     decideMove(directions, possibleDirections, possibleDirectionsVector);
 
+    if(dead && SDL_HasIntersection(&respawnPoint, &m_positionRectangle)){
+        reset();
+    }
+
     maintainPositionRelativeToTiles();
     prevDirections = possibleDirectionsVector;
     updateHitBox();
@@ -101,7 +105,7 @@ void Ghost::decideMove(
 
 void Ghost::updateValidMoves(std::map<Direction, SDL_Rect> &directions,
                              std::map<Direction, SDL_Rect> &possibleDirections,
-                             std::vector<Direction> &possibleDirectionsVector) {
+                             std::vector<Direction> &possibleDirectionsVector) const {
     for (auto &directionPosition : directions) {
         bool didNotCollideWithWall = true;
         for (auto &object : GameManager::getStationery()) {
@@ -125,7 +129,7 @@ int Ghost::getRandomNumberInRange(int begin, int end) {
     return dist(mt);
 }
 
-Direction Ghost::getDirectionToPoint(std::map<Direction, SDL_Rect> &possibleDirections) {
+Direction Ghost::getDirectionToPoint(std::map<Direction, SDL_Rect> &possibleDirections) const {
 
     Direction destination = UP;
     float shortestLength = 1000.0f;
@@ -137,8 +141,8 @@ Direction Ghost::getDirectionToPoint(std::map<Direction, SDL_Rect> &possibleDire
         int xLen;
         int yLen;
         if (dead) {
-            xLen = abs(spawn.x - directionPosition.second.x);
-            yLen = abs(spawn.y - directionPosition.second.y);
+            xLen = abs(respawnPoint.x - directionPosition.second.x);
+            yLen = abs(respawnPoint.y - directionPosition.second.y);
         } else {
             xLen = abs(playerPos.x - directionPosition.second.x);
             yLen = abs(playerPos.y - directionPosition.second.y);
@@ -169,7 +173,6 @@ void Ghost::reset() {
     eatableStateEnd = false;
     eatable = false;
     updateHitBox();
-    eatable = false;
     direction = RIGHT;
     m_animator.animate(&m_texture, direction);
 }
@@ -206,6 +209,21 @@ std::map<Direction, SDL_Rect> Ghost::getDirectionsMap() {
             {DOWN,  down},
             {LEFT,  left},
             {RIGHT, right}};
+}
+
+void Ghost::powerPelletState() {
+    if(dead)
+        return;
+    switchedToEatable = true;
+    eatableStateEnd = false;
+    m_movementSpeed = 2;
+}
+
+void Ghost::die() {
+    m_movementSpeed = 5;
+    dead = true;
+    eatable = false;
+    switchedToEatable = false;
 }
 
 

@@ -74,6 +74,7 @@ void Map::createWallWithTexture(int map[32][29], int row, int column) {
     int northTile = map[row - 1][column] == wall ? wall : 0;
     int southTile = map[row + 1][column] == wall ? wall : 0;
 
+
     int nwTile = map[row - 1][column - 1] == wall ? wall : 0;
     int neTile = map[row - 1][column + 1] == wall ? wall : 0;
     int swTile = map[row + 1][column - 1] == wall ? wall : 0;

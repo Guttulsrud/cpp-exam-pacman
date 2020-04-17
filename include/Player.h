@@ -11,8 +11,8 @@
 
 class Player : public Movable {
 public:
-    Player(SDL_Texture *texturePtr, int x, int y, int movementSpeed) :
-            Movable(texturePtr, x, y, movementSpeed) {
+    Player(int x, int y, int movementSpeed) :
+            Movable(x, y, movementSpeed) {
         m_movementChange.x = 0;
         m_movementChange.y = 0;
     }

@@ -14,14 +14,26 @@ public:
         spawn.x = x;
         spawn.y = y;
 
+        respawnPoint.x = 30*15;
+        respawnPoint.y = 30*14+15;
+        respawnPoint.w = 60;
+        respawnPoint.h = 60;
+
     }
 
+    void reset() override;
+    void powerPelletState();
+    void die();
+    void update() override;
+
+    bool eatable = false;
+    bool dead = false;
+private:
+    SDL_Rect respawnPoint;
     int difficulty = 4;
     Direction direction = RIGHT;
     std::vector<Direction> prevDirections;
-    bool eatable = false;
     bool eatableStateEnd = false;
-    bool dead = false;
     bool switchedToEatable = false;
     EntityAnimator m_animator;
     SDL_Point spawn;
@@ -33,11 +45,7 @@ public:
 
     static Uint32 reviveGhostCallback(Uint32 interval, void *param);
 
-    void update() override;
-
-    void reset() override;
-
-    Direction getDirectionToPoint(std::map<Direction, SDL_Rect> &possibleDirections);
+    Direction getDirectionToPoint(std::map<Direction, SDL_Rect> &possibleDirections) const;
 
     static int getRandomNumberInRange(int begin, int end);
 
@@ -139,7 +147,7 @@ public:
     std::map<Direction, SDL_Rect> getDirectionsMap();
 
     void updateValidMoves(std::map<Direction, SDL_Rect> &directions, std::map<Direction, SDL_Rect> &possibleDirections,
-                          std::vector<Direction> &possibleDirectionsVector);
+                          std::vector<Direction> &possibleDirectionsVector) const;
 
     void decideMove(std::map<Direction, SDL_Rect> &directions, std::map<Direction, SDL_Rect> &possibleDirections,
                     std::vector<Direction> &possibleDirectionsVector);

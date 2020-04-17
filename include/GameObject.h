@@ -26,7 +26,6 @@ public:
     }
 
     void render();
-
     SDL_Rect m_sourceRectangle, m_positionRectangle;
     SDL_Texture *m_texture;
 

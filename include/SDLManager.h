@@ -5,6 +5,7 @@
 #include <SDL2/SDL_mixer.h>
 #include <SDL2/SDL_ttf.h>
 #include "../utils/SDL_FontCache.h"
+#include "GameObject.h"
 
 class SDLManager {
 public:
