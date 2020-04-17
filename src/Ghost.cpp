@@ -177,6 +177,9 @@ void Ghost::reset() {
 }
 
 Uint32 Ghost::eatableStateEndCallback(Uint32 n, void *ghost) {
+    //Jeg ønsket å være konsistent og bruke SDL ting til å løse mest mulig av oppgaven.
+    //Jeg ble nødt til å bruke reintepret_cast siden en SDL timercallback krever en void peker
+    //Det vil aldri være et tilfelle hvor denne metoden blir kalt, uten at "void * ghost" peker på et Ghost object
     auto *g = reinterpret_cast<Ghost *>(ghost);
     if (!g->dead && g->eatable)
         g->eatableStateEnd = true;
@@ -184,6 +187,9 @@ Uint32 Ghost::eatableStateEndCallback(Uint32 n, void *ghost) {
 }
 
 Uint32 Ghost::reviveGhostCallback(Uint32 n, void *ghost) {
+    //Jeg ønsket å være konsistent og bruke SDL ting til å løse mest mulig av oppgaven.
+    //Jeg ble nødt til å bruke reintepret_cast siden en SDL timercallback krever en void peker
+    //Det vil aldri være et tilfelle hvor denne metoden blir kalt, uten at "void * ghost" peker på et Ghost object
     auto *g = reinterpret_cast<Ghost *>(ghost);
     if (!g->dead && g->eatable && g->eatableStateEnd) {
         g->eatableStateEnd = false;
