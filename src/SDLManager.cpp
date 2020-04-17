@@ -46,7 +46,7 @@ void SDLManager::clean() {
 
 void SDLManager::initFonts() {
     setFontSize(42);
-    drawText("Ready!", 375, 545);
+    drawText("Ready!", 400, 545);
     setFontSize(24);
 }
 

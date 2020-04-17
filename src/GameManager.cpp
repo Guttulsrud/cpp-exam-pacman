@@ -235,7 +235,7 @@ void GameManager::mapCompleted() {
     currentLevel++;
     if (currentLevel == 3) {
         sdlManager.setFontSize(100);
-        sdlManager.drawText("You win!", 200, 400);
+        sdlManager.drawText("You win!", 300, 400);
         SDL_RenderPresent(SDLManager::m_renderer);
         SDL_Delay(3000);
         SDL_RenderClear(SDLManager::m_renderer);
@@ -264,7 +264,7 @@ void GameManager::renderTopDisplay() {
 void GameManager::renderGameObjects() {
     for (auto const &pellet : m_pellets) {
         if (pellet->m_isFruit) {
-            if (m_currentScore > m_scoreLastRound + 200) {
+            if (m_currentScore > m_scoreLastRound + 500) {
                 pellet->render();
             }
         } else {

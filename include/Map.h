@@ -48,7 +48,10 @@ private:
     SDL_Texture *edgeW;
     SDL_Texture *pellet;
     SDL_Texture *pelletLarge;
-    SDL_Texture *fruit;
+    SDL_Texture *fruitMapOne;
+    SDL_Texture *fruitMapTwo;
+    SDL_Texture *fruitMapThree;
+
 
 };
 

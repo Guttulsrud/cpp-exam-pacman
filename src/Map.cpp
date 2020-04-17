@@ -58,7 +58,9 @@ Map::Map(const std::string &filePath, int mapIndex) {
     edgeW = TextureManager::loadTexture(folderPath + "edge_W.png");
     edgeS = TextureManager::loadTexture(folderPath + "edge_S.png");
 
-    fruit = TextureManager::loadTexture("../resources/img/pickups/strawberry.png");
+    fruitMapOne = TextureManager::loadTexture("../resources/img/pickups/cherry.png");
+    fruitMapTwo = TextureManager::loadTexture("../resources/img/pickups/melon.png");
+    fruitMapThree = TextureManager::loadTexture("../resources/img/pickups/strawberry.png");
 
 
     loadLevelMap(currentMap);
@@ -176,9 +178,17 @@ void Map::loadLevelMap(int map[32][29]) {
             tileType = map[row][column];
 
             switch (tileType) {
+                case 6:
+                    GameManager::addPellet(
+                            std::make_shared<Pellet>(fruitMapThree, column * tileLength + 30, row * tileLength + 30, 50, 50, false, true));
+                    break;
+                case 5:
+                    GameManager::addPellet(
+                            std::make_shared<Pellet>(fruitMapTwo, column * tileLength + 30, row * tileLength + 30, 50, 50, false, true));
+                    break;
                 case 4:
                     GameManager::addPellet(
-                            std::make_shared<Pellet>(fruit, column * tileLength + 30, row * tileLength + 30, 50, 50, false, true));
+                            std::make_shared<Pellet>(fruitMapOne, column * tileLength + 30, row * tileLength + 30, 50, 50, false, true));
                     break;
                 case 3:
                     GameManager::addPellet(std::make_shared<Pellet>(pelletLarge, column * tileLength + 30 -8,
