@@ -1,11 +1,7 @@
 #include "../include/Player.h"
 #include "../include/InputManager.h"
 #include "../include/GameManager.h"
-#include "../include/Pellet.h"
-#include "../include/Ghost.h"
 #include <SDL_mixer.h>
-#include <future>
-#include <fstream>
 
 void Player::update() {
 
@@ -14,17 +10,20 @@ void Player::update() {
 
     if (!willCollideWithWall(potentialPosition)) {
         m_positionRectangle = potentialPosition;
+        updateDirection();
+        m_animator.animate(&m_texture, m_direction);
     } else {
         potentialPosition = moveOneFrame(movementChange);
         if (!willCollideWithWall(potentialPosition)) {
             m_positionRectangle = potentialPosition;
             potentialMovementDirection = movementChange;
+            updateDirection();
+            m_animator.animate(&m_texture, m_direction);
         }
     }
 
     movementChange = potentialMovementDirection;
-    updateDirection();
-    m_animator.animate(&m_texture, m_direction);
+
     updateHitBox();
     moveInBoundsIfOutOfBounds();
 }
@@ -84,8 +83,6 @@ void playDeathAnimation() {
     }
 }
 
-
-
 void Player::reset() {
     m_positionRectangle.x = 30 * 14.5;
     m_positionRectangle.y = 30 * 24;
@@ -93,21 +90,8 @@ void Player::reset() {
     updateHitBox();
 }
 
-
-
-
 void Player::die() {
     m_direction = UP;
-
-}
-
-bool Player::willCollideWithWall(SDL_Rect &possiblePosition) {
-    for (auto &stationary : GameManager::getStationery()) {
-        if (stationary->getType() == WALL && SDL_HasIntersection(&possiblePosition, &stationary->m_positionRectangle)) {
-            return true;
-        }
-    }
-    return false;
 }
 
 SDL_Rect Player::moveOneFrame(SDL_Point potentialChange) {
@@ -121,4 +105,3 @@ void Player::playSound(Sound sound, int channel) {
     Mix_PlayChannel(channel, sounds[sound], 0);
 
 }
-

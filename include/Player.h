@@ -97,8 +97,6 @@ private:
 
     SDL_Point updateMovementDirection();
 
-    bool willCollideWithWall(SDL_Rect& possiblePosition);
-
     SDL_Rect moveOneFrame(SDL_Point potentialChange);
 };
 

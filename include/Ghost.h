@@ -130,6 +130,8 @@ public:
                                                                   "../resources/img/ghosts/eyes_E.png"
                                                           }
                                                   }});
+
+    static int getRandomNumberInRange(int begin, int end);
 };
 
 #endif

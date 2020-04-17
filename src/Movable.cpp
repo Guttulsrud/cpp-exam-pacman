@@ -1,4 +1,5 @@
 #include "../include/Movable.h"
+#include "../include/GameManager.h"
 
 
 void Movable::updateHitBox() {
@@ -20,4 +21,13 @@ void Movable::moveInBoundsIfOutOfBounds() {
     } else if (m_positionRectangle.y < -22) {
         m_positionRectangle.y = 960;
     }
+}
+
+bool Movable::willCollideWithWall(SDL_Rect &possiblePosition) {
+    for (auto &stationary : GameManager::getStationery()) {
+        if (stationary->getType() == WALL && SDL_HasIntersection(&possiblePosition, &stationary->m_positionRectangle)) {
+            return true;
+        }
+    }
+    return false;
 }
