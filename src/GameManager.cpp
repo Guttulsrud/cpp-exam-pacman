@@ -177,7 +177,7 @@ void GameManager::startNewRound() {
 
     Mix_HaltChannel(-1);
 
-    for (auto const &ghost : getGhosts()) {
+    for (auto const &ghost : m_ghosts) {
         ghost->reset();
     }
     sdlManager.initFonts();
@@ -317,7 +317,7 @@ void GameManager::updateMovables() {
     for (auto const &ghost : m_ghosts) {
         ghost->update();
     }
-    getPlayer()->update();
+    m_player->update();
 }
 
 void GameManager::runGameLoop() {
@@ -360,7 +360,7 @@ void GameManager::handleCollisions() {
     bool collectedFruit = false;
     bool collectedPellet = false;
 
-    for (auto &pellet : GameManager::getPellets()) {
+    for (auto &pellet : m_pellets) {
         if (SDL_HasIntersection(&m_player->hitBox, &pellet->m_positionRectangle)) {
             collectedPellet = true;
             m_currentScore += 10;
@@ -369,7 +369,7 @@ void GameManager::handleCollisions() {
                 if(!Mix_Playing(3)) {
                     playSound(EAT_POWER_PELLET, 3);
                 }
-                for (auto &ghost : GameManager::getGhosts()) {
+                for (auto &ghost : m_ghosts) {
                     ghost->powerPelletState();
                 }
 
@@ -392,6 +392,7 @@ void GameManager::handleCollisions() {
 }
 
 
+//Has to be outside of GameManager
 void playerDeathAnimation() {
     std::shared_ptr<Player> &player = GameManager::getPlayer();
     std::vector<std::shared_ptr<Stationary>> &stationary = GameManager::getStationery();
