@@ -6,6 +6,7 @@ void GameManager::run() {
 
     sdlManager.init("PacMan", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 930, 1020);
     m_highScore = readHighScoreFromFile();
+    initSounds();
 
     while (running) {
         sdlManager.renderStartScreen();
@@ -196,7 +197,7 @@ void GameManager::startNewRound() {
     }
     sdlManager.initFonts();
     render();
-    m_player->playSound(INTRO, 5);
+    playSound(INTRO, 5);
     stopExecutionWhileSoundPlaying(5);
 }
 
@@ -210,7 +211,9 @@ int GameManager::readHighScoreFromFile() {
 }
 
 void GameManager::gameOver() {
+    stopSoundOnChannel(-1);
     currentLevel = 0;
+    m_lives = 3;
     SDL_RenderClear(SDLManager::m_renderer);
     if (m_currentScore > m_highScore) {
         writeHighScore(m_currentScore);
@@ -233,7 +236,7 @@ void GameManager::startGame() {
 
 void GameManager::mapCompleted() {
     stopSoundOnChannel(-1);
-    m_player->playSound(MAP_COMPLETED);
+    playSound(MAP_COMPLETED);
     stopExecutionWhileSoundPlaying(-1);
     m_stationery.clear();
     sdlManager.renderBuffer();
@@ -365,7 +368,6 @@ void GameManager::stopExecutionWhileSoundPlaying(int channel) {
 }
 
 void GameManager::handleCollisions() {
-    checkForPelletPickup();
     checkForPlayerAndGhost();
 
     // Check for collision with stationary game objects
@@ -378,7 +380,9 @@ void GameManager::handleCollisions() {
             m_currentScore += 10;
 
             if (p->m_isPowerPellet) {
-                m_player->playSound(EAT_POWER_PELLET, 1);
+                if(!Mix_Playing(3)) {
+                    playSound(EAT_POWER_PELLET, 3);
+                }
                 for (auto &ghost : GameManager::getGhosts()) {
                     ghost->switchedToEatable = true;
                     ghost->eatableStateEnd = false;
@@ -395,16 +399,12 @@ void GameManager::handleCollisions() {
     }
 
     if (collectedPellet && !Mix_Playing(1)) {
-        m_player->playSound(EAT_PELLET, 1);
+        playSound(EAT_PELLET, 1);
 
     } else if (collectedFruit) {
-        m_player->playSound(EAT_FRUIT,1);
+        playSound(EAT_FRUIT,1);
         m_currentScore += 300;
     }
-}
-
-void GameManager::checkForPelletPickup() {
-
 }
 
 
@@ -438,8 +438,8 @@ void GameManager::checkForPlayerAndGhost() {
             if (ghost->eatable) {
                 //ghost is dead
                 if (!ghost->dead) {
-                    m_player->playSound(EAT_GHOST, 2);
-                    m_player->playSound(GHOST_RETURN, 6);
+                    playSound(EAT_GHOST, 2);
+                    playSound(GHOST_RETURN, 6);
                 }
                 ghost->m_movementSpeed = 5;
                 ghost->dead = true;
@@ -449,15 +449,14 @@ void GameManager::checkForPlayerAndGhost() {
                 ghost->eatable = false;
                 ghost->switchedToEatable = false;
             } else {
+                stopSoundOnChannel(-1);
                 m_player->die();
 
-
-
                 m_lives--;
-                m_player->playSound(DEATH,4);
+                playSound(DEATH);
                 auto tread = std::async(playerDeathAnimation);
 
-                while (Mix_Playing(-1)) {}
+                stopExecutionWhileSoundPlaying(-1);
                 if (m_lives < 1) {
                     tread.get();
                     gameOver();
@@ -469,5 +468,23 @@ void GameManager::checkForPlayerAndGhost() {
         }
     }
 }
+
+void GameManager::playSound(Sound sound, int channel) {
+    Mix_PlayChannel(channel, sounds[sound], 0);
+}
+
+void GameManager::initSounds() {
+    sounds = {{EAT_PELLET,       Mix_LoadWAV("../resources/sounds/pacman/pacman_chomp.wav")},
+              {EAT_POWER_PELLET, Mix_LoadWAV("../resources/sounds/pacman/eat_powerpellet.mp3")},
+              {EAT_FRUIT,        Mix_LoadWAV("../resources/sounds/pacman/pacman_eatfruit.wav")},
+              {EAT_GHOST,        Mix_LoadWAV("../resources/sounds/pacman/pacman_eatghost.wav")},
+              {DEATH,            Mix_LoadWAV("../resources/sounds/pacman/pacman_death.wav")},
+              {INTRO,            Mix_LoadWAV("../resources/sounds/game/pacman_beginning.wav")},
+              {MAP_COMPLETED,    Mix_LoadWAV("../resources/sounds/pacman/pacman_extrapac.wav")},
+              {GHOST_RETURN,    Mix_LoadWAV("../resources/sounds/ghosts/ghost_return_to_home.mp3")},
+    };
+
+}
+
 
 

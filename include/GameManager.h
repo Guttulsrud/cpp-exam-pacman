@@ -15,6 +15,10 @@
 #include <algorithm>
 #include "SDLManager.h"
 
+enum Sound {
+    EAT_PELLET, EAT_POWER_PELLET, DEATH, EAT_FRUIT, EAT_GHOST, INTRO, MAP_COMPLETED, GHOST_RETURN
+};
+
 
 class GameManager {
 public:
@@ -28,8 +32,11 @@ public:
         static GameManager instance;
         return instance;
     }
+    std::map<Sound, Mix_Chunk *> sounds;
 
     void run();
+    void initSounds();
+    void playSound(Sound sound, int channel = -1);
 
     void render();
 
@@ -47,12 +54,17 @@ public:
 
 
     static std::shared_ptr<Player> &getPlayer();
+
     static std::vector<std::shared_ptr<Stationary>> &getStationery();
+
     static std::vector<std::shared_ptr<Pellet>> &getPellets();
+
     static std::vector<std::shared_ptr<Ghost>> &getGhosts();
 
     static void addStationary(const std::shared_ptr<Stationary> &s);
+
     static void addPellet(const std::shared_ptr<Pellet> &p);
+
     static void addGhost(const std::shared_ptr<Ghost> &s);
 
 
@@ -61,7 +73,6 @@ public:
     int m_highScore = 0;
     int m_newHighScore = 0;
     int m_lives = 3;
-
 
 
 private:
@@ -95,6 +106,7 @@ private:
     void updateMovables();
 
     void mapCompleted();
+
     void createMovables();
 
     void checkIfMapComplete();
@@ -103,11 +115,10 @@ private:
 
     void handleCollisions();
 
-    void checkForPelletPickup();
-
     void checkForPlayerAndGhost();
 
     void renderGameObjects();
+
     void renderTopDisplay();
 
     void setMap(const int &mapIndex);
@@ -116,7 +127,6 @@ private:
     Uint32 frameStart = 0;
 
     GameManager() = default;
-
 
 
 };

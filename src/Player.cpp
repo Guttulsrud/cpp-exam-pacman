@@ -13,16 +13,16 @@ void Player::update() {
         updateDirection();
         m_animator.animate(&m_texture, m_direction);
     } else {
-        potentialPosition = moveOneFrame(movementChange);
+        potentialPosition = moveOneFrame(m_movementChange);
         if (!willCollideWithWall(potentialPosition)) {
             m_positionRectangle = potentialPosition;
-            potentialMovementDirection = movementChange;
+            potentialMovementDirection = m_movementChange;
             updateDirection();
             m_animator.animate(&m_texture, m_direction);
         }
     }
 
-    movementChange = potentialMovementDirection;
+    m_movementChange = potentialMovementDirection;
 
     updateHitBox();
     moveInBoundsIfOutOfBounds();
@@ -30,7 +30,7 @@ void Player::update() {
 
 SDL_Point Player::updateMovementDirection() {
     InputManager IM = InputManager::getInstance();
-    SDL_Point potentialMovementChange = movementChange;
+    SDL_Point potentialMovementChange = m_movementChange;
     if (!IM.KeyStillUp(SDL_SCANCODE_W) || !IM.KeyStillUp(SDL_SCANCODE_UP)) {
         potentialMovementChange.x = 0;
         potentialMovementChange.y = -m_movementSpeed;
@@ -48,13 +48,13 @@ SDL_Point Player::updateMovementDirection() {
 }
 
 void Player::updateDirection() {
-    if (movementChange.x > 0) {
+    if (m_movementChange.x > 0) {
         m_direction = RIGHT;
-    } else if (movementChange.x < 0) {
+    } else if (m_movementChange.x < 0) {
         m_direction = LEFT;
-    } else if (movementChange.y < 0) {
+    } else if (m_movementChange.y < 0) {
         m_direction = UP;
-    } else if (movementChange.y > 0) {
+    } else if (m_movementChange.y > 0) {
         m_direction = DOWN;
     } else {
         m_direction = NONE;
@@ -99,9 +99,4 @@ SDL_Rect Player::moveOneFrame(SDL_Point potentialChange) {
     returnPosition.x += potentialChange.x;
     returnPosition.y += potentialChange.y;
     return returnPosition;
-}
-
-void Player::playSound(Sound sound, int channel) {
-    Mix_PlayChannel(channel, sounds[sound], 0);
-
 }

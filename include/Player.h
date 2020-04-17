@@ -9,39 +9,23 @@
 #include <future>
 
 
-enum Sound {
-    EAT_PELLET, EAT_POWER_PELLET, DEATH, EAT_FRUIT, EAT_GHOST, INTRO, MAP_COMPLETED, GHOST_RETURN
-};
-
 class Player : public Movable {
 public:
     Player(SDL_Texture *texturePtr, int x, int y, int movementSpeed) :
-            Movable(texturePtr, x, y, movementSpeed){
-        movementChange.x = 0;
-        movementChange.y = 0;
-
-        sounds = {{EAT_PELLET,       Mix_LoadWAV("../resources/sounds/pacman/pacman_chomp.wav")},
-                  {EAT_POWER_PELLET, Mix_LoadWAV("../resources/sounds/pacman/eat_powerpellet.mp3")},
-                  {EAT_FRUIT,        Mix_LoadWAV("../resources/sounds/pacman/pacman_eatfruit.wav")},
-                  {EAT_GHOST,        Mix_LoadWAV("../resources/sounds/pacman/pacman_eatghost.wav")},
-                  {DEATH,            Mix_LoadWAV("../resources/sounds/pacman/pacman_death.wav")},
-                  {INTRO,            Mix_LoadWAV("../resources/sounds/game/pacman_beginning.wav")},
-                  {MAP_COMPLETED,    Mix_LoadWAV("../resources/sounds/pacman/pacman_extrapac.wav")},
-                  {GHOST_RETURN,    Mix_LoadWAV("../resources/sounds/ghosts/ghost_return_to_home.mp3")},
-        };
+            Movable(texturePtr, x, y, movementSpeed) {
+        m_movementChange.x = 0;
+        m_movementChange.y = 0;
     }
-
-    std::map<Sound, Mix_Chunk *> sounds;
 
 
     void reset() override;
 
     void update() override;
+
     void die();
 
     Direction m_direction = UP;
 
-    void playSound(Sound sound, int channel = -1);
     EntityAnimator m_animator = EntityAnimator({{UP,
                                                         {
                                                                 "../resources/img/pacman/base.png",
@@ -90,8 +74,7 @@ public:
                                                    }
                                                   });
 private:
-    SDL_Point movementChange;
-
+    SDL_Point m_movementChange;
 
     void updateDirection();
 
