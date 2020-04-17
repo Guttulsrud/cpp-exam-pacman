@@ -128,7 +128,6 @@ private:
 
     GameManager() = default;
 
-
     void playerDead();
 
     void ghostDead(std::shared_ptr<Ghost> &ghost);

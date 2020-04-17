@@ -433,6 +433,7 @@ void GameManager::ghostDead(std::shared_ptr<Ghost> &ghost) {
         playSound(EAT_GHOST, 2);
         playSound(GHOST_RETURN, 6);
     }
+    m_currentScore+=200;
     ghost->die();
 }
 
