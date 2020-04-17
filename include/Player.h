@@ -15,40 +15,34 @@ enum Sound {
 
 class Player : public Movable {
 public:
-    Player(SDL_Texture *texturePtr, int x, int y, int movementSpeed) :
-            Movable(texturePtr, x, y, movementSpeed) {
+    Player(SDL_Texture *texturePtr, int x, int y, int movementSpeed, EntityAnimator animator) :
+            Movable(texturePtr, x, y, movementSpeed), m_animator(animator) {
         movementChange.x = 0;
         movementChange.y = 0;
         highScore = readHighScoreFromFile();
+
+        sounds = {{EAT_PELLET,       Mix_LoadWAV("../resources/sounds/pacman/pacman_chomp.wav")},
+                  {EAT_POWER_PELLET, Mix_LoadWAV("../resources/sounds/pacman/eat_powerpellet.mp3")},
+                  {EAT_FRUIT,        Mix_LoadWAV("../resources/sounds/pacman/pacman_eatfruit.wav")},
+                  {EAT_GHOST,        Mix_LoadWAV("../resources/sounds/pacman/pacman_eatghost.wav")},
+                  {DEATH,            Mix_LoadWAV("../resources/sounds/pacman/pacman_death.wav")},
+                  {INTRO,            Mix_LoadWAV("../resources/sounds/game/pacman_beginning.wav")},
+                  {MAP_COMPLETED,    Mix_LoadWAV("../resources/sounds/pacman/pacman_extrapac.wav")},
+                  {GHOST_RETURN,    Mix_LoadWAV("../resources/sounds/ghosts/ghost_return_to_home.mp3")},
+        };
     }
+
+    std::map<Sound, Mix_Chunk *> sounds;
+
 
     void reset() override;
 
     void update() override;
-    void playSound(Sound sound, int channel = -1);
-    void writeHighScore(int score);
     void die();
 
     Direction m_direction = UP;
 
-    int currentScore = 0;
-    int scoreLastRound = 0;
-    int highScore = 0;
-    int newHighScore = 0;
-    int lives = 3;
-
-
-
-    std::map<Sound, Mix_Chunk *> sounds = {{EAT_PELLET,       Mix_LoadWAV("../resources/sounds/pacman/pacman_chomp.wav")},
-                                           {EAT_POWER_PELLET, Mix_LoadWAV("../resources/sounds/pacman/eat_powerpellet.mp3")},
-                                           {EAT_FRUIT,        Mix_LoadWAV("../resources/sounds/pacman/pacman_eatfruit.wav")},
-                                           {EAT_GHOST,        Mix_LoadWAV("../resources/sounds/pacman/pacman_eatghost.wav")},
-                                           {DEATH,            Mix_LoadWAV("../resources/sounds/pacman/pacman_death.wav")},
-                                           {INTRO,            Mix_LoadWAV("../resources/sounds/game/pacman_beginning.wav")},
-                                           {MAP_COMPLETED,    Mix_LoadWAV("../resources/sounds/pacman/pacman_extrapac.wav")},
-                                           {GHOST_RETURN,    Mix_LoadWAV("../resources/sounds/ghosts/ghost_return_to_home.mp3")},
-    };
-
+    void playSound(Sound sound, int channel = -1);
     EntityAnimator m_animator = EntityAnimator({{UP,
                                                         {
                                                                 "../resources/img/pacman/base.png",
@@ -99,9 +93,6 @@ public:
 private:
     SDL_Point movementChange;
 
-    int readHighScoreFromFile();
-
-    void handleStuffRefactorPls();
 
     void updateDirection();
 
