@@ -199,6 +199,7 @@ void GameManager::startNewRound() {
     m_player->playSound(INTRO, 5);
     stopExecutionWhileSoundPlaying(5);
 }
+
 int GameManager::readHighScoreFromFile() {
     int score = 0;
     std::ifstream file("../resources/highscore.txt");
@@ -215,7 +216,6 @@ void GameManager::gameOver() {
         writeHighScore(m_currentScore);
     }
     m_pellets.clear();
-    m_stationery.clear();
     m_stationery.clear();
     m_ghosts.clear();
     inGame = false;
@@ -363,6 +363,7 @@ void GameManager::stopSoundOnChannel(int channel) {
 void GameManager::stopExecutionWhileSoundPlaying(int channel) {
     while (Mix_Playing(channel)) {}
 }
+
 void GameManager::handleCollisions() {
     checkForPelletPickup();
     checkForPlayerAndGhost();
@@ -377,7 +378,7 @@ void GameManager::handleCollisions() {
             m_currentScore += 10;
 
             if (p->m_isPowerPellet) {
-                m_player->playSound(EAT_POWER_PELLET,1);
+                m_player->playSound(EAT_POWER_PELLET, 1);
                 for (auto &ghost : GameManager::getGhosts()) {
                     ghost->switchedToEatable = true;
                     ghost->eatableStateEnd = false;
@@ -437,7 +438,7 @@ void GameManager::checkForPlayerAndGhost() {
             if (ghost->eatable) {
                 //ghost is dead
                 if (!ghost->dead) {
-                    m_player->playSound(EAT_GHOST,2);
+                    m_player->playSound(EAT_GHOST, 2);
                     m_player->playSound(GHOST_RETURN, 6);
                 }
                 ghost->m_movementSpeed = 5;

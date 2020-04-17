@@ -68,7 +68,7 @@ void Ghost::update() {
 
         std::uniform_int_distribution<int> dist;
 
-        if (getRandomNumberInRange(0 , 10)) > difficulty && !dead) {
+        if (getRandomNumberInRange(0 , 10) > difficulty && !dead) {
             auto item = possibleDirections.begin();
             std::advance(item, getRandomNumberInRange(0 , possibleDirections.size() - 1));
 
