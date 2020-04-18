@@ -99,7 +99,7 @@ private:
 
 
     const int FPS = 60;
-    int currentLevel = 2;
+    int currentLevel = 0;
     bool running = true;
     bool inGame = true;
     const int frameDelay = 1000 / FPS;
