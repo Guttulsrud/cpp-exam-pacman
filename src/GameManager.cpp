@@ -381,9 +381,11 @@ void GameManager::handlePelletCollision() {// Check for collision with stationar
             m_currentScore += 10;
 
             if (pellet->m_isPowerPellet) {
-                if(!Mix_Playing(3)) {
-                    sdlManager.playSound(Sound::EAT_POWER_PELLET, 3);
+                if(Mix_Playing(3)) {
+                    sdlManager.stopSoundOnChannel(3);
                 }
+                sdlManager.playSound(Sound::EAT_POWER_PELLET, 3);
+
                 for (auto &ghost : m_ghosts) {
                     ghost->powerPelletState();
                 }
