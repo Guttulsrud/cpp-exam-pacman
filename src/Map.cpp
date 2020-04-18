@@ -148,7 +148,7 @@ void Map::createWallWithTexture(int map[32][29], int row, int column) {
     }
     else if (tileType != wall && wallNeighbours == 2) {
         if ((northTile == wall && southTile == wall) || (eastTile == wall && westTile == wall)) {
-            tileTexture = m_wall;
+            return;
         } else if (southTile == wall) {
             if (westTile == wall && swTile == wall) {
                 tileTexture = m_insideCornerSW;

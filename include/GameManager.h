@@ -56,8 +56,6 @@ public:
     int m_newHighScore = 0;
     int m_lives = 3;
 
-    std::map<Sound, Mix_Chunk *> m_sounds;
-
     std::vector<std::string> m_levelPaths = {
             "../resources/maps/level_one.txt",
             "../resources/maps/level_two.txt",
@@ -101,7 +99,7 @@ private:
 
 
     const int FPS = 60;
-    int currentLevel = 0;
+    int currentLevel = 2;
     bool running = true;
     bool inGame = true;
     const int frameDelay = 1000 / FPS;

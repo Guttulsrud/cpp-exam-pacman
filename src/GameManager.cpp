@@ -228,7 +228,7 @@ void GameManager::mapCompleted() {
 
     m_scoreLastRound = m_currentScore;
     currentLevel++;
-    if (currentLevel == 3) {
+    if (currentLevel >= m_levelPaths.size()) {
         sdlManager.setFontSize(100);
         sdlManager.drawText("You win!", 300, 400);
         SDL_RenderPresent(SDLManager::m_renderer);

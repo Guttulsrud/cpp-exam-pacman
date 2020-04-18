@@ -17,11 +17,10 @@ private:
     void loadMapFromFile(const char *filePath);
 
     int m_tileLength = 30;
-    int m_currentMap[32][29];
+    int m_currentMap[32][29]{};
 
     SDL_Texture *m_fill;
     SDL_Texture *m_round;
-    SDL_Texture *m_wall;
     SDL_Texture *m_endN;
     SDL_Texture *m_endW;
     SDL_Texture *m_endS;
