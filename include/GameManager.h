@@ -114,6 +114,8 @@ private:
     std::vector<std::shared_ptr<Pellet>> m_pellets;
     std::vector<std::shared_ptr<Ghost>> m_ghosts;
     std::shared_ptr<Map> m_map;
+
+    void handlePelletCollision();
 };
 
 #endif

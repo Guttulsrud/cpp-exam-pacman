@@ -25,7 +25,7 @@ void Movable::moveInBoundsIfOutOfBounds() {
 
 bool Movable::willCollideWithWall(SDL_Rect &possiblePosition) {
     for (auto &stationary : GameManager::getStationery()) {
-        if (stationary->getType() == WALL && SDL_HasIntersection(&possiblePosition, &stationary->m_positionRectangle)) {
+        if (stationary->getType() == TYPE::WALL && SDL_HasIntersection(&possiblePosition, &stationary->m_positionRectangle)) {
             return true;
         }
     }

@@ -6,16 +6,16 @@
 
 Direction getOppositeDirection(Direction direction) {
     switch (direction) {
-        case UP:
-            return DOWN;
-        case DOWN:
-            return UP;
-        case LEFT:
-            return RIGHT;
-        case RIGHT:
-            return LEFT;
+        case Direction::UP:
+            return Direction::DOWN;
+        case Direction::DOWN:
+            return Direction::UP;
+        case Direction::LEFT:
+            return Direction::RIGHT;
+        case Direction::RIGHT:
+            return Direction::LEFT;
         default:
-            return UP;
+            return Direction::UP;
     }
 }
 
@@ -108,7 +108,7 @@ void Ghost::updateValidMoves(std::map<Direction, SDL_Rect> &directions,
     for (auto &directionPosition : directions) {
         bool didNotCollideWithWall = true;
         for (auto &object : GameManager::getStationery()) {
-            if (object->getType() == WALL) {
+            if (object->getType() == TYPE::WALL) {
                 if (SDL_HasIntersection(&directionPosition.second, &object->m_positionRectangle)) {
                     didNotCollideWithWall = false;
                 }
@@ -130,7 +130,7 @@ int Ghost::getRandomNumberInRange(int begin, int end) {
 
 Direction Ghost::getDirectionToPoint(std::map<Direction, SDL_Rect> &possibleDirections) const {
 
-    Direction destination = UP;
+    Direction destination = Direction::UP;
     float shortestLength = 1000.0f;
     float longestLength = 0.0f;
 
@@ -172,7 +172,7 @@ void Ghost::reset() {
     m_eatableStateEnd = false;
     m_eatable = false;
     updateHitBox();
-    m_direction = RIGHT;
+    m_direction = Direction::RIGHT;
     m_animator.animate(&m_texture, m_direction);
 }
 
@@ -210,10 +210,10 @@ std::map<Direction, SDL_Rect> Ghost::getDirectionsMap() {
     SDL_Rect right = m_positionRectangle;
     right.x += m_movementSpeed;
 
-    return {{UP,    up},
-            {DOWN,  down},
-            {LEFT,  left},
-            {RIGHT, right}};
+    return {{Direction::UP,    up},
+            {Direction::DOWN,  down},
+            {Direction::LEFT,  left},
+            {Direction::RIGHT, right}};
 }
 
 void Ghost::powerPelletState() {

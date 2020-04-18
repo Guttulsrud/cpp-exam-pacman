@@ -45,7 +45,7 @@ void SDLManager::clean() {
     SDL_Quit();
 }
 
-void SDLManager::initFonts() {
+void SDLManager::showReadyText() {
     setFontSize(42);
     drawText("Ready!", 400, 545);
     setFontSize(24);
@@ -86,14 +86,14 @@ void SDLManager::renderStartScreen() {
 }
 
 void SDLManager::initSounds() {
-    m_sounds = {{EAT_PELLET,       Mix_LoadWAV("../resources/sounds/pacman/pacman_chomp.wav")},
-                {EAT_POWER_PELLET, Mix_LoadWAV("../resources/sounds/pacman/eat_powerpellet.mp3")},
-                {EAT_FRUIT,        Mix_LoadWAV("../resources/sounds/pacman/pacman_eatfruit.wav")},
-                {EAT_GHOST,        Mix_LoadWAV("../resources/sounds/pacman/pacman_eatghost.wav")},
-                {DEATH,            Mix_LoadWAV("../resources/sounds/pacman/pacman_death.wav")},
-                {INTRO,            Mix_LoadWAV("../resources/sounds/game/pacman_beginning.wav")},
-                {MAP_COMPLETED,    Mix_LoadWAV("../resources/sounds/pacman/pacman_extrapac.wav")},
-                {GHOST_RETURN,     Mix_LoadWAV("../resources/sounds/ghosts/ghost_return_to_home.mp3")},
+    m_sounds = {{Sound::EAT_PELLET,       Mix_LoadWAV("../resources/sounds/pacman/pacman_chomp.wav")},
+                {Sound::EAT_POWER_PELLET, Mix_LoadWAV("../resources/sounds/pacman/eat_powerpellet.mp3")},
+                {Sound::EAT_FRUIT,        Mix_LoadWAV("../resources/sounds/pacman/pacman_eatfruit.wav")},
+                {Sound::EAT_GHOST,        Mix_LoadWAV("../resources/sounds/pacman/pacman_eatghost.wav")},
+                {Sound::DEATH,            Mix_LoadWAV("../resources/sounds/pacman/pacman_death.wav")},
+                {Sound::INTRO,            Mix_LoadWAV("../resources/sounds/game/pacman_beginning.wav")},
+                {Sound::MAP_COMPLETED,    Mix_LoadWAV("../resources/sounds/pacman/pacman_extrapac.wav")},
+                {Sound::GHOST_RETURN,     Mix_LoadWAV("../resources/sounds/ghosts/ghost_return_to_home.mp3")},
     };
 }
 

@@ -37,7 +37,7 @@ private:
     SDL_TimerID m_eatableStateEndTimer;
     SDL_TimerID m_ghostReviveTimer;
     SDL_Rect m_respawnPoint;
-    Direction m_direction = RIGHT;
+    Direction m_direction = Direction::RIGHT;
     std::vector<Direction> m_prevDirections;
 
     static Uint32 eatableStateEndCallback(Uint32 interval, void *param);
@@ -48,33 +48,33 @@ private:
 
     static int getRandomNumberInRange(int begin, int end);
 
-    EntityAnimator powerPelletStateAnimator = EntityAnimator({{UP,
+    EntityAnimator powerPelletStateAnimator = EntityAnimator({{Direction::UP,
                                                                       {
                                                                               "../resources/img/ghosts/ghost_badTripState_1.png",
                                                                               "../resources/img/ghosts/ghost_badTripState_2.png"
                                                                       }
                                                               },
-                                                              {DOWN,
+                                                              {Direction::DOWN,
                                                                       {
 
                                                                               "../resources/img/ghosts/ghost_badTripState_1.png",
                                                                               "../resources/img/ghosts/ghost_badTripState_2.png"
                                                                       }
                                                               },
-                                                              {LEFT,
+                                                              {Direction::LEFT,
                                                                       {
                                                                               "../resources/img/ghosts/ghost_badTripState_1.png",
                                                                               "../resources/img/ghosts/ghost_badTripState_2.png"
                                                                       }
                                                               },
-                                                              {RIGHT,
+                                                              {Direction::RIGHT,
                                                                       {
                                                                               "../resources/img/ghosts/ghost_badTripState_1.png",
                                                                               "../resources/img/ghosts/ghost_badTripState_2.png"
                                                                       }
                                                               }});
 
-    EntityAnimator powerPelletStateEndAnimator = EntityAnimator({{UP,
+    EntityAnimator powerPelletStateEndAnimator = EntityAnimator({{Direction::UP,
                                                                          {
                                                                                  "../resources/img/ghosts/ghost_badTripState_1.png",
                                                                                  "../resources/img/ghosts/ghost_badTripState_2.png",
@@ -86,7 +86,7 @@ private:
                                                                                  "../resources/img/ghosts/ghost_badTripState_flash_2.png"
                                                                          }
                                                                  },
-                                                                 {DOWN,
+                                                                 {Direction::DOWN,
                                                                          {
                                                                                  "../resources/img/ghosts/ghost_badTripState_1.png",
                                                                                  "../resources/img/ghosts/ghost_badTripState_2.png",
@@ -98,7 +98,7 @@ private:
                                                                                  "../resources/img/ghosts/ghost_badTripState_flash_2.png"
                                                                          }
                                                                  },
-                                                                 {LEFT,
+                                                                 {Direction::LEFT,
                                                                          {
                                                                                  "../resources/img/ghosts/ghost_badTripState_1.png",
                                                                                  "../resources/img/ghosts/ghost_badTripState_2.png",
@@ -110,7 +110,7 @@ private:
                                                                                  "../resources/img/ghosts/ghost_badTripState_flash_2.png"
                                                                          }
                                                                  },
-                                                                 {RIGHT,
+                                                                 {Direction::RIGHT,
                                                                          {
                                                                                  "../resources/img/ghosts/ghost_badTripState_1.png",
                                                                                  "../resources/img/ghosts/ghost_badTripState_2.png",
@@ -122,22 +122,22 @@ private:
                                                                                  "../resources/img/ghosts/ghost_badTripState_flash_2.png"
                                                                          }
                                                                  }});
-    EntityAnimator deadAnimator = EntityAnimator({{UP,
+    EntityAnimator deadAnimator = EntityAnimator({{Direction::UP,
                                                           {
                                                                   "../resources/img/ghosts/eyes_N.png"
                                                           }
                                                   },
-                                                  {DOWN,
+                                                  {Direction::DOWN,
                                                           {
                                                                   "../resources/img/ghosts/eyes_S.png"
                                                           }
                                                   },
-                                                  {LEFT,
+                                                  {Direction::LEFT,
                                                           {
                                                                   "../resources/img/ghosts/eyes_W.png"
                                                           }
                                                   },
-                                                  {RIGHT,
+                                                  {Direction::RIGHT,
                                                           {
                                                                   "../resources/img/ghosts/eyes_E.png"
                                                           }

@@ -1,7 +1,6 @@
 #include "../include/Player.h"
 #include "../include/InputManager.h"
 #include "../include/GameManager.h"
-#include <SDL_mixer.h>
 
 void Player::update() {
 
@@ -49,15 +48,15 @@ SDL_Point Player::updateMovementDirection() {
 
 void Player::updateDirection() {
     if (m_movementChange.x > 0) {
-        m_direction = RIGHT;
+        m_direction = Direction::RIGHT;
     } else if (m_movementChange.x < 0) {
-        m_direction = LEFT;
+        m_direction = Direction::LEFT;
     } else if (m_movementChange.y < 0) {
-        m_direction = UP;
+        m_direction = Direction::UP;
     } else if (m_movementChange.y > 0) {
-        m_direction = DOWN;
+        m_direction = Direction::DOWN;
     } else {
-        m_direction = NONE;
+        m_direction = Direction::NONE;
     }
 }
 
@@ -91,7 +90,7 @@ void Player::reset() {
 }
 
 void Player::die() {
-    m_direction = UP;
+    m_direction = Direction::UP;
 }
 
 SDL_Rect Player::moveOneFrame(SDL_Point potentialChange) {

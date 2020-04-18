@@ -7,7 +7,7 @@
 #include "../utils/SDL_FontCache.h"
 #include "GameObject.h"
 
-enum Sound {
+enum class Sound {
     EAT_PELLET, EAT_POWER_PELLET, DEATH, EAT_FRUIT, EAT_GHOST, INTRO, MAP_COMPLETED, GHOST_RETURN
 };
 
@@ -36,7 +36,7 @@ public:
 
     void setFontSize(int size);
 
-    void initFonts();
+    void showReadyText();
 
     void render(SDL_Texture *texture, const SDL_Rect *src, const SDL_Rect *dest);
 

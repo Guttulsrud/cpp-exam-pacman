@@ -7,7 +7,7 @@
 class Pellet : public Stationary {
 public:
     Pellet(SDL_Texture *texturePtr, int x, int y, int w, int h, bool isPowerPellet = false, bool isFruit = false) :
-            Stationary(PELLET, x, y, texturePtr, h, w),
+            Stationary(TYPE::PELLET, x, y, texturePtr, h, w),
             m_isPowerPellet(isPowerPellet),
             m_isFruit(isFruit) {}
 

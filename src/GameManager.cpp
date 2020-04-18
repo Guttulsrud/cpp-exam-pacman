@@ -26,8 +26,8 @@ void GameManager::writeHighScore(int score) {
     if (file) {
         file << score;
     }
+    file.close();
 }
-
 
 void GameManager::update() {
     checkIfMapComplete();
@@ -43,6 +43,7 @@ void GameManager::render() {
 
 void GameManager::setMap(const int &mapIndex) {
     currentLevel = mapIndex;
+    m_map.reset();
     m_map = std::make_shared<Map>(m_levelPaths[mapIndex], mapIndex);
 }
 
@@ -65,25 +66,28 @@ void GameManager::createMovables() {
 
     addGhost(std::make_shared<Ghost>(
             30 * 13, 30 * 15, 3,
-            EntityAnimator({{UP,
+            EntityAnimator({{    Direction::
+                                 UP,
                                     {
                                             "../resources/img/ghosts/green_N1.png",
                                             "../resources/img/ghosts/green_N2.png"
                                     }
                             },
-                            {DOWN,
+                            {    Direction::
+                                 DOWN,
                                     {
                                             "../resources/img/ghosts/green_S1.png",
                                             "../resources/img/ghosts/green_S2.png"
                                     }
                             },
-                            {LEFT,
+                            {    Direction::
+                                 LEFT,
                                     {
                                             "../resources/img/ghosts/green_W1.png",
                                             "../resources/img/ghosts/green_W2.png"
                                     }
                             },
-                            {RIGHT,
+                            {Direction::RIGHT,
                                     {
                                             "../resources/img/ghosts/green_E1.png",
                                             "../resources/img/ghosts/green_E2.png"
@@ -92,25 +96,25 @@ void GameManager::createMovables() {
 
     addGhost(std::make_shared<Ghost>(
             30 * 16, 30 * 15, 3,
-            EntityAnimator({{UP,
+            EntityAnimator({{Direction::UP,
                                     {
                                             "../resources/img/ghosts/purpleN1.png",
                                             "../resources/img/ghosts/purple_N2.png"
                                     }
                             },
-                            {DOWN,
+                            {Direction::DOWN,
                                     {
                                             "../resources/img/ghosts/purple_S1.png",
                                             "../resources/img/ghosts/purple_S2.png"
                                     }
                             },
-                            {LEFT,
+                            {Direction::LEFT,
                                     {
                                             "../resources/img/ghosts/purple_W1.png",
                                             "../resources/img/ghosts/purple_W2.png"
                                     }
                             },
-                            {RIGHT,
+                            {Direction::RIGHT,
                                     {
                                             "../resources/img/ghosts/purple_E1.png",
                                             "../resources/img/ghosts/purple_E2.png"
@@ -118,25 +122,25 @@ void GameManager::createMovables() {
                             }})));
 
     addGhost(std::make_shared<Ghost>(30 * 14 + 15, 30 * 12, 3,
-                                     EntityAnimator({{UP,
+                                     EntityAnimator({{Direction::UP,
                                                              {
                                                                      "../resources/img/ghosts/red_N1.png",
                                                                      "../resources/img/ghosts/red_N2.png"
                                                              }
                                                      },
-                                                     {DOWN,
+                                                     {Direction::DOWN,
                                                              {
                                                                      "../resources/img/ghosts/red_S1.png",
                                                                      "../resources/img/ghosts/red_S2.png"
                                                              }
                                                      },
-                                                     {LEFT,
+                                                     {Direction::LEFT,
                                                              {
                                                                      "../resources/img/ghosts/red_W1.png",
                                                                      "../resources/img/ghosts/red_W2.png"
                                                              }
                                                      },
-                                                     {RIGHT,
+                                                     {Direction::RIGHT,
                                                              {
                                                                      "../resources/img/ghosts/red_E1.png",
                                                                      "../resources/img/ghosts/red_E2.png"
@@ -145,25 +149,25 @@ void GameManager::createMovables() {
 
     addGhost(std::make_shared<Ghost>(
             30 * 14 + 15, 30 * 15, 3,
-            EntityAnimator({{UP,
+            EntityAnimator({{Direction::UP,
                                     {
                                             "../resources/img/ghosts/orange_N1.png",
                                             "../resources/img/ghosts/orange_N2.png"
                                     }
                             },
-                            {DOWN,
+                            {Direction::DOWN,
                                     {
                                             "../resources/img/ghosts/orange_S1.png",
                                             "../resources/img/ghosts/orange_S2.png"
                                     }
                             },
-                            {LEFT,
+                            {Direction::LEFT,
                                     {
                                             "../resources/img/ghosts/orange_W1.png",
                                             "../resources/img/ghosts/orange_W2.png"
                                     }
                             },
-                            {RIGHT,
+                            {Direction::RIGHT,
                                     {
                                             "../resources/img/ghosts/orange_E1.png",
                                             "../resources/img/ghosts/orange_E2.png"
@@ -180,10 +184,12 @@ void GameManager::startNewRound() {
     for (auto const &ghost : m_ghosts) {
         ghost->reset();
     }
-    sdlManager.initFonts();
+
+    sdlManager.showReadyText();
     render();
-    sdlManager.playSound(INTRO, 5);
+    sdlManager.playSound(Sound::INTRO, 5);
     sdlManager.stopExecutionWhileSoundPlaying(5);
+
 }
 
 int GameManager::readHighScoreFromFile() {
@@ -192,6 +198,7 @@ int GameManager::readHighScoreFromFile() {
     if (file) {
         file >> score;
     }
+    file.close();
     return score;
 }
 
@@ -203,15 +210,24 @@ void GameManager::gameOver() {
     if (m_currentScore > m_highScore) {
         writeHighScore(m_currentScore);
     }
+
+    m_ghosts.clear();
+    for (auto &item : m_stationery) {
+        item.reset();
+    }
+    for (auto &item : m_pellets) {
+        item.reset();
+    }
+    m_map.reset();
+
     m_pellets.clear();
     m_stationery.clear();
-    m_ghosts.clear();
     inGame = false;
 }
 
 void GameManager::startGame() {
     numberOfLivesDisplayTexture = TextureManager::loadTexture("../resources/img/pacman/medium-open-right.png");
-    sdlManager.initFonts();
+    sdlManager.showReadyText();
     setMap(currentLevel);
     createMovables();
     startNewRound();
@@ -221,7 +237,7 @@ void GameManager::startGame() {
 
 void GameManager::mapCompleted() {
     sdlManager.stopSoundOnChannel(-1);
-    sdlManager.playSound(MAP_COMPLETED);
+    sdlManager.playSound(Sound::MAP_COMPLETED);
     sdlManager.stopExecutionWhileSoundPlaying(-1);
     m_stationery.clear();
     sdlManager.renderBuffer();
@@ -235,6 +251,10 @@ void GameManager::mapCompleted() {
         SDL_Delay(3000);
         SDL_RenderClear(SDLManager::m_renderer);
         currentLevel = 0;
+    }
+    m_map.reset();
+    for (auto &item : m_stationery) {
+        item.reset();
     }
     setMap(currentLevel);
     startNewRound();
@@ -348,8 +368,10 @@ void GameManager::waitForMenuInput() {
 
 void GameManager::handleCollisions() {
     checkForPlayerAndGhost();
+    handlePelletCollision();
+}
 
-    // Check for collision with stationary game objects
+void GameManager::handlePelletCollision() {// Check for collision with stationary game objects
     bool collectedFruit = false;
     bool collectedPellet = false;
 
@@ -360,7 +382,7 @@ void GameManager::handleCollisions() {
 
             if (pellet->m_isPowerPellet) {
                 if(!Mix_Playing(3)) {
-                    sdlManager.playSound(EAT_POWER_PELLET, 3);
+                    sdlManager.playSound(Sound::EAT_POWER_PELLET, 3);
                 }
                 for (auto &ghost : m_ghosts) {
                     ghost->powerPelletState();
@@ -376,10 +398,10 @@ void GameManager::handleCollisions() {
     }
 
     if (collectedPellet && !Mix_Playing(1)) {
-        sdlManager.playSound(EAT_PELLET, 1);
+        sdlManager.playSound(Sound::EAT_PELLET, 1);
 
     } else if (collectedFruit) {
-        sdlManager.playSound(EAT_FRUIT,1);
+        sdlManager.playSound(Sound::EAT_FRUIT, 1);
         m_currentScore += 300;
     }
 }
@@ -424,8 +446,8 @@ void GameManager::checkForPlayerAndGhost() {
 
 void GameManager::ghostDead(std::shared_ptr<Ghost> &ghost) {
     if (!ghost->m_dead) {
-        sdlManager.playSound(EAT_GHOST, 2);
-        sdlManager.playSound(GHOST_RETURN, 6);
+        sdlManager.playSound(Sound::EAT_GHOST, 2);
+        sdlManager.playSound(Sound::GHOST_RETURN, 6);
     }
     m_currentScore+=200;
     ghost->die();
@@ -435,7 +457,7 @@ void GameManager::playerDead() {
     m_player->die();
     sdlManager.stopSoundOnChannel(-1);
     m_lives--;
-    sdlManager.playSound(DEATH);
+    sdlManager.playSound(Sound::DEATH);
     auto tread = std::async(playerDeathAnimation);
 
     sdlManager.stopExecutionWhileSoundPlaying(-1);
@@ -446,9 +468,3 @@ void GameManager::playerDead() {
         startNewRound();
     }
 }
-
-
-
-
-
-

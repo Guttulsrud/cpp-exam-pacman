@@ -141,7 +141,7 @@ void Map::createWallWithTexture(int map[32][29], int row, int column) {
             tileTexture = m_fill;
         }
         GameManager::addStationary(
-                std::make_shared<Stationary>(WALL, column * m_tileLength + m_tileLength,
+                std::make_shared<Stationary>(TYPE::WALL, column * m_tileLength + m_tileLength,
                                              row * m_tileLength + m_tileLength, tileTexture));
 
 
@@ -163,7 +163,7 @@ void Map::createWallWithTexture(int map[32][29], int row, int column) {
             }
         }
         GameManager::addStationary(
-                std::make_shared<Stationary>(HALLWAY, column * m_tileLength + m_tileLength,
+                std::make_shared<Stationary>(TYPE::HALLWAY, column * m_tileLength + m_tileLength,
                                              row * m_tileLength + m_tileLength, tileTexture));
     }
 }

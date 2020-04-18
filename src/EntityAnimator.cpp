@@ -3,8 +3,8 @@
 
 void EntityAnimator::animate(SDL_Texture **entityTexturePtr, Direction direction) {
 
-    if (direction == NONE) {
-        GameManager::getPlayer()->m_texture = m_textures[UP][0];
+    if (direction == Direction::NONE) {
+        GameManager::getPlayer()->m_texture = m_textures[Direction::UP][0];
         return;
     }
     if (m_frameCount == 5) {
