@@ -25,6 +25,7 @@ int SDLManager::init(const char *title, int xPos, int yPos, int width, int heigh
 
         if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024)) {
             Mix_AllocateChannels(8);
+            initSounds();
         }
 
         if (TTF_Init() != 0) {
@@ -79,9 +80,31 @@ void SDLManager::renderStartScreen() {
     FC_LoadFont(m_font, m_renderer, "../resources/fonts/arial.ttf", 30, FC_MakeColor(240, 153, 63, 255), TTF_STYLE_BOLD);
     FC_Draw(m_font, m_renderer, 295, 380, "Press Space to start!");
     FC_Draw(m_font, m_renderer, 330, 550, "Press 'Q' to quit!");
-
     FC_FreeFont(m_font);
-
     SDL_RenderPresent(m_renderer);
     SDL_RenderClear(m_renderer);
+}
+
+void SDLManager::initSounds() {
+    m_sounds = {{EAT_PELLET,       Mix_LoadWAV("../resources/sounds/pacman/pacman_chomp.wav")},
+                {EAT_POWER_PELLET, Mix_LoadWAV("../resources/sounds/pacman/eat_powerpellet.mp3")},
+                {EAT_FRUIT,        Mix_LoadWAV("../resources/sounds/pacman/pacman_eatfruit.wav")},
+                {EAT_GHOST,        Mix_LoadWAV("../resources/sounds/pacman/pacman_eatghost.wav")},
+                {DEATH,            Mix_LoadWAV("../resources/sounds/pacman/pacman_death.wav")},
+                {INTRO,            Mix_LoadWAV("../resources/sounds/game/pacman_beginning.wav")},
+                {MAP_COMPLETED,    Mix_LoadWAV("../resources/sounds/pacman/pacman_extrapac.wav")},
+                {GHOST_RETURN,     Mix_LoadWAV("../resources/sounds/ghosts/ghost_return_to_home.mp3")},
+    };
+}
+
+void SDLManager::playSound(Sound sound, int channel) {
+    Mix_PlayChannel(channel, m_sounds[sound], 0);
+}
+
+void SDLManager::stopSoundOnChannel(int channel) {
+    Mix_HaltChannel(channel);
+}
+
+void SDLManager::stopExecutionWhileSoundPlaying(int channel) {
+    while (Mix_Playing(channel)) {}
 }

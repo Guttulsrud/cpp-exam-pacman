@@ -15,10 +15,6 @@
 #include <algorithm>
 #include "SDLManager.h"
 
-enum Sound {
-    EAT_PELLET, EAT_POWER_PELLET, DEATH, EAT_FRUIT, EAT_GHOST, INTRO, MAP_COMPLETED, GHOST_RETURN
-};
-
 
 class GameManager {
 public:
@@ -30,19 +26,11 @@ public:
 
     void run();
 
-    void initSounds();
-
-    void playSound(Sound sound, int channel = -1);
-
     void render();
 
     void gameOver();
 
     void startNewRound();
-
-    void stopSoundOnChannel(int channel);
-
-    void stopExecutionWhileSoundPlaying(int channel);
 
     int readHighScoreFromFile();
 
