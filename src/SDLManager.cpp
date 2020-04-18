@@ -25,7 +25,6 @@ int SDLManager::init(const char *title, int xPos, int yPos, int width, int heigh
 
         if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024)) {
             Mix_AllocateChannels(8);
-            initSounds();
         }
 
         if (TTF_Init() != 0) {
