@@ -66,22 +66,22 @@ void GameManager::createMovables() {
 
     addGhost(std::make_shared<Ghost>(
             30 * 13, 30 * 15, 3,
-            EntityAnimator({{    Direction::
-                                 UP,
+            EntityAnimator({{Direction::
+                             UP,
                                     {
                                             "../resources/img/ghosts/green_N1.png",
                                             "../resources/img/ghosts/green_N2.png"
                                     }
                             },
-                            {    Direction::
-                                 DOWN,
+                            {Direction::
+                             DOWN,
                                     {
                                             "../resources/img/ghosts/green_S1.png",
                                             "../resources/img/ghosts/green_S2.png"
                                     }
                             },
-                            {    Direction::
-                                 LEFT,
+                            {Direction::
+                             LEFT,
                                     {
                                             "../resources/img/ghosts/green_W1.png",
                                             "../resources/img/ghosts/green_W2.png"
@@ -382,7 +382,7 @@ void GameManager::handlePelletCollision() {// Check for collision with stationar
             m_currentScore += 10;
 
             if (pellet->m_isPowerPellet) {
-                if(Mix_Playing(3)) {
+                if (Mix_Playing(3)) {
                     sdlManager.stopSoundOnChannel(3);
                 }
                 sdlManager.playSound(Sound::EAT_POWER_PELLET, 3);
@@ -452,7 +452,7 @@ void GameManager::ghostDead(std::shared_ptr<Ghost> &ghost) {
         sdlManager.playSound(Sound::EAT_GHOST, 2);
         sdlManager.playSound(Sound::GHOST_RETURN, 6);
     }
-    m_currentScore+=200;
+    m_currentScore += 200;
     ghost->die();
 }
 

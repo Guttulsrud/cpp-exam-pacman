@@ -5,6 +5,8 @@
 void Movable::updateHitBox() {
     m_hitBox.x = m_positionRectangle.x + 20;
     m_hitBox.y = m_positionRectangle.y + 20;
+    m_positionRectangle.w = 60;
+    m_positionRectangle.h = 60;
 }
 
 void Movable::moveInBoundsIfOutOfBounds() {
