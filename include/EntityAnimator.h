@@ -17,15 +17,17 @@ public:
             for(auto &path : vec){
                 directionTextures.emplace_back(TextureManager::loadTexture(path));
             }
-            textures.insert({key, directionTextures});
+            m_textures.insert({key, directionTextures});
         }
     };
-
-    std::map<Direction, std::vector<SDL_Texture *>> textures;
-    int frameCount = 0;
-    int animationIndex = 0;
-
     void animate(SDL_Texture ** entityTexturePtr, Direction direction);
+
+private:
+
+    std::map<Direction, std::vector<SDL_Texture *>> m_textures;
+    int m_frameCount = 0;
+    int m_animationIndex = 0;
+
 };
 
 

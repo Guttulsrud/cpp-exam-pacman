@@ -1,7 +1,6 @@
 #include "../include/Player.h"
 #include "../include/InputManager.h"
 #include "../include/GameManager.h"
-#include <SDL_mixer.h>
 
 void Player::update() {
 
@@ -31,16 +30,16 @@ void Player::update() {
 SDL_Point Player::updateMovementDirection() {
     InputManager IM = InputManager::getInstance();
     SDL_Point potentialMovementChange = m_movementChange;
-    if (!IM.KeyStillUp(SDL_SCANCODE_W) || !IM.KeyStillUp(SDL_SCANCODE_UP)) {
+    if (!IM.keyStillUp(SDL_SCANCODE_W) || !IM.keyStillUp(SDL_SCANCODE_UP)) {
         potentialMovementChange.x = 0;
         potentialMovementChange.y = -m_movementSpeed;
-    } else if (!IM.KeyStillUp(SDL_SCANCODE_A) || !IM.KeyStillUp(SDL_SCANCODE_LEFT)) {
+    } else if (!IM.keyStillUp(SDL_SCANCODE_A) || !IM.keyStillUp(SDL_SCANCODE_LEFT)) {
         potentialMovementChange.x = -m_movementSpeed;
         potentialMovementChange.y = 0;
-    } else if (!IM.KeyStillUp(SDL_SCANCODE_S) || !IM.KeyStillUp(SDL_SCANCODE_DOWN)) {
+    } else if (!IM.keyStillUp(SDL_SCANCODE_S) || !IM.keyStillUp(SDL_SCANCODE_DOWN)) {
         potentialMovementChange.x = 0;
         potentialMovementChange.y = m_movementSpeed;
-    } else if (!IM.KeyStillUp(SDL_SCANCODE_D) || !IM.KeyStillUp(SDL_SCANCODE_RIGHT)) {
+    } else if (!IM.keyStillUp(SDL_SCANCODE_D) || !IM.keyStillUp(SDL_SCANCODE_RIGHT)) {
         potentialMovementChange.x = m_movementSpeed;
         potentialMovementChange.y = 0;
     }
@@ -49,15 +48,15 @@ SDL_Point Player::updateMovementDirection() {
 
 void Player::updateDirection() {
     if (m_movementChange.x > 0) {
-        m_direction = RIGHT;
+        m_direction = Direction::RIGHT;
     } else if (m_movementChange.x < 0) {
-        m_direction = LEFT;
+        m_direction = Direction::LEFT;
     } else if (m_movementChange.y < 0) {
-        m_direction = UP;
+        m_direction = Direction::UP;
     } else if (m_movementChange.y > 0) {
-        m_direction = DOWN;
+        m_direction = Direction::DOWN;
     } else {
-        m_direction = NONE;
+        m_direction = Direction::NONE;
     }
 }
 
@@ -91,7 +90,7 @@ void Player::reset() {
 }
 
 void Player::die() {
-    m_direction = UP;
+    m_direction = Direction::UP;
 }
 
 SDL_Rect Player::moveOneFrame(SDL_Point potentialChange) {

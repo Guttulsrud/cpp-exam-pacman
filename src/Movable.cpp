@@ -3,8 +3,8 @@
 
 
 void Movable::updateHitBox() {
-    hitBox.x = m_positionRectangle.x+20;
-    hitBox.y = m_positionRectangle.y+20;
+    m_hitBox.x = m_positionRectangle.x + 20;
+    m_hitBox.y = m_positionRectangle.y + 20;
 }
 
 void Movable::moveInBoundsIfOutOfBounds() {
@@ -25,7 +25,7 @@ void Movable::moveInBoundsIfOutOfBounds() {
 
 bool Movable::willCollideWithWall(SDL_Rect &possiblePosition) {
     for (auto &stationary : GameManager::getStationery()) {
-        if (stationary->getType() == WALL && SDL_HasIntersection(&possiblePosition, &stationary->m_positionRectangle)) {
+        if (stationary->getType() == TYPE::WALL && SDL_HasIntersection(&possiblePosition, &stationary->m_positionRectangle)) {
             return true;
         }
     }

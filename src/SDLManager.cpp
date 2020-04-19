@@ -9,13 +9,13 @@ int SDLManager::init(const char *title, int xPos, int yPos, int width, int heigh
 
     Uint32 flags = SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL;
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) == 0) {
-        window = SDL_CreateWindow(title, xPos, yPos, width, height, flags);
+        m_window = SDL_CreateWindow(title, xPos, yPos, width, height, flags);
 
-        if (!window) {
+        if (!m_window) {
             std::cout << "Couldn't open Window!" << std::endl;
         }
 
-        m_renderer = SDL_CreateRenderer(window, -1, flags);
+        m_renderer = SDL_CreateRenderer(m_window, -1, flags);
 
         if (m_renderer) {
             SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, 255);
@@ -37,26 +37,26 @@ int SDLManager::init(const char *title, int xPos, int yPos, int width, int heigh
 
 void SDLManager::clean() {
     TTF_Quit();
-    FC_FreeFont(font);
+    FC_FreeFont(m_font);
     Mix_CloseAudio();
     SDL_DestroyRenderer(m_renderer);
-    SDL_DestroyWindow(window);
+    SDL_DestroyWindow(m_window);
     SDL_Quit();
 }
 
-void SDLManager::initFonts() {
+void SDLManager::showReadyText() {
     setFontSize(42);
     drawText("Ready!", 400, 545);
     setFontSize(24);
 }
 
 void SDLManager::drawText(const char *text, float x, float y, int parameter) {
-    FC_Draw(font, m_renderer, x, y, text, parameter);
+    FC_Draw(m_font, m_renderer, x, y, text, parameter);
 }
 
 void SDLManager::setFontSize(int size) {
-    font = FC_CreateFont();
-    FC_LoadFont(font, m_renderer, "../resources/fonts/arial.ttf", size, FC_MakeColor(255, 255, 0, 255), TTF_STYLE_NORMAL);
+    m_font = FC_CreateFont();
+    FC_LoadFont(m_font, m_renderer, "../resources/fonts/arial.ttf", size, FC_MakeColor(255, 255, 0, 255), TTF_STYLE_NORMAL);
 }
 
 void SDLManager::renderBuffer() {
@@ -73,15 +73,37 @@ void SDLManager::renderStartScreen() {
     auto startScreenRect = SDL_Rect{0, 0, 930, 1020};
 
     render( TextureManager::loadTexture(
-            "../resources/startscreenassets/start_screen_alt.png"), &startScreenRect, &startScreenRect);
+            "../resources/startscreenassets/start_screen.png"), &startScreenRect, &startScreenRect);
 
-    font = FC_CreateFont();
-    FC_LoadFont(font, m_renderer, "../resources/fonts/arial.ttf", 30, FC_MakeColor(240, 153, 63, 255), TTF_STYLE_BOLD);
-    FC_Draw(font, m_renderer, 295, 380, "Press Space to start!");
-    FC_Draw(font, m_renderer, 330, 550, "Press 'Q' to quit!");
-
-    FC_FreeFont(font);
-
+    m_font = FC_CreateFont();
+    FC_LoadFont(m_font, m_renderer, "../resources/fonts/arial.ttf", 30, FC_MakeColor(240, 153, 63, 255), TTF_STYLE_BOLD);
+    FC_Draw(m_font, m_renderer, 295, 380, "Press Space to start!");
+    FC_Draw(m_font, m_renderer, 330, 550, "Press 'Q' to quit!");
+    FC_FreeFont(m_font);
     SDL_RenderPresent(m_renderer);
     SDL_RenderClear(m_renderer);
+}
+
+void SDLManager::initSounds() {
+    m_sounds = {{Sound::EAT_PELLET,       Mix_LoadWAV("../resources/sounds/pacman/pacman_chomp.wav")},
+                {Sound::EAT_POWER_PELLET, Mix_LoadWAV("../resources/sounds/pacman/eat_powerpellet.mp3")},
+                {Sound::EAT_FRUIT,        Mix_LoadWAV("../resources/sounds/pacman/pacman_eatfruit.wav")},
+                {Sound::EAT_GHOST,        Mix_LoadWAV("../resources/sounds/pacman/pacman_eatghost.wav")},
+                {Sound::DEATH,            Mix_LoadWAV("../resources/sounds/pacman/pacman_death.wav")},
+                {Sound::INTRO,            Mix_LoadWAV("../resources/sounds/game/pacman_beginning.wav")},
+                {Sound::MAP_COMPLETED,    Mix_LoadWAV("../resources/sounds/pacman/pacman_extrapac.wav")},
+                {Sound::GHOST_RETURN,     Mix_LoadWAV("../resources/sounds/ghosts/ghost_return_to_home.mp3")},
+    };
+}
+
+void SDLManager::playSound(Sound sound, int channel) {
+    Mix_PlayChannel(channel, m_sounds[sound], 0);
+}
+
+void SDLManager::stopSoundOnChannel(int channel) {
+    Mix_HaltChannel(channel);
+}
+
+void SDLManager::stopExecutionWhileSoundPlaying(int channel) {
+    while (Mix_Playing(channel)) {}
 }

@@ -9,50 +9,41 @@ class Map {
 
 
 public:
-    ~Map();
-
     Map(const std::string& filePath, int mapIndex);
-
-    int currentMap[32][29];
-
-    void loadMapFromFile(const char *filePath);
-
-    void loadLevelMap(int map[32][29]);
 
 private:
     void createWallWithTexture(int map[32][29], int row, int column);
+    void loadLevelMap(int map[32][29]);
+    void loadMapFromFile(const char *filePath);
 
-    int tileLength = 30;
+    int m_tileLength = 30;
+    int m_currentMap[32][29]{};
 
-
-    SDL_Texture *fill;
-    SDL_Texture *round;
-    SDL_Texture *black;
-    SDL_Texture *endN;
-    SDL_Texture *endW;
-    SDL_Texture *endS;
-    SDL_Texture *endE;
-    SDL_Texture *wallDoubleEdgeWE;
-    SDL_Texture *wallDoubleEdgeNS;
-    SDL_Texture *cornerSW;
-    SDL_Texture *cornerNW;
-    SDL_Texture *cornerNE;
-    SDL_Texture *cornerSE;
-    SDL_Texture *insideCornerNW;
-    SDL_Texture *insideCornerNE;
-    SDL_Texture *insideCornerSW;
-    SDL_Texture *insideCornerSE;
-    SDL_Texture *edgeS;
-    SDL_Texture *edgeN;
-    SDL_Texture *edgeE;
-    SDL_Texture *edgeW;
-    SDL_Texture *pellet;
-    SDL_Texture *pelletLarge;
-    SDL_Texture *fruitMapOne;
-    SDL_Texture *fruitMapTwo;
-    SDL_Texture *fruitMapThree;
-
-
+    SDL_Texture *m_fill;
+    SDL_Texture *m_round;
+    SDL_Texture *m_endN;
+    SDL_Texture *m_endW;
+    SDL_Texture *m_endS;
+    SDL_Texture *m_endE;
+    SDL_Texture *m_wallDoubleEdgeWE;
+    SDL_Texture *m_wallDoubleEdgeNS;
+    SDL_Texture *m_cornerSW;
+    SDL_Texture *m_cornerNW;
+    SDL_Texture *m_cornerNE;
+    SDL_Texture *m_cornerSE;
+    SDL_Texture *m_insideCornerNW;
+    SDL_Texture *m_insideCornerNE;
+    SDL_Texture *m_insideCornerSW;
+    SDL_Texture *m_insideCornerSE;
+    SDL_Texture *m_edgeS;
+    SDL_Texture *m_edgeN;
+    SDL_Texture *m_edgeE;
+    SDL_Texture *m_edgeW;
+    SDL_Texture *m_pellet;
+    SDL_Texture *m_pelletLarge;
+    SDL_Texture *m_fruitMapOne;
+    SDL_Texture *m_fruitMapTwo;
+    SDL_Texture *m_fruitMapThree;
 };
 
 

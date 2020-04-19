@@ -15,28 +15,16 @@
 #include <algorithm>
 #include "SDLManager.h"
 
-enum Sound {
-    EAT_PELLET, EAT_POWER_PELLET, DEATH, EAT_FRUIT, EAT_GHOST, INTRO, MAP_COMPLETED, GHOST_RETURN
-};
-
 
 class GameManager {
 public:
-    std::vector<std::string> levelPaths = {
-            "../resources/maps/level_one.txt",
-            "../resources/maps/level_two.txt",
-            "../resources/maps/level_three.txt"
-    };
 
     static GameManager &getInstance() {
         static GameManager instance;
         return instance;
     }
-    std::map<Sound, Mix_Chunk *> sounds;
 
     void run();
-    void initSounds();
-    void playSound(Sound sound, int channel = -1);
 
     void render();
 
@@ -44,14 +32,7 @@ public:
 
     void startNewRound();
 
-    void stopSoundOnChannel(int channel);
-
-    void stopExecutionWhileSoundPlaying(int channel);
-
     int readHighScoreFromFile();
-
-    static void writeHighScore(int score);
-
 
     static std::shared_ptr<Player> &getPlayer();
 
@@ -67,6 +48,7 @@ public:
 
     static void addGhost(const std::shared_ptr<Ghost> &s);
 
+    static void writeHighScore(int score);
 
     int m_currentScore = 0;
     int m_scoreLastRound = 0;
@@ -74,27 +56,13 @@ public:
     int m_newHighScore = 0;
     int m_lives = 3;
 
+    std::vector<std::string> m_levelPaths = {
+            "../resources/maps/level_one.txt",
+            "../resources/maps/level_two.txt",
+            "../resources/maps/level_three.txt"
+    };
 
 private:
-
-    const int FPS = 60;
-    const int frameDelay = 1000 / FPS;
-
-    int currentLevel = 0;
-    bool running = true;
-    bool inGame = true;
-
-    InputManager inputManager = InputManager::getInstance();
-    SDLManager sdlManager = SDLManager::getInstance();
-
-    SDL_Texture *numberOfLivesDisplayTexture;
-
-    std::shared_ptr<Player> m_player;
-    std::vector<std::shared_ptr<Stationary>> m_stationery;
-    std::vector<std::shared_ptr<Pellet>> m_pellets;
-    std::vector<std::shared_ptr<Ghost>> m_ghosts;
-    std::shared_ptr<Map> m_map;
-
     void update();
 
     void startGame();
@@ -123,14 +91,31 @@ private:
 
     void setMap(const int &mapIndex);
 
-    Uint32 frameTime;
-    Uint32 frameStart = 0;
-
-    GameManager() = default;
-
     void playerDead();
 
     void ghostDead(std::shared_ptr<Ghost> &ghost);
+
+    GameManager() = default;
+
+
+    const int FPS = 60;
+    int currentLevel = 0;
+    bool running = true;
+    bool inGame = true;
+    const int frameDelay = 1000 / FPS;
+
+    Uint32 m_frameTime;
+    Uint32 m_frameStart = 0;
+    InputManager inputManager = InputManager::getInstance();
+    SDLManager sdlManager = SDLManager::getInstance();
+    SDL_Texture *numberOfLivesDisplayTexture;
+    std::shared_ptr<Player> m_player;
+    std::vector<std::shared_ptr<Stationary>> m_stationery;
+    std::vector<std::shared_ptr<Pellet>> m_pellets;
+    std::vector<std::shared_ptr<Ghost>> m_ghosts;
+    std::shared_ptr<Map> m_map;
+
+    void handlePelletCollision();
 };
 
 #endif

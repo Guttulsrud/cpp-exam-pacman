@@ -4,6 +4,10 @@
 
 #include "GameObject.h"
 
+enum class TYPE {
+    WALL, PELLET, HALLWAY,
+};
+
 class Stationary : public GameObject {
 
 public:

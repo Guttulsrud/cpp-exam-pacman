@@ -5,10 +5,7 @@
 #include <SDL2/SDL.h>
 #include "TextureManager.h"
 
-enum TYPE {
-    WALL, PELLET, HALLWAY,
-};
-enum Direction {
+enum class Direction {
     UP, DOWN, LEFT, RIGHT, NONE
 };
 

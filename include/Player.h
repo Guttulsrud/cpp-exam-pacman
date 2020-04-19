@@ -17,16 +17,15 @@ public:
         m_movementChange.y = 0;
     }
 
-
     void reset() override;
 
     void update() override;
 
     void die();
 
-    Direction m_direction = UP;
+    Direction m_direction = Direction::UP;
 
-    EntityAnimator m_animator = EntityAnimator({{UP,
+    EntityAnimator m_animator = EntityAnimator({{Direction::UP,
                                                         {
                                                                 "../resources/img/pacman/base.png",
                                                                 "../resources/img/pacman/medium-open-up.png",
@@ -34,7 +33,7 @@ public:
                                                                 "../resources/img/pacman/medium-open-up.png"
                                                         }
                                                 },
-                                                {DOWN,
+                                                {Direction::DOWN,
                                                         {
                                                                 "../resources/img/pacman/base.png",
                                                                 "../resources/img/pacman/medium-open-down.png",
@@ -42,7 +41,7 @@ public:
                                                                 "../resources/img/pacman/medium-open-down.png"
                                                         }
                                                 },
-                                                {LEFT,
+                                                {Direction::LEFT,
                                                         {
                                                                 "../resources/img/pacman/base.png",
                                                                 "../resources/img/pacman/medium-open-left.png",
@@ -50,7 +49,7 @@ public:
                                                                 "../resources/img/pacman/medium-open-left.png"
                                                         }
                                                 },
-                                                {RIGHT,
+                                                {Direction::RIGHT,
                                                         {
                                                                 "../resources/img/pacman/base.png",
                                                                 "../resources/img/pacman/medium-open-right.png",
@@ -59,7 +58,7 @@ public:
                                                         }
                                                 }});
 
-    EntityAnimator deathAnimator = EntityAnimator({{UP,
+    EntityAnimator deathAnimator = EntityAnimator({{Direction::UP,
                                                            {
                                                                    "../resources/img/pacman/pacman_death_1.png",
                                                                    "../resources/img/pacman/pacman_death_2.png",
@@ -74,13 +73,15 @@ public:
                                                    }
                                                   });
 private:
-    SDL_Point m_movementChange;
 
     void updateDirection();
 
     SDL_Point updateMovementDirection();
 
     SDL_Rect moveOneFrame(SDL_Point potentialChange);
+
+    SDL_Point m_movementChange;
+
 };
 
 

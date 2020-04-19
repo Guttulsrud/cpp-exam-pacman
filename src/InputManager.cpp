@@ -1,19 +1,19 @@
 #include "../include/InputManager.h"
 
-bool InputManager::KeyDown(int iKeyIndex) {
-    return !oldKeys[iKeyIndex] && keys[iKeyIndex];
+bool InputManager::keyDown(int iKeyIndex) {
+    return !m_oldKeys[iKeyIndex] && m_keys[iKeyIndex];
 }
 
-bool InputManager::KeyStillDown(int iKeyIndex) {
-    return oldKeys[iKeyIndex] && keys[iKeyIndex];
+bool InputManager::keyStillDown(int iKeyIndex) {
+    return m_oldKeys[iKeyIndex] && m_keys[iKeyIndex];
 }
 
-bool InputManager::KeyUp(int iKeyIndex) {
-    return oldKeys[iKeyIndex] && !keys[iKeyIndex];
+bool InputManager::keyUp(int iKeyIndex) {
+    return m_oldKeys[iKeyIndex] && !m_keys[iKeyIndex];
 }
 
-bool InputManager::KeyStillUp(int iKeyIndex) {
-    return !(oldKeys[iKeyIndex] && keys[iKeyIndex]);
+bool InputManager::keyStillUp(int iKeyIndex) {
+    return !(m_oldKeys[iKeyIndex] && m_keys[iKeyIndex]);
 }
 
 InputManager &InputManager::getInstance() {
@@ -22,7 +22,7 @@ InputManager &InputManager::getInstance() {
 }
 
 void InputManager::update() {
-    memcpy(oldKeys, keys, keyCount * sizeof(Uint8));
+    memcpy(m_oldKeys, m_keys, m_keyCount * sizeof(Uint8));
     SDL_PumpEvents();
 }
 
