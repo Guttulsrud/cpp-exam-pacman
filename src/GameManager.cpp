@@ -205,6 +205,7 @@ int GameManager::readHighScoreFromFile() {
 void GameManager::gameOver() {
     sdlManager.stopSoundOnChannel(-1);
     currentLevel = 0;
+    m_scoreLastRound = 0;
     m_lives = 3;
     SDL_RenderClear(SDLManager::m_renderer);
     if (m_currentScore > m_highScore) {
